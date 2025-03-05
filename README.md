@@ -37,13 +37,13 @@ Our technology stack includes:
 
 ## 📌 Project Management & Resources
 
-* Scrum Board: [Trello]([url](https://trello.com/u/heinzaw15/boards))
-* GitHub Repository: [Link]([](url))
+* Scrum Board: [Trello](https://trello.com/b/ohr4aTTh/capstoneproject)
+* GitHub Repository: [Link](https://github.com/HeinHtutZaw19/simplify)
 
 ## 👥 Teammates
 
-* Minji Kim (115242397) | [minji.kim.6@stonybrook.edu]([url](minji.kim.6@stonybrook.edu))
-* Dowon Kim (114001605) | [dowon.kim@stonybrook.edu]([url](dowon.kim@stonybrook.edu))
-* Hein Zaw (115344093) | [hein.zaw@stonybrook.edu]([url](hein.zaw@stonybrook.edu))
+* Minji Kim (115242397) | <minji.kim.6@stonybrook.edu>
+* Dowon Kim (114001605) | <dowon.kim@stonybrook.edu>
+* Hein Zaw (115344093) | <hein.zaw@stonybrook.edu>
 
 
