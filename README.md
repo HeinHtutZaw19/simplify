@@ -37,8 +37,8 @@ Our technology stack includes:
 
 ## 📌 Project Management & Resources
 
-Scrum Board: [Trello]([url](https://trello.com/u/heinzaw15/boards))
-GitHub Repository: [Link]([](url))
+* Scrum Board: [Trello]([url](https://trello.com/u/heinzaw15/boards))
+* GitHub Repository: [Link]([](url))
 
 ## 👥 Teammates
 
