@@ -32,13 +32,15 @@ The project also explores a win-win sponsorship model, allowing brands to connec
 Our technology stack includes:
 
 * AI & Machine Learning for personalized insights
+* NLP for Custom GPT
 * Computer Vision for skin analysis
 * Gamification Mechanics for enhanced user engagement
+* MERN stack for full-stack development
 
 ## 📌 Project Management & Resources
 
 * Scrum Board: [Trello](https://trello.com/b/ohr4aTTh/capstoneproject)
-* GitHub Repository: [Link](https://github.com/HeinHtutZaw19/simplify)
+* GitHub Repository: [Github](https://github.com/HeinHtutZaw19/simplify)
 
 ## 👥 Teammates
 
