@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon index.js",
     "start": "NODE_ENV=production node backend/server.js",
-    "clean": "rm -rf node_modules && rm -rf frontend/node_modules && rm -rf frontend/build"
+    "clean": "rm -rf node_modules && rm -rf frontend/node_modules && rm -rf frontend/dist"
   },
   "type":"module",
   "keywords": [],
