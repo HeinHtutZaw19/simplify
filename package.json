@@ -1,0 +1,22 @@
+{
+  "name": "simplify",
+  "version": "1.0.0",
+  "description": "## 🧴 Problem Statement",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "start": "NODE_ENV=production node backend/server.js",
+    "clean": "rm -rf node_modules && rm -rf frontend/node_modules && rm -rf frontend/build"
+  },
+  "type":"module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1"
+  }
+}
