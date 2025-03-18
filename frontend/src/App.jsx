@@ -4,6 +4,9 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import {Button} from '@chakra-ui/react'
 import {Route, Routes} from 'react-router-dom'
+import Login from './Login'
+import Signup from './Signup'
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -15,6 +18,8 @@ function App() {
     <Routes>
       <Route path="/" element={<h1>Home</h1>} />
       <Route path="/about" element={<h1>About</h1>} />
+      <Route path="/login" element={<Login/>} />
+      <Route path="/signup" element={<Signup/>} />
     </Routes>
     </>
   )
