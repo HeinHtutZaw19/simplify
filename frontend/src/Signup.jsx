@@ -1,22 +1,21 @@
 import './App.css'
-import { Editable, EditableInput, EditablePreview } from '@chakra-ui/react'
+import signupUser from './API/API'
+import { Input, Button } from '@chakra-ui/react'
 
-function Signup() {
+const Signup = () => {
+    const onSignupClick = async () => {
+        console.log("Sign up clicked")
+        const res = await signupUser({'username':'ehrmantraut'});
+        console.log('res:', res);
+    }
+
     return (
         <div>
             <h1>signup header</h1>
-            <Editable placeholder='Username'>
-                <EditablePreview />
-                <EditableInput />
-            </Editable>
-            <Editable placeholder='Email'>
-                <EditablePreview />
-                <EditableInput />
-            </Editable>
-            <Editable placeholder='Password'>
-                <EditablePreview />
-                <EditableInput />
-            </Editable>
+            <Input placeholder='Username' />
+            <Input placeholder='Email' />
+            <Input placeholder='Password' />
+            <Button onClick={onSignupClick}>Sign Up</Button>
         </div>
     )
 }
