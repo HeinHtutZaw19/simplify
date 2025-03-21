@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
+import User from './models/user.js';
 
 const app = express();
 dotenv.config();
@@ -20,23 +21,36 @@ app.use(express.json());
 
 const __dirname = path.resolve();
 console.log(process.env.NODE_ENV)
-if(process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
     })
 }
 
-app.post('/api/signup', (req, res) => {
-    // check for duplicate username or email
+app.post('/api/signup', async (req, res) => {
+    try {
+        console.log(req.body);
+        // check for duplicate username or email
 
-    // create user in db
+        // create user in db
+        const newUser = new User({
+            username: 'aaaa', //temp
+            email: 'eeee',
+            password: '1234asdf'
+        })
+        await newUser.save();
 
-    // return created user
-    res.json({username:'afjdskfj', id:727});
+        // return created user
+        res.json(newUser);
+    }
+    catch (error) {
+        console.error('Signup error:', error.message);
+        res.sendStatus(400);
+    }
 });
 
-app.listen(PORT, ()=>{
+app.listen(PORT, () => {
     connectDB();
     console.log(`Server started on http://localhost:${PORT}`);
 })

@@ -17,7 +17,7 @@ export const signupUser = async (user) => {
         return parsed;
     }
     catch (error) {
-        console.error(error.message);
+        console.error('Signup error:', error.message);
     }
 }
 
