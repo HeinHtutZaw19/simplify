@@ -7,7 +7,8 @@ const Signup = () => {
     const [signupInfo, setSignupInfo] = useState({
         username: '',
         email: '',
-        password: '', // TODO: later we need to add other properties (like the survey answers) when doing signup
+        password: '',
+        passwordVerify: '', // TODO: later we need to add other properties (like the survey answers) when doing signup
     })
 
     const handleChange = (e) => {
@@ -39,6 +40,8 @@ const Signup = () => {
 
         // TODO password requirements (case, special char, numbers)
 
+        // TODO verify password
+
         const res = await signupUser({
             'username': signupInfo.username,
             'email': signupInfo.email,
@@ -52,7 +55,7 @@ const Signup = () => {
             <h1>signup header</h1>
             <Input placeholder='Username' name='username' value={signupInfo.username} onChange={handleChange} />
             <Input placeholder='Email' name='email' value={signupInfo.email} onChange={handleChange} />
-            <Input placeholder='Password' name='password' value={signupInfo.password} onChange={handleChange} />
+            <Input type='password' placeholder='Password' name='password' value={signupInfo.password} onChange={handleChange} />
             <Button onClick={onSignupClick}>Sign Up</Button>
         </div>
     )
