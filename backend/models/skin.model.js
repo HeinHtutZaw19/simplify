@@ -15,5 +15,5 @@ const skinSchema = new mongoose.Schema({
     }]
 })
 
-const Skin = mangoose.model("Skin", skinSchema);
+const Skin = mongoose.model("Skin", skinSchema);
 export default Skin;

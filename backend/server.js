@@ -4,7 +4,7 @@ import path from "path";
 import cors from "cors";
 import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
-import User from './models/user.js';
+import User from './models/user.model.js';
 
 const app = express();
 dotenv.config();

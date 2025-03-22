@@ -5,8 +5,8 @@ import {Button, Flex} from '@chakra-ui/react'
 import {Route, Routes} from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import Sidebar from './components/Sidebar'
-import Login from './Login'
-import Signup from './Signup'
+import Login from './components/Login'
+import Signup from './components/Signup'
 
 function App() {
   return (

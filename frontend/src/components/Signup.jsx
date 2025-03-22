@@ -1,5 +1,4 @@
-import './App.css'
-import signupUser from './API/API'
+import signupUser from '../API/API'
 import { Input, Button } from '@chakra-ui/react'
 import { useState } from 'react'
 
