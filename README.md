@@ -41,6 +41,7 @@ Our technology stack includes:
 
 * Scrum Board: [Trello](https://trello.com/b/ohr4aTTh/capstoneproject)
 * GitHub Repository: [Github](https://github.com/HeinHtutZaw19/simplify)
+* Figma: [Figma](https://www.figma.com/design/rnA11UOpkZ3Z8YAfXebkCU/pages?node-id=3336-2&t=4xmHUPtgqH175zgB-1)
 
 ## 👥 Teammates
 
