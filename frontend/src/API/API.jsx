@@ -13,6 +13,10 @@ export const signupUser = async (user) => {
     };
     try {
         const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Signup error:', res.status);
+            return;
+        }
         const parsed = await res.json();
         return parsed;
     }

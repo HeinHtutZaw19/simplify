@@ -8,7 +8,7 @@ const Signup = () => {
         username: '',
         email: '',
         password: '',
-        passwordVerify: '', // TODO: later we need to add other properties (like the survey answers) when doing signup
+        passwordConfirm: '', // TODO: later we need to add other properties (like the survey answers) when doing signup
     })
 
     const handleChange = (e) => {
@@ -20,8 +20,6 @@ const Signup = () => {
     };
 
     const onSignupClick = async () => {
-        console.log("Sign up clicked")
-
         // prevent signup if an input is empty
         if (!signupInfo.username || !signupInfo.email || !signupInfo.password) {
             console.log('All input fields must not be blank');
@@ -38,9 +36,19 @@ const Signup = () => {
             return;
         }
 
-        // TODO password requirements (case, special char, numbers)
+        // check password requirements
+        // at least length 8, mix of lowercase,  uppercase, numbers, special chars
+        const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\])[A-Za-z\d@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\]{8,}$/;
+        if (!passwordRequirements.test(signupInfo.password)) {
+            console.log('Password requirements not met');
+            return;
+        }
 
-        // TODO verify password
+        // confirm password
+        if (signupInfo.password !== signupInfo.passwordConfirm) {
+            console.log('Password confirmation is wrong')
+            return;
+        }
 
         const res = await signupUser({
             'username': signupInfo.username,
@@ -56,6 +64,10 @@ const Signup = () => {
             <Input placeholder='Username' name='username' value={signupInfo.username} onChange={handleChange} />
             <Input placeholder='Email' name='email' value={signupInfo.email} onChange={handleChange} />
             <Input type='password' placeholder='Password' name='password' value={signupInfo.password} onChange={handleChange} />
+            <Input type='password' placeholder='Confirm Password' name='passwordConfirm' value={signupInfo.passwordConfirm} onChange={handleChange} />
+            <span style={{ display: 'block' }}>
+                Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
+            </span>
             <Button onClick={onSignupClick}>Sign Up</Button>
         </div>
     )
