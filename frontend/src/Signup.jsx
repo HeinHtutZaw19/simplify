@@ -37,6 +37,8 @@ const Signup = () => {
             return;
         }
 
+        // TODO password requirements (case, special char, numbers)
+
         const res = await signupUser({
             'username': signupInfo.username,
             'email': signupInfo.email,

@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
+import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
 import User from './models/user.js';
 
@@ -34,7 +35,7 @@ app.post('/api/signup', async (req, res) => {
 
         // validate email format
         // <string>@<string>.<string>
-        const validEmail = signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/);
+        const validEmail = email.toLowerCase().match(/^\S+@\S+\.\S+$/);
         if (!validEmail) {
             console.log('Signup error: Invalid email');
             return;
@@ -54,13 +55,18 @@ app.post('/api/signup', async (req, res) => {
             return;
         }
 
+        // salt + hash the password
+        const salted = await bcrypt.genSalt(10);
+        const hashed = await bcrypt.hash(password, salted);
+
         // create user in db
         const newUser = new User({
             username: username,
             email: email,
-            password: password,
+            password: hashed,
         })
         await newUser.save();
+        console.log('User created:', username);
 
         // return created user
         res.json(newUser);
