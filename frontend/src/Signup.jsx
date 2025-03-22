@@ -5,7 +5,11 @@ import { Input, Button } from '@chakra-ui/react'
 const Signup = () => {
     const onSignupClick = async () => {
         console.log("Sign up clicked")
-        const res = await signupUser({'username':'ehrmantraut'});
+        const res = await signupUser({
+            'username': 'heis4e6nberg',
+            'email': 'fs6324y5tda',
+            'password': '1234aresdf'
+        });
         console.log('res:', res);
     }
 

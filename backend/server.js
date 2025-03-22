@@ -30,14 +30,27 @@ if (process.env.NODE_ENV === 'production') {
 
 app.post('/api/signup', async (req, res) => {
     try {
-        console.log(req.body);
+        const { username, email, password } = req.body;
+
         // check for duplicate username or email
+        const userExists = await User.exists({ username: username });
+        if (userExists) {
+            console.log('Signup error: Username exists');
+            res.sendStatus(409);
+            return;
+        }
+        const emailExists = await User.exists({ email: email });
+        if (emailExists) {
+            console.log('Signup error: Email exists');
+            res.sendStatus(409);
+            return;
+        }
 
         // create user in db
         const newUser = new User({
-            username: 'aaaa', //temp
-            email: 'eeee',
-            password: '1234asdf'
+            username: username,
+            email: email,
+            password: password,
         })
         await newUser.save();
 
