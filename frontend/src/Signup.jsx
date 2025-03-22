@@ -27,6 +27,16 @@ const Signup = () => {
             return;
         }
 
+        // TODO make sure users don't type anything stupid in these fields (special characters)
+
+        // validate email format
+        // <string>@<string>.<string>
+        const validEmail = signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/);
+        if (!validEmail) {
+            console.log('Invalid email');
+            return;
+        }
+
         const res = await signupUser({
             'username': signupInfo.username,
             'email': signupInfo.email,

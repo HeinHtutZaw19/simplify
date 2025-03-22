@@ -32,6 +32,14 @@ app.post('/api/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
+        // validate email format
+        // <string>@<string>.<string>
+        const validEmail = signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/);
+        if (!validEmail) {
+            console.log('Signup error: Invalid email');
+            return;
+        }
+
         // check for duplicate username or email
         const userExists = await User.exists({ username: username });
         if (userExists) {
