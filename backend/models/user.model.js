@@ -9,26 +9,32 @@ const userSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String
     },
-    name: {
+    username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     age: {
         type : Number,
-        required: true
+        // required: true
     },
     email:{
+        type: String,
+        required: true,
+        unique: true
+    },
+    password:{
         type: String,
         required: true
     },
     region:{
         type: String,
-        required: true
+        // required: true
     },
     forum:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Forum',
-        required: true
+        // required: true
     },
     chat: [{
         type: mongoose.Schema.Types.ObjectId,
