@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session'
 import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
@@ -20,6 +21,13 @@ app.use(cors({
 
 app.use(express.json());
 
+const sessionSecret = 'VE9zUUDY8FWggzDg'; //random string
+app.use(session({
+    secret: sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+}))
+
 const __dirname = path.resolve();
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {
@@ -31,6 +39,8 @@ if (process.env.NODE_ENV === 'production') {
 
 app.post('/api/signup', async (req, res) => {
     try {
+        console.log('--------------------------------------------')
+        console.log(req)
         const { username, email, password } = req.body;
 
         // validate email format
