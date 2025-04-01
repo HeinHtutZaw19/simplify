@@ -92,7 +92,7 @@ app.post('/api/signup', async (req, res) => {
         req.session.user = newUser;
         req.session.save(err => {
             if (err) {
-                console.log('Session error:', err)
+                console.log('Session(signup) error:', err)
             }
         })
 
@@ -111,6 +111,15 @@ app.get('/api/checklogin', (req, res) => {
         user = req.session.user;
     }
     res.json(user);
+});
+
+app.get('/api/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.log('Session(logout) error:', err)
+        }
+    })
+    res.sendStatus(200);
 });
 
 app.listen(PORT, () => {

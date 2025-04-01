@@ -68,7 +68,9 @@ const Signup = () => {
             'email': signupInfo.email,
             'password': signupInfo.password
         });
-        console.log('res:', res);
+        if (res) {
+            navigate('/');
+        }
     }
 
     return (

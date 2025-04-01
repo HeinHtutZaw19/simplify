@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Flex, Text, Button } from '@chakra-ui/react'
-import { checkLogin } from '../API/API'
+import { checkLogin, logoutUser } from '../API/API'
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -17,8 +17,12 @@ const HomePage = () => {
     fetchLoginData();
   });
 
-  const handleLogoutClick = () => {
+  const handleLogoutClick = async () => {
     console.log('logout clicked');
+    const res = logoutUser();
+    if (res) {
+      navigate('/signup');
+    }
   }
 
   return (

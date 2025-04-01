@@ -52,8 +52,11 @@ export const logoutUser = async () => {
     };
     try {
         const res = await fetch(url, params);
-        const parsed = await res.json();
-        return parsed;
+        if (!res.ok) {
+            console.log('Logout error:', res.status);
+            return;
+        }
+        return res;
     }
     catch (error) {
         console.error('Logout error:', error.message);
