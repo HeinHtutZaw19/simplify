@@ -1,8 +1,22 @@
 import { signupUser } from '../API/API'
 import { Input, Button } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
+import { checkLogin } from '../API/API'
 
 const Signup = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchLoginData = async () => {
+            const user = await checkLogin();
+            if (user) {
+                navigate('/');
+            }
+        }
+        fetchLoginData();
+    });
+
     const [signupInfo, setSignupInfo] = useState({
         username: '',
         email: '',

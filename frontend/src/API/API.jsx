@@ -42,3 +42,20 @@ export const checkLogin = async () => {
         console.error('Check login error:', error.message);
     }
 }
+
+export const logoutUser = async () => {
+    const url = "http://localhost:4000/api/logout";
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Logout error:', error.message);
+    }
+}
