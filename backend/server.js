@@ -1,4 +1,6 @@
 import express from 'express';
+import session from 'express-session'
+import MongoStore from 'connect-mongo';
 import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
@@ -28,6 +30,24 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
     })
 }
+
+app.use(session({
+    secret: 'VE9zUUDY8FWggzDg', //random string
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        ttl: 60 * 60 * 24 * 7, // 7 days, in seconds
+        autoRemove: 'native',
+    }),
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}));
 
 app.post('/api/signup', async (req, res) => {
     try {
@@ -68,6 +88,14 @@ app.post('/api/signup', async (req, res) => {
         await newUser.save();
         console.log('User created:', username);
 
+        // make new session
+        req.session.user = newUser;
+        req.session.save(err => {
+            if (err) {
+                console.log('Session(signup) error:', err)
+            }
+        })
+
         // return created user
         res.json(newUser);
     }
@@ -75,6 +103,23 @@ app.post('/api/signup', async (req, res) => {
         console.error('Signup error:', error.message);
         res.sendStatus(400);
     }
+});
+
+app.get('/api/checklogin', (req, res) => {
+    let user = null;
+    if (req.session.user) {
+        user = req.session.user;
+    }
+    res.json(user);
+});
+
+app.get('/api/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.log('Session(logout) error:', err)
+        }
+    })
+    res.sendStatus(200);
 });
 
 app.listen(PORT, () => {
