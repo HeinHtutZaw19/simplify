@@ -14,8 +14,8 @@
     "@chakra-ui/react": "^2.10.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "simplify": "file:..",
-    "react-router-dom": "^7.4.1"
+    "react-router-dom": "^7.4.1",
+    "simplify": "file:.."
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
