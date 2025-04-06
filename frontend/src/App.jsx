@@ -10,13 +10,15 @@ import ChatPage from './pages/ChatPage'
 import LeaderboardPage from './pages/LeaderboardPage'
 import SettingsPage from './pages/SettingsPage'
 import HelpPage from './pages/HelpPage'
+import SurveyPage from './pages/SurveyPage'
+
 
 //Components
 import Sidebar from './components/Sidebar'
 
 function App() {
   const location = useLocation()
-  const hideSidebar = location.pathname === '/login' || location.pathname === '/signup'
+  const hideSidebar = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/survey'
 
   return (
     <Flex w="100%" h="100vh" overflow="hidden">
@@ -31,6 +33,7 @@ function App() {
           <Route path="/help" element={<HelpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/survey" element={<SurveyPage />} />
         </Routes>
       </Flex>
     </Flex>

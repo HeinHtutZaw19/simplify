@@ -1,5 +1,5 @@
 import { Box, Grid, Text, VStack, Image, Divider, Flex } from "@chakra-ui/react";
-import fireIcon from "../assets/fire.png"; // Replace with your fire emoji/icon
+import fireIcon from "../assets/fire.png";
 const FireIcon = (props) => (
     <Image src={fireIcon} boxSize="24px" objectFit='contain' {...props} />
 );
@@ -7,6 +7,8 @@ const FireIcon = (props) => (
 
 const Calendar = () => {
     const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
+    const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+      
 
     const today = new Date();
     const currentMonth = today.getMonth(); // 0 = January, 11 = December
@@ -34,7 +36,7 @@ const Calendar = () => {
             <FireIcon boxSize={20}/>
             <Text fontWeight="bold" fontSize="xl" color="#798B9F">x1</Text>
         </Flex>
-        <Text fontWeight="semibold" fontSize="lg" color="#798B9F">JAN 2022</Text>
+        <Text fontWeight="semibold" fontSize="lg" color="#798B9F">{monthNames[currentMonth]} {currentYear}</Text>
         <Divider borderColor="#798B9F" borderWidth="1px" />
         <Grid templateColumns="repeat(7, 1fr)" gap={5} >
           {weekdays.map((d) => (
