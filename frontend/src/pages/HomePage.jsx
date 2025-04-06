@@ -1,5 +1,5 @@
 import React, {useRef} from 'react'
-import {Grid, GridItem, Flex, Text, Box, VStack, Heading, Icon, Checkbox, CheckboxGroup, Image, Button} from '@chakra-ui/react';
+import {Grid, GridItem, Flex, Text, Box, VStack, Heading, Icon, Checkbox, CheckboxGroup, Image, Button, Avatar} from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
 import { useEffect } from 'react'
@@ -12,6 +12,7 @@ import toner from '../assets/toner.png';
 import serum from '../assets/serum.png';
 import moisturizer from '../assets/moisturizer.png';
 import sunscreen from '../assets/sunscreen.png';
+import Calendar from '../components/Calendar';
 
 
 const imageMap = {
@@ -96,22 +97,25 @@ const HomePage = () => {
 
       {/* Right Side Stack */}
 
-      <VStack pos="sticky" right="0" h="100vh" w="25vw" p={4} spacing={6} bg="#CCE0F2" pt={8}>
-        <Box  bg="blue.600" p={4} borderRadius="md" w="100%">
-          <Icon></Icon>
-          <Text fontWeight="bold">Streaks</Text>
-          <Text fontSize="sm">calendar</Text>
-        </Box>
+      <VStack pos="sticky" right="0" h="100vh" w="25vw" p={4} spacing={6} pt={8}>
+        <Calendar/>
 
         <Heading size="lg" fontWeight="bold" color="#5A67BA">Leaderboard</Heading>
-        <Box p={4} bg="#1e1f24" borderRadius="md" w="100%" color='white'>
-          <Heading size="sm">Martha Anderson</Heading>
-          <Text fontSize="sm">80$</Text>
+        <Box p={4} bg="#1e1f24" borderRadius="md" w="100%" color='white' display='flex' flexDirection='row'>
+          <Avatar/>
+          <Box pl={4} alignContent='center'>
+            <Heading size="sm">Martha Anderson</Heading>
+            <Text fontSize="sm">80$</Text>
+          </Box>
         </Box>
-        <Box p={4} bg="#1e1f24" borderRadius="md" w="100%" color='white'>
-          <Heading size="sm">Julia Clover</Heading>
-          <Text fontSize="sm">50$</Text>
+        <Box p={4} bg="#1e1f24" borderRadius="md" w="100%" color='white' display='flex' flexDirection='row'>
+          <Avatar/>
+          <Box pl={4} alignContent='center'>
+            <Heading size="sm">Julia Clover</Heading>
+            <Text fontSize="sm">50$</Text>
+          </Box>
         </Box>
+
       </VStack>
 
     </Flex>
