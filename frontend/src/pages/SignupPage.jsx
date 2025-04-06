@@ -51,11 +51,12 @@ const Signup = () => {
 
         // check password requirements
         // at least length 8, mix of lowercase,  uppercase, numbers, special chars
-        const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\])[A-Za-z\d@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\]{8,}$/;
-        if (!passwordRequirements.test(signupInfo.password)) {
-            console.log('Password requirements not met');
-            return;
-        }
+        // TEMP: disabled password requirements for development (it was annoying)
+        // const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\])[A-Za-z\d@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\]{8,}$/;
+        // if (!passwordRequirements.test(signupInfo.password)) {
+        //     console.log('Password requirements not met');
+        //     return;
+        // }
 
         // confirm password
         if (signupInfo.password !== signupInfo.passwordConfirm) {
