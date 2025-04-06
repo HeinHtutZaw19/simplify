@@ -11,6 +11,8 @@ import HelpPage from './pages/HelpPage'
 
 //Components
 import Sidebar from './components/Sidebar'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/leaderboard" element={<LeaderboardPage/>} />
         <Route path="/settings" element={<SettingsPage/>} />
         <Route path="/help" element={<HelpPage/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/signup" element={<Signup/>} />
       </Routes>
       </Flex>
     </Flex>

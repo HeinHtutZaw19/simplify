@@ -1,6 +1,10 @@
 import React, {useRef} from 'react'
-import {Grid, GridItem, Flex, Text, Box, VStack, Heading, Icon, Checkbox, CheckboxGroup, Image} from '@chakra-ui/react';
+import {Grid, GridItem, Flex, Text, Box, VStack, Heading, Icon, Checkbox, CheckboxGroup, Image, Button} from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
+
+import { useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
+import { checkLogin, logoutUser } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
 
@@ -18,6 +22,27 @@ const imageMap = {
 };
 
 const HomePage = () => {
+    const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      const user = await checkLogin();
+      if (!user) {
+        //redirect to /welcome (to /signup for now)
+        navigate('/signup');
+      }
+    }
+    fetchLoginData();
+  });
+
+  const handleLogoutClick = async () => {
+    console.log('logout clicked');
+    const res = logoutUser();
+    if (res) {
+      navigate('/signup');
+    }
+  }
+
   const skinAnalysisRef = useRef(null);
   return (
     // Full Page Flex
@@ -63,6 +88,10 @@ const HomePage = () => {
         <Box ref={skinAnalysisRef} mt={10} w="100%">
           <SkinAnalysis />
         </Box>
+
+        <Button onClick={handleLogoutClick}>
+        Logout
+        </Button>
       </Flex>
 
       {/* Right Side Stack */}
@@ -84,6 +113,7 @@ const HomePage = () => {
           <Text fontSize="sm">50$</Text>
         </Box>
       </VStack>
+
     </Flex>
   )
 }
