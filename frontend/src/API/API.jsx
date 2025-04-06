@@ -5,7 +5,7 @@ const header = {
 }
 
 export const signupUser = async (user) => {
-    const url = "http://localhost:4000/api/signup";
+    const url = `http://localhost:${PORT}/api/signup"`
     const params = {
         ...header,
         method: 'POST',
@@ -27,7 +27,7 @@ export const signupUser = async (user) => {
 }
 
 export const checkLogin = async () => {
-    const url = "http://localhost:4000/api/checklogin";
+    const url = `http://localhost:${PORT}/api/checklogin`;
     const params = {
         ...header,
         method: 'GET',
@@ -44,7 +44,7 @@ export const checkLogin = async () => {
 }
 
 export const logoutUser = async () => {
-    const url = "http://localhost:4000/api/logout";
+    const url = `http://localhost:${PORT}/api/logout`;
     const params = {
         ...header,
         method: 'GET',
