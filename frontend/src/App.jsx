@@ -3,8 +3,8 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 
 //Pages
 import HomePage from './pages/HomePage'
-import Login from './pages/LoginPage'
-import Signup from './pages/SignupPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 import SkinLabPage from './pages/SkinLAbPage'
 import ChatPage from './pages/ChatPage'
 import LeaderboardPage from './pages/LeaderboardPage'
@@ -29,8 +29,8 @@ function App() {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/help" element={<HelpPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </Flex>
     </Flex>

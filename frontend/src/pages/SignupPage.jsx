@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { checkLogin } from '../API/API'
 
-const Signup = () => {
+const SignupPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -91,4 +91,4 @@ const Signup = () => {
     )
 }
 
-export default Signup;
+export default SignupPage;
