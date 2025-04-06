@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.10.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "simplify": "file:..",
     "react-router-dom": "^7.4.1"
   },
   "devDependencies": {
