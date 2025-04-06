@@ -1,11 +1,6 @@
 import React from 'react'
 
-import { Flex, Heading, Image, CircularProgress, CircularProgressLabel, Text, List, Box, ListItem, VStack } from '@chakra-ui/react'
-import { CheckIcon } from '@chakra-ui/icons';
-
-import skinanalysis from '../assets/skinanalysis.png';
-
-
+import { Flex, CircularProgress, CircularProgressLabel, Text, Box, VStack } from '@chakra-ui/react'
 
 const SkinLabAnalysis = () => {
 
@@ -28,7 +23,7 @@ const SkinLabAnalysis = () => {
                 </CircularProgress>
             </Flex>
             <Text px={40} py={20} fontSize={18} >Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
-                <br />Your Skin Can Improve! With the right care, you can restore balance, reduce redness, and achieve a smoother, healthier glow. Here's your personalized skincare routine to help you get there:
+                <br />Your Skin Can Improve! With the right care, you can restore balance, reduce redness, and achieve a smoother, healthier glow.
             </Text>
         </Box>
     )
