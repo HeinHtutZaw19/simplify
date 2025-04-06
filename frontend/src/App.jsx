@@ -1,5 +1,5 @@
-import {Flex} from '@chakra-ui/react'
-import {Route, Routes} from 'react-router-dom'
+import { Flex } from '@chakra-ui/react'
+import { Route, Routes, useLocation } from 'react-router-dom'
 
 //Pages
 import HomePage from './pages/HomePage'
@@ -15,20 +15,23 @@ import HelpPage from './pages/HelpPage'
 import Sidebar from './components/Sidebar'
 
 function App() {
+  const location = useLocation()
+  const hideSidebar = location.pathname === '/login' || location.pathname === '/signup'
+
   return (
     <Flex w="100%" h="100vh" overflow="hidden">
-      <Sidebar />
+      {!hideSidebar && <Sidebar />}
       <Flex flex="1" overflowY="auto">
         <Routes>
-        <Route path="/" element={<HomePage/>} />
-        <Route path="/skinlab" element={<SkinLabPage/>} />
-        <Route path="/chat" element={<ChatPage/>} />
-        <Route path="/leaderboard" element={<LeaderboardPage/>} />
-        <Route path="/settings" element={<SettingsPage/>} />
-        <Route path="/help" element={<HelpPage/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/signup" element={<Signup/>} />
-      </Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/skinlab" element={<SkinLabPage />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/help" element={<HelpPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
       </Flex>
     </Flex>
   )

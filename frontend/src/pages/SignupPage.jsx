@@ -81,7 +81,7 @@ const Signup = () => {
             <Input placeholder='Email' name='email' value={signupInfo.email} onChange={handleChange} />
             <Input type='password' placeholder='Password' name='password' value={signupInfo.password} onChange={handleChange} />
             <Input type='password' placeholder='Confirm Password' name='passwordConfirm' value={signupInfo.passwordConfirm} onChange={handleChange} />
-            <span style={{ display: 'block' }}>
+            <span style={{ display: 'block', fontSize:'14px' }}>
                 Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
             </span>
             <Button onClick={onSignupClick}>Sign Up</Button>
