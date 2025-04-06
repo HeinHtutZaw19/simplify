@@ -1,5 +1,6 @@
 import React from 'react'
 import {Flex, Menu, MenuList, MenuButton, Icon, Text, Link, Button} from '@chakra-ui/react'
+
 const NavItem = ({icon, title, active, handler}) => {
   return (
     <Flex

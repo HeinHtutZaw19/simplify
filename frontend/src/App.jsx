@@ -1,23 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import {Button, Flex} from '@chakra-ui/react'
+import {Flex} from '@chakra-ui/react'
 import {Route, Routes} from 'react-router-dom'
+
+//Pages
 import HomePage from './pages/HomePage'
+import SkinLabPage from './pages/SkinLAbPage'
+import ChatPage from './pages/ChatPage'
+import LeaderboardPage from './pages/LeaderboardPage'
+import SettingsPage from './pages/SettingsPage'
+import HelpPage from './pages/HelpPage'
+
+//Components
 import Sidebar from './components/Sidebar'
 
 function App() {
   return (
-    <Flex w="100%">
-      <Sidebar/>
-      <Routes>
+    <Flex w="100%" h="100vh" overflow="hidden">
+      <Sidebar />
+      <Flex flex="1" overflowY="auto">
+        <Routes>
         <Route path="/" element={<HomePage/>} />
-        <Route path="/skinlab" element={<h1>SkinLab</h1>} />
-        <Route path="/chat" element={<h1>Chat</h1>} />
-        <Route path="/leaderboard" element={<h1>Leaderboard</h1>} />
-        <Route path="/settings" element={<h1>Settings</h1>} />
-        <Route path="/help" element={<h1>Help</h1>} />
+        <Route path="/skinlab" element={<SkinLabPage/>} />
+        <Route path="/chat" element={<ChatPage/>} />
+        <Route path="/leaderboard" element={<LeaderboardPage/>} />
+        <Route path="/settings" element={<SettingsPage/>} />
+        <Route path="/help" element={<HelpPage/>} />
       </Routes>
+      </Flex>
     </Flex>
   )
 }

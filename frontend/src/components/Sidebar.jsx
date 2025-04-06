@@ -1,6 +1,6 @@
 import React from 'react'
-import { Flex, Link, Icon, Divider, Text, Heading, Avatar, IconButton } from '@chakra-ui/react'
-import {FiHome, FiMenu} from 'react-icons/fi'
+import { Flex, Text, Heading, Avatar, Box } from '@chakra-ui/react'
+import {FiHome} from 'react-icons/fi'
 import {MdLeaderboard}from 'react-icons/md'
 import {FaCamera}from 'react-icons/fa'
 import { IoChatbubbleEllipsesOutline, IoSettings } from "react-icons/io5";
@@ -18,13 +18,16 @@ const Sidebar = () => {
         console.log(tab)
     }
     return (
+        <Box 
+            pl={7}
+            bg ='#CCE0F2' 
+            boxShadow="0 4px 12px 0 rgba(0,0,0,0.05)"
+        >
         <Flex
-            bg="#CCE0F2"
             pos="sticky"
             left="0"
             h="100vh"
-            boxShadow="0 4px 12px 0 rgba(0,0,0,0.05)"
-            w={{base:"320px", md:"200px", sm:"50px"}}
+            w={{base:"345px", md:"225px", sm:"75px"}}
             flexDir="column"
             justifyContent="space-between">
                     <Flex
@@ -55,6 +58,7 @@ const Sidebar = () => {
                 </Flex>
                         
         </Flex>
+        </Box>
 
     )
 }
