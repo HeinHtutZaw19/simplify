@@ -3,6 +3,8 @@ import {Route, Routes} from 'react-router-dom'
 
 //Pages
 import HomePage from './pages/HomePage'
+import Login from './pages/LoginPage'
+import Signup from './pages/SignupPage'
 import SkinLabPage from './pages/SkinLAbPage'
 import ChatPage from './pages/ChatPage'
 import LeaderboardPage from './pages/LeaderboardPage'
@@ -11,8 +13,6 @@ import HelpPage from './pages/HelpPage'
 
 //Components
 import Sidebar from './components/Sidebar'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
 
 function App() {
   return (

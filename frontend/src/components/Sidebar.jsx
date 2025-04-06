@@ -1,20 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Flex, Text, Heading, Avatar, Box } from '@chakra-ui/react'
-import {FiHome} from 'react-icons/fi'
-import {MdLeaderboard}from 'react-icons/md'
-import {FaCamera}from 'react-icons/fa'
+import { FiHome } from 'react-icons/fi'
+import { MdLeaderboard }from 'react-icons/md'
+import { FaCamera }from 'react-icons/fa'
 import { IoChatbubbleEllipsesOutline, IoSettings } from "react-icons/io5";
 import { MdOutlineHelp } from "react-icons/md";
 import NavItem from './NavItem'
-import {useState} from 'react'
+import { useNavigate } from "react-router-dom"
 
 const Sidebar = () => {
     const [tab, changeTab] = useState({
         active: "Routine"
     })
+    const navigate = useNavigate();
+
     const handleChangeTab = (data)=>{
         changeTab({active: data});
-
+        if (data === "Routine") {
+            navigate('/');
+        }
+        else {
+            navigate('/' + data);
+        }
         console.log(tab)
     }
     return (
