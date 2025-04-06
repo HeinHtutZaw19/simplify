@@ -78,7 +78,7 @@ const SkinLabPage = () => {
           <Image src={testImage} transform="scale(6.0)" transformOrigin="top left" ml="-295px" mt="-395px" />
         </Box>
       </Box>
-      <Button mt="30px" mb="120px" width="120px" height="35px" lineHeight="90px" colorScheme="blue">
+      <Button mt="30px" width="120px" height="35px" lineHeight="90px" colorScheme="blue">
         Submit
       </Button>
       <SkinLabAnalysis />
