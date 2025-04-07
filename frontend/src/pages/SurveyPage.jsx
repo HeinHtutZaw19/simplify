@@ -45,7 +45,7 @@ const SurveyPage = () => {
         } 
         else {
         console.log("Survey complete:", responses);
-        navigate('/');
+        navigate('/signup');
         }
     };
 
@@ -55,7 +55,7 @@ const SurveyPage = () => {
 
     const handleCloseClick = async () => {
         console.log('logout clicked');
-        navigate('/');
+        navigate('/welcome');
     }
 
     const handleBackClick = async () => {

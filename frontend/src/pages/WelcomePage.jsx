@@ -16,7 +16,7 @@ const WelcomePage = () => {
     };
 
     return (
-        <Flex direction="column" align="center" minH="100vh" overflowY="auto">
+        <Flex direction="column" align="center" minH="100vh" overflowY="auto" sx={{'&::-webkit-scrollbar': {display: 'none'}}}>
             <Box position="relative" width="100%">
                 <Image src={welcome} width="100%" height="auto" objectFit="cover" />
 
@@ -29,7 +29,7 @@ const WelcomePage = () => {
                     align="center"
                 >
                     <Button
-                        onClick={onLoginClick}
+                        onClick={onSignupClick}
                         width="460px"
                         height="65px"
                         top="475px"
@@ -43,7 +43,7 @@ const WelcomePage = () => {
                         Get Started
                     </Button>
                     <Button
-                        onClick={onSignupClick}
+                        onClick={onLoginClick}
                         width="460px"
                         height="65px"
                         top="492px"
