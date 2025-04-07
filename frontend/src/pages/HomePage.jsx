@@ -62,7 +62,7 @@ const HomePage = () => {
                 key={item}
                 w="20vw"
                 h="18vw"
-                bg="#DA8484"
+                bg= "#5A67BA" //"#DA8484"
                 position="relative"
                 borderRadius="md"
                 display="flex"
