@@ -81,13 +81,13 @@ const SkinLabPage = () => {
         </Box>
       </Box>
       <Flex direction="row" mt="15px" mb="40px" align="center" width={300}>
-        <Button width="120px" ml="90px" mr="30px" height="35px" lineHeight="90px" colorScheme="blue">
+        <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" colorScheme="blue">
           Submit
         </Button>
-        <Text fontSize={20} mr="10px">
+        <Text fontSize={20} mr="15px" style={{cursor:'pointer'}}>
           <FiUpload />
         </Text>
-        <Text fontSize={15}>
+        <Text fontSize={15} style={{cursor:'pointer'}}>
           <FaRedo />
         </Text>
       </Flex>
