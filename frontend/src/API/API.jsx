@@ -5,7 +5,7 @@ const header = {
 }
 
 export const signupUser = async (user) => {
-    const url = `http://localhost:4000/api/signup"`
+    const url = `http://localhost:4000/api/signup`
     const params = {
         ...header,
         method: 'POST',
