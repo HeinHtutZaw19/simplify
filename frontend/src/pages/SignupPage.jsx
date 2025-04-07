@@ -1,8 +1,10 @@
 import { signupUser } from '../API/API'
-import { Input, Button, Flex, Heading } from '@chakra-ui/react'
+import { Input, Button, Flex, Heading, Box } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { checkLogin } from '../API/API'
+import { CloseIcon } from '@chakra-ui/icons';
+
 
 const SignupPage = () => {
     const navigate = useNavigate();
@@ -74,8 +76,18 @@ const SignupPage = () => {
         }
     }
 
+    const handleCloseClick = async () => {
+        console.log('logout clicked');
+        navigate('/welcome');
+    }
+
     return (
-        <Flex flex="1" direction="column" alignItems="center" px={525} pt={140}>
+        <Box w ='100%' p={20}>
+            <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
+                <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5}/></Button>
+            </Box>
+        <Flex flex="1" direction="column" alignItems="center" px={525} pt={50}>
+            
             <Heading mb={5}>
                 Get Started!
             </Heading>
@@ -88,6 +100,7 @@ const SignupPage = () => {
             </span>
             <Button onClick={onSignupClick} mt={8} width="200px" colorScheme="blue" rounded={12}>Sign Up</Button>
         </Flex>
+        </Box>
     )
 }
 
