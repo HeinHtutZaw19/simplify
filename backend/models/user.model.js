@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 import Forum from "./forum.model.js"
 import Chat from "./chat.model.js"
-import Skin from "./skin.model.js"
-import Score from "./score.model.js"
+import Skin from "./feedback.model.js"
 
 const userSchema = new mongoose.Schema({
-    pfp:{
-        data: Buffer,
-        contentType: String
+    pfp: {
+        type: String
     },
     username: {
         type: String,
@@ -15,44 +13,48 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     age: {
-        type : Number,
-        // required: true
+        type: Number,
     },
-    email:{
+    email: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    region:{
+    region: {
         type: String,
-        // required: true
     },
-    forum:{
+    forum: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Forum',
-        // required: true
     },
     chat: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat'
     }],
-    skin: {
+    feedback: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Skin',
+        ref: 'FeedBack',
     },
-    score:{
-        luminosity: Number,
-        clarity: Number,
-        vibrancy: Number,
+    routine: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "Product"
+    }],
+    streak: {
+        type: Number,
+        default: 0
     },
-    rank: Number
-},{
+}, {
     timestamps: true
 });
 const User = mongoose.model("User", userSchema);
-
 export default User;
+
+// pfp: {
+//     // data: Buffer,
+//     // contentType: String
+//     type: String
+// },

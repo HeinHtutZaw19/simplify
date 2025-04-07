@@ -1,16 +1,11 @@
 import mongoose from "mongoose";
 
 const forumSchema = new mongoose.Schema({
-    user:{
-        type: mongoose.Schema.ObjectId,
-        ref: "User",
-        required: true
-    },
-    answers:[{
+    answers: [{
         type: String,
         required: true
     }]
-},{
+}, {
     timestamps: true
 });
 
