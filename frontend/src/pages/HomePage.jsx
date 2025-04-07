@@ -30,7 +30,7 @@ const HomePage = () => {
       const user = await checkLogin();
       if (!user) {
         //redirect to /welcome (to /signup for now)
-        navigate('/signup');
+        navigate('/welcome');
       }
     }
     fetchLoginData();
@@ -40,7 +40,7 @@ const HomePage = () => {
     console.log('logout clicked');
     const res = logoutUser();
     if (res) {
-      navigate('/signup');
+      navigate('/welcome');
     }
   }
 
