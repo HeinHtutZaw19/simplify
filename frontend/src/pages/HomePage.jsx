@@ -7,23 +7,23 @@ import { useNavigate } from "react-router-dom";
 import { checkLogin, logoutUser } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
+import Calendar from '../components/Calendar';
+import UserCard from '../components/UserCard';
 
 import toner from '../assets/toner.png';
 import serum from '../assets/serum.png';
 import moisturizer from '../assets/moisturizer.png';
 import sunscreen from '../assets/sunscreen.png';
-import Calendar from '../components/Calendar';
-
-
-const imageMap = {
-  Toner: toner,
-  Serum: serum,
-  Moisturizer: moisturizer,
-  Sunscreen: sunscreen,
-};
 
 const HomePage = () => {
-    const navigate = useNavigate();
+  const imageMap = {
+    Toner: toner,
+    Serum: serum,
+    Moisturizer: moisturizer,
+    Sunscreen: sunscreen,
+  };
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -90,9 +90,6 @@ const HomePage = () => {
           <SkinAnalysis />
         </Box>
 
-        <Button onClick={handleLogoutClick}>
-        Logout
-        </Button>
       </Flex>
 
       {/* Right Side Stack */}
@@ -101,8 +98,9 @@ const HomePage = () => {
         <Calendar/>
 
         <Heading size="lg" fontWeight="bold" color="#5A67BA">Leaderboard</Heading>
+        
         <Box p={4} bg="#1e1f24" borderRadius="md" w="100%" color='white' display='flex' flexDirection='row'>
-          <Avatar/>
+          <Avatar />
           <Box pl={4} alignContent='center'>
             <Heading size="sm">Martha Anderson</Heading>
             <Text fontSize="sm">80$</Text>
