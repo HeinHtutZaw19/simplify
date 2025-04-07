@@ -9,7 +9,7 @@ const SkinLabAnalysis = () => {
         <Box>
             <Flex direction="row" justify='flex-start'>
                 <Text flex="1" p={30} fontSize={18} >
-                    Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
+                    <b>Skin Analysis Result:</b> Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
                     <br /> <br />
                     🚀 Your Skin Can Improve!
                     <br /><br />

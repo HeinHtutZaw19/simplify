@@ -1,12 +1,14 @@
 import React from 'react'
-import { Flex, Box, Image, Button } from '@chakra-ui/react'
+import { Flex, Box, Image, Button, Text } from '@chakra-ui/react'
+import { FiUpload } from "react-icons/fi";
+import { FaRedo } from "react-icons/fa";
 import SkinLabAnalysis from '../components/SkinLabAnalysis';
 import testImage from '../assets/skinanalysis.png';
 
 const SkinLabPage = () => {
   return (
     <Flex flex="1" height="100vh" overflowY="auto" direction="column" alignItems="center" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-      <Box position="relative" mt="120px">
+      <Box position="relative" mt="80px">
         <Image src={testImage} height="400px" border="15px solid" rounded="15px" borderColor="blue.200" />
         <Box
           position="absolute"
@@ -78,9 +80,17 @@ const SkinLabPage = () => {
           <Image src={testImage} transform="scale(6.0)" transformOrigin="top left" ml="-295px" mt="-395px" />
         </Box>
       </Box>
-      <Button mt="30px" width="120px" height="35px" lineHeight="90px" colorScheme="blue">
-        Submit
-      </Button>
+      <Flex direction="row" mt="15px" mb="40px" align="center" width={300}>
+        <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" colorScheme="blue">
+          Submit
+        </Button>
+        <Text fontSize={20} mr="15px" style={{cursor:'pointer'}}>
+          <FiUpload />
+        </Text>
+        <Text fontSize={15} style={{cursor:'pointer'}}>
+          <FaRedo />
+        </Text>
+      </Flex>
       <SkinLabAnalysis />
     </Flex>
   )
