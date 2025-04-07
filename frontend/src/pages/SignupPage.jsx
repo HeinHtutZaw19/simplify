@@ -94,8 +94,18 @@ const SignupPage = () => {
             <Input placeholder='Username' name='username' value={signupInfo.username} onChange={handleChange} mt={3} rounded={10} backgroundColor="#E3EDF9" />
             <Input placeholder='Email' name='email' value={signupInfo.email} onChange={handleChange} mt={3} rounded={10} backgroundColor="#E3EDF9" />
             <Input type='password' placeholder='Password' name='password' value={signupInfo.password} onChange={handleChange} mt={3} rounded={10} backgroundColor="#E3EDF9" />
-            <Input type='password' placeholder='Confirm Password' name='passwordConfirm' value={signupInfo.passwordConfirm} onChange={handleChange} mt={3} rounded={10} backgroundColor="#E3EDF9" />
-            <span style={{ display: 'block', fontSize: '13px', marginTop:'3px', padding:'0 10px 0 10px' }}>
+            <Input
+                type='password'
+                placeholder='Confirm Password'
+                name='passwordConfirm'
+                value={signupInfo.passwordConfirm}
+                onChange={handleChange}
+                mt={3}
+                rounded={10}
+                backgroundColor="#E3EDF9"
+                style={{border:(signupInfo.password==signupInfo.passwordConfirm ? '': '2px solid red')}}
+            />
+            <span style={{ display: 'block', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px' }}>
                 Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
             </span>
             <Button onClick={onSignupClick} mt={8} width="200px" colorScheme="blue" rounded={12}>Sign Up</Button>

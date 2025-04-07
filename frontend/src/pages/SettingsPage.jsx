@@ -15,7 +15,7 @@ const SettingsPage = () => {
       const user = await checkLogin();
       if (!user) {
         //redirect to /welcome (to /signup for now)
-        navigate('/signup');
+        navigate('/welcome');
       }
     }
     fetchLoginData();
@@ -25,7 +25,7 @@ const SettingsPage = () => {
     console.log('logout clicked');
     const res = logoutUser();
     if (res) {
-      navigate('/signup');
+      navigate('/welcome');
     }
   }
   return (
