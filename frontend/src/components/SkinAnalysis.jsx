@@ -1,25 +1,22 @@
 import React from 'react'
-
-import { Flex, Heading, Image, CircularProgress, CircularProgressLabel, Text, List, Box, ListItem, VStack } from '@chakra-ui/react'
+import { Flex, Heading, Image, Text, List, Box, ListItem } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons';
 import Metrics from './Metrics.jsx'
 import skinanalysis from '../assets/skinanalysis.png';
-
-
 
 const SkinAnalysis = ({ luminosity, clarity, vibrancy, overall }) => {
 
     return (
         <Box>
-            <Heading textAlign="center">Combination Skin Type</Heading>
-            <Flex direction="row">
-                <Image src={skinanalysis} alt="skin analysis" m={25} boxSize="30%" flex={1} p={20}></Image>
+            <Heading id="home-analysis-heading">Combination Skin Type</Heading>
+            <Flex id='home-analysis-visuals'>
+                <Image src={skinanalysis} alt="skin analysis" boxSize="30%"></Image>
                 <Metrics luminosity={luminosity} clarity={clarity} vibrancy={vibrancy} overall={overall} />
             </Flex>
-            <Text p={4} >
-                Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
+            <Text p={4}>
+                Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
                 <br /><br />
-                🚀 Your Skin Can Improve! With the right care, you can restore balance, reduce redness, and achieve a smoother, healthier glow. Here’s your personalized skincare routine to help you get there:
+                🚀 Your Skin Can Improve! With the right care, you can restore balance, reduce redness, and achieve a smoother, healthier glow. Here's your personalized skincare routine to help you get there:
             </Text>
 
             <List p={3} spacing={3}>
