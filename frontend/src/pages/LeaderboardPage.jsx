@@ -85,7 +85,7 @@ const LeaderboardPage = () => {
         </Tabs>
       </VStack>
       <Flex w="full" justifyContent="center" alignItems={"center"} bg={THEME_COLOR} height="full">
-        <VStack align="stretch" flex={1} p={5} >
+        <VStack align="stretch" height="500px" overflowY={"auto"} flex={1} p={5} >
           {mockLeaderboard.map((user, index) => (
             <UserCard key={index} user={user} />
           ))}
