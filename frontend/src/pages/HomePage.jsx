@@ -80,7 +80,7 @@ const HomePage = () => {
       </Flex>
 
       {/* Right Side Stack */}
-      <VStack pos="sticky" right="0" h="100vh" w="25vw" p={4} spacing={6} pt={8}>
+      <VStack id="home-side" pos="sticky" >
         <Calendar />
 
         <Heading size="lg" fontWeight="bold" color="#5A67BA">Leaderboard</Heading>

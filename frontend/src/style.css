@@ -5,7 +5,6 @@
 }
 
 #home-main {
-    border: 1px solid green;
     padding: 10px;
     flex: 1;
     flex-direction: column;
@@ -64,4 +63,23 @@
     justify-content: center;
     margin-top: 10px;
     gap: 50px;
+}
+
+#home-side {
+    border: 1px solid red;
+    width: 25vw;
+    padding: 15px;
+    gap: 10px;
+}
+
+#home-calendar {
+    border: 1px solid green;
+    background: #CCE0F2;
+    width: 100%;
+}
+
+#home-calendar-streak {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
