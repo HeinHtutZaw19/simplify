@@ -7,14 +7,14 @@ import skinanalysis from '../assets/skinanalysis.png';
 
 
 
-const SkinAnalysis = () => {
+const SkinAnalysis = ({ luminosity, clarity, vibrancy, overall }) => {
 
     return (
         <Box>
             <Heading textAlign="center">Combination Skin Type</Heading>
             <Flex direction="row">
                 <Image src={skinanalysis} alt="skin analysis" m={25} boxSize="30%" flex={1} p={20}></Image>
-                <Metrics />
+                <Metrics luminosity={luminosity} clarity={clarity} vibrancy={vibrancy} overall={overall} />
             </Flex>
             <Text p={4} >
                 Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.

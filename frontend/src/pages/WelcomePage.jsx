@@ -5,6 +5,7 @@ import second from '../assets/2.png';
 import third from '../assets/3.png';
 import fourth from '../assets/4.png';
 
+
 const WelcomePage = () => {
     const navigate = useNavigate();
 
@@ -19,18 +20,6 @@ const WelcomePage = () => {
     };
 
     return (
-        <Flex direction="column" align="center" minH="20vh" width="100%" bgColor="white" overflowY="auto" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-            <Flex align="flex-start" width="100%" height="75vh" position="relative">
-                <Image src={logo} alt="Logo" boxSize="350px" ml="10%" />
-                <Box
-                    position="absolute"
-                    top="0"
-                    right="0"
-                    width="50%"
-                    height="30%"
-                    bg="blue.200"
-                />
-            </Flex>
 
             <Flex align="center" justifyContent="center" width="100%" p="10" height="50%" position="relative">
                 <Image src={second} alt="Logo" boxSize="350px" ml="10%" />
