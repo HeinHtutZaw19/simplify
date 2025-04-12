@@ -47,7 +47,7 @@ const HomePage = () => {
       <Flex id="home-main" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
 
         <Box id="home-heading">
-          <Heading size="lg" fontWeight="bold">Finish the checklist to get +1 streak!</Heading>
+          <Heading size="lg" fontFamily="Feather Bold" >Finish the checklist to get +1 streak!</Heading>
         </Box>
 
         <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
@@ -55,7 +55,7 @@ const HomePage = () => {
             {['Toner', 'Moisturizer', 'Serum', 'Sunscreen'].map((item) => (
               <Box className="home-routine-box" key={item} borderRadius="lg">
                 <Checkbox className="home-routine-checkbox" value={item} size="lg">
-                  <Text fontWeight="bold" color="white">{item}</Text>
+                  <Text color="white">{item}</Text>
                 </Checkbox>
                 <Image className="home-routine-image" src={imageMap[item]} alt={item}></Image>
               </Box>
@@ -71,11 +71,11 @@ const HomePage = () => {
           <Text textAlign="center" color="white">Skin Analysis <TriangleDownIcon color="white" /></Text>
         </Box>
 
-        <Box ref={skinAnalysisRef} mt={10} w="100%" style={{ border: '1px solid red' }}>
+        <Box ref={skinAnalysisRef} w="100%">
           <SkinAnalysis />
         </Box>
 
-        <div style={{fontSize:'11px'}}>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
+        <div style={{ fontSize: '11px' }}>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
 
       </Flex>
 

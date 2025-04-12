@@ -3,20 +3,20 @@ import { CircularProgress, CircularProgressLabel, Text, VStack, HStack } from '@
 
 const Metrics = () => {
     return (
-        <HStack style={{border:'1px solid green'}}>
-            <VStack w="30%" spacing={2} style={{border:'1px solid orange'}}>
-                <CircularProgress value={30} color='#7E7DD9' thickness='4px' size='100px'>
-                    <CircularProgressLabel fontSize='20px'>30% <Text fontSize='15px'>Luminosity</Text></CircularProgressLabel>
+        <HStack w='38%'>
+            <VStack w='35%' spacing={2}>
+                <CircularProgress value={30} color='#7E7DD9' thickness='4px' size='100%'>
+                    <CircularProgressLabel fontSize='1vw'>30% <Text>Luminosity</Text></CircularProgressLabel>
                 </CircularProgress>
-                <CircularProgress value={25} color='#7E7DD9' thickness='4px' size='100px'>
-                    <CircularProgressLabel fontSize='20px'>25%<Text fontSize='15px'>Clarity</Text></CircularProgressLabel>
+                <CircularProgress value={25} color='#7E7DD9' thickness='4px' size='100%'>
+                    <CircularProgressLabel fontSize='1vw'>25%<Text>Clarity</Text></CircularProgressLabel>
                 </CircularProgress>
-                <CircularProgress value={35} color='#7E7DD9' thickness='4px' size='100px'>
-                    <CircularProgressLabel fontSize='20px'>35%<Text fontSize='15px'>Vibrancy</Text></CircularProgressLabel>
+                <CircularProgress value={35} color='#7E7DD9' thickness='4px' size='100%'>
+                    <CircularProgressLabel fontSize='1vw'>35%<Text>Vibrancy</Text></CircularProgressLabel>
                 </CircularProgress>
             </VStack>
-            <CircularProgress alignContent="center" value={30} color='#F7A442' thickness='5px' size='200px' style={{border:'1px solid green'}}>
-                <CircularProgressLabel fontSize='25px'>30%<Text fontSize='20px'>Overall</Text></CircularProgressLabel>
+            <CircularProgress w='65%' value={30} color='#F7A442' thickness='5px' size='100%'>
+                <CircularProgressLabel fontSize='2vw'>30%<Text>Overall</Text></CircularProgressLabel>
             </CircularProgress>
         </HStack>
     )

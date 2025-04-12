@@ -8,11 +8,11 @@ const SkinAnalysis = () => {
     return (
         <Box>
             <Heading id="home-analysis-heading">Combination Skin Type</Heading>
-            <Flex id='home-analysis-visuals' direction="row">
+            <Flex id='home-analysis-visuals'>
                 <Image src={skinanalysis} alt="skin analysis" boxSize="30%"></Image>
                 <Metrics />
             </Flex>
-            <Text p={4} fontFamily="Feather Bold" >
+            <Text p={4}>
                 Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
                 <br /><br />
                 🚀 Your Skin Can Improve! With the right care, you can restore balance, reduce redness, and achieve a smoother, healthier glow. Here's your personalized skincare routine to help you get there:
