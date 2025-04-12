@@ -19,9 +19,8 @@
 }
 
 #home-routine-grid {
-    border: 3px solid orange;
-    width: 75%;
-    gap: 25px;
+    width: 55%;
+    gap: 20px;
 }
 
 .home-routine-box {
@@ -45,7 +44,23 @@
 
 #home-skinanalysis-button {
     border: 1px solid blue;
-    align-items: center;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background: #3182CE;
-    align-content: center;
+    padding: 10px;
+    margin: 20px 0 20px 0;
+}
+
+#home-analysis-heading {
+    border: 1px solid red;
+    text-align: center;
+}
+
+#home-analysis-visuals {
+    border: 1px solid blue;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
 }

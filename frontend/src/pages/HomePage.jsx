@@ -22,7 +22,7 @@ const HomePage = () => {
     Moisturizer: moisturizer,
     Sunscreen: sunscreen,
   };
-
+  const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,7 +36,10 @@ const HomePage = () => {
     fetchLoginData();
   });
 
-  const skinAnalysisRef = useRef(null);
+  const onSkinAnalysisClick = () => {
+    skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   return (
     // Full Page Flex
     <Flex className="page" overflow="hidden" color="black">
@@ -62,14 +65,17 @@ const HomePage = () => {
 
         <Box
           id="home-skinanalysis-button"
-          borderRadius="md" as="button"
-          onClick={() => { skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>
+          borderRadius="md"
+          as="button"
+          onClick={onSkinAnalysisClick}>
           <Text textAlign="center" color="white">Skin Analysis <TriangleDownIcon color="white" /></Text>
         </Box>
 
         <Box ref={skinAnalysisRef} mt={10} w="100%" style={{ border: '1px solid red' }}>
           <SkinAnalysis />
         </Box>
+
+        <div style={{fontSize:'11px'}}>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
 
       </Flex>
 
