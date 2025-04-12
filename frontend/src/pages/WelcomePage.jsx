@@ -2,6 +2,7 @@ import { Image, Button, Flex, Box } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
 import welcome from '../assets/welcome.png';
 
+
 const WelcomePage = () => {
     const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ const WelcomePage = () => {
     };
 
     return (
-        <Flex direction="column" align="center" minH="100vh" overflowY="auto" sx={{'&::-webkit-scrollbar': {display: 'none'}}}>
+        <Flex direction="column" align="center" minH="100vh" overflowY="auto" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
             <Box position="relative" width="100%">
                 <Image src={welcome} width="100%" height="auto" objectFit="cover" />
 

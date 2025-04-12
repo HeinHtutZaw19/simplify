@@ -3,7 +3,7 @@ import React from 'react'
 import { Flex, CircularProgress, CircularProgressLabel, Text, Box, VStack } from '@chakra-ui/react'
 import Metrics from './Metrics.jsx'
 
-const SkinLabAnalysis = () => {
+const SkinLabAnalysis = ({ luminosity, clarity, vibrancy, overall }) => {
 
     return (
         <Box>
@@ -13,11 +13,11 @@ const SkinLabAnalysis = () => {
                     <br /> <br />
                     🚀 Your Skin Can Improve!
                     <br /><br />
-                    Luminosity: 30% because (detailed description)<br />
-                    Clarity: 25% because (detailed description)<br />
-                    Vibrancy: 35% because (detailed description)<br />
+                    Luminosity: {luminosity}% because (detailed description)<br />
+                    Clarity: {clarity}% because (detailed description)<br />
+                    Vibrancy: {vibrancy}% because (detailed description)<br />
                 </Text>
-                <Metrics />
+                <Metrics luminosity={luminosity} clarity={clarity} vibrancy={vibrancy} overall={overall} />
             </Flex>
 
         </Box>
