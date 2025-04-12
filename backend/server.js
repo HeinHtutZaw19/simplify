@@ -99,6 +99,41 @@ app.post('/api/signup', async (req, res) => {
     }
 });
 
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // find matching user details in db
+        const foundUser = await User.findOne({email: email});
+        if (!foundUser) {
+            res.sendStatus(401);
+            return;
+        }
+        
+        // match hashed pw with the db
+        const isMatch = await bcrypt.compare(password, foundUser.password);
+        if (!isMatch) {
+            res.sendStatus(401);
+            return;
+        }
+
+        // make new session
+        req.session.user = foundUser;
+        req.session.save(err => {
+            if (err) {
+                console.log('Session(login) error:', err)
+            }
+        })
+
+        // return created user
+        res.json(foundUser);
+    }
+    catch (error) {
+        console.error('Login error:', error.message);
+        res.sendStatus(400);
+    }
+});
+
 app.get('/api/checklogin', (req, res) => {
     let user = null;
     if (req.session.user) {
