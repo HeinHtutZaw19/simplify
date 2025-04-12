@@ -62,12 +62,6 @@ app.post('/api/signup', async (req, res) => {
         }
 
         // check for duplicate username or email
-        const userExists = await User.exists({ username: username });
-        if (userExists) {
-            console.log('Signup error: Username exists');
-            res.sendStatus(409);
-            return;
-        }
         const emailExists = await User.exists({ email: email });
         if (emailExists) {
             console.log('Signup error: Email exists');

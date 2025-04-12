@@ -1,6 +1,9 @@
-import { Image, Button, Flex, Box } from '@chakra-ui/react';
+import { Image, Button, Flex, Box, Text } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
-import welcome from '../assets/welcome.png';
+import logo from '../assets/logo.png';
+import second from '../assets/2.png';
+import third from '../assets/3.png';
+import fourth from '../assets/4.png';
 
 const WelcomePage = () => {
     const navigate = useNavigate();
@@ -16,51 +19,72 @@ const WelcomePage = () => {
     };
 
     return (
-        <Flex direction="column" align="center" minH="100vh" overflowY="auto" sx={{'&::-webkit-scrollbar': {display: 'none'}}}>
-            <Box position="relative" width="100%">
-                <Image src={welcome} width="100%" height="auto" objectFit="cover" />
-
-                <Flex
+        <Flex direction="column" align="center" minH="20vh" width="100%" bgColor="white" overflowY="auto" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+            <Flex align="flex-start" width="100%" height="75vh" position="relative">
+                <Image src={logo} alt="Logo" boxSize="350px" ml="10%" />
+                <Box
                     position="absolute"
-                    top="30px"
-                    width="100%"
-                    px={6}
-                    direction="column"
-                    align="center"
-                >
-                    <Button
-                        onClick={onSignupClick}
-                        width="460px"
-                        height="65px"
-                        top="475px"
-                        left="335px"
-                        colorScheme="blue"
-                        rounded={17}
-                        fontSize={32}
-                        color="black"
-                        backgroundColor="#C3D7F0"
-                    >
-                        Get Started
-                    </Button>
-                    <Button
-                        onClick={onLoginClick}
-                        width="460px"
-                        height="65px"
-                        top="492px"
-                        left="335px"
-                        colorScheme="blue"
-                        rounded={17}
-                        fontSize={32}
-                        color="black"
-                        backgroundColor="#C3D7F0"
-                    >
-                        Sign In
-                    </Button>
-                </Flex>
-            </Box>
+                    top="0"
+                    right="0"
+                    width="50%"
+                    height="30%"
+                    bg="blue.200"
+                />
+            </Flex>
 
-            <Box height="800px" />
-        </Flex>
+            <Flex align="center" justifyContent="center" width="100%" p="10" height="50%" position="relative">
+                <Image src={second} alt="Logo" boxSize="350px" ml="10%" />
+                <Flex direction="column" justifyContent="center" alignItems="center" p={10}>
+                    <Text fontSize="2xl" textAlign="left" maxW="90%" >
+                        SIMPLIFY: AI-Powered Skincare-Assistant Smart Skincare, Just for You
+                    </Text>
+                    <Flex direction="column" p="2" mt={5}>
+                        <Button
+                            onClick={onSignupClick}
+                            color="black"
+                            rounded={17}
+                            px={10}
+                            backgroundColor="#C3D7F0"
+                        >
+                            Get Started
+                        </Button>
+                        <Button
+                            onClick={onLoginClick}
+                            color="black"
+                            rounded={17}
+                            mt={5}
+                            px={10}
+                            backgroundColor="#C3D7F0"
+                        >
+                            Sign In
+                        </Button>
+                    </Flex>
+                </Flex>
+            </Flex>
+            <Flex justifyContents="center" alignItems="center" width="100%" height="50%" p="10" position="relative">
+                <Text fontSize="2xl" textAlign="left" maxW="50%" ml="10%"  >
+                    <strong>Skin Lab </strong>that scans, analyzes, and personalizes your skincare—giving you routines and product recommendations tailored to your unique skin type
+                </Text>
+                <Image src={third} alt="Logo" boxSize="350px" ml={10} />
+            </Flex>
+            <Flex justifyContents="center" alignItems="center" width="100%" height="50%" p="10" position="relative">
+                <Image src={fourth} alt="Logo" boxSize="350px" ml="10%" />
+                <Text fontSize="2xl" textAlign="left" maxW="50%" ml={10} >
+                    Stay consistent, keep your streaks, and watch your skincare progress shine on the <strong>leaderboard</strong>!
+                </Text>
+            </Flex>
+            <Flex bgColor="white" justifyContents="center" alignItems="center" width="100%" p="10" position="relative">
+                <Box
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    width="100%"
+                    height="100%"
+                    bg="blue.200"
+                />
+            </Flex>
+        </Flex >
+
     );
 };
 
