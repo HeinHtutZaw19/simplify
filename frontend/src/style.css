@@ -4,7 +4,7 @@
     height: 100vh;
 }
 
-#home-main {
+.flex-scroll {
     padding: 10px;
     flex: 1;
     flex-direction: column;
@@ -104,4 +104,21 @@
     #home-side {
         display: none;
     }
+}
+
+.skinlab-detail-flex {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#skinlab-image-div {
+    height: 400px;
+    width: auto;
+    min-width: 305px;
+    position: relative;
+    align-items: stretch;
+    justify-content: center;
 }

@@ -3,10 +3,9 @@ import { Box, Image, Flex } from '@chakra-ui/react';
 
 const BoxOverlayImage = ({ boxes, img }) => {
     return (
-        <Flex flex="1" position="relative" width="100%" height="100%" alignItems="center" justifyContent="center">
-            <Image src={img} height="400px" border="15px solid" rounded="15px" borderColor="blue.200" />
+        <Flex id="skinlab-image-div">
+            <Image src={img} width="auto" flexShrink={0} border="15px solid" rounded="15px" borderColor="blue.200" />
             {boxes.map((box, index) => (
-
                 <Box
                     key={index}
                     position="absolute"
