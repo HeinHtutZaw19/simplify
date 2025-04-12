@@ -1,22 +1,22 @@
 import React from 'react'
 import { CircularProgress, CircularProgressLabel, Text, VStack, HStack } from '@chakra-ui/react'
 
-const Metrics = () => {
+const Metrics = ({ luminosity, clarity, vibrancy, overall }) => {
     return (
         <HStack w='38%'>
             <VStack w='35%' spacing={2}>
-                <CircularProgress value={30} color='#7E7DD9' thickness='4px' size='100%'>
-                    <CircularProgressLabel fontSize='1vw'>30% <Text>Luminosity</Text></CircularProgressLabel>
+                <CircularProgress value={luminosity} color='#7E7DD9' thickness='4px' size='100%'>
+                    <CircularProgressLabel fontSize='1vw'>{luminosity}% <Text>Luminosity</Text></CircularProgressLabel>
                 </CircularProgress>
-                <CircularProgress value={25} color='#7E7DD9' thickness='4px' size='100%'>
-                    <CircularProgressLabel fontSize='1vw'>25%<Text>Clarity</Text></CircularProgressLabel>
+                <CircularProgress value={clarity} color='#7E7DD9' thickness='4px' size='100%'>
+                    <CircularProgressLabel fontSize='1vw'>{clarity}%<Text>Clarity</Text></CircularProgressLabel>
                 </CircularProgress>
-                <CircularProgress value={35} color='#7E7DD9' thickness='4px' size='100%'>
-                    <CircularProgressLabel fontSize='1vw'>35%<Text>Vibrancy</Text></CircularProgressLabel>
+                <CircularProgress value={vibrancy} color='#7E7DD9' thickness='4px' size='100%'>
+                    <CircularProgressLabel fontSize='1vw'>{vibrancy}%<Text>Vibrancy</Text></CircularProgressLabel>
                 </CircularProgress>
             </VStack>
-            <CircularProgress w='65%' value={30} color='#F7A442' thickness='5px' size='100%'>
-                <CircularProgressLabel fontSize='2vw'>30%<Text>Overall</Text></CircularProgressLabel>
+            <CircularProgress w='65%' value={overall} color='#F7A442' thickness='5px' size='100%'>
+                <CircularProgressLabel fontSize='2vw'>{overall}%<Text'>Overall</Text></CircularProgressLabel>
             </CircularProgress>
         </HStack>
     )

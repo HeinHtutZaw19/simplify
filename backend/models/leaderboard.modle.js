@@ -1,12 +1,21 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose");
 
 const leaderboardSchema = new mongoose.Schema({
-    users:[{
+    users: [{
         type: mongoose.Schema.ObjectId,
         ref: "User"
     }],
-    
-})
+    isCumulative: {
+        type: Boolean,
+    },
+    isGlobal: {
+        type: Boolean,
+    }
+}, {
+    timestamps: true // Automatically manage createdAt and updatedAt
+});
 
-const LeaderBoard = mongoose.model("LeaderBoard", leaderboardSchema)
-export default LeaderBoard
+const Leaderboard = mongoose.model("Leaderboard", leaderboardSchema);
+
+module.exports = Leaderboard;
+

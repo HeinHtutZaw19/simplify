@@ -4,13 +4,14 @@ import { CheckIcon } from '@chakra-ui/icons';
 import Metrics from './Metrics.jsx'
 import skinanalysis from '../assets/skinanalysis.png';
 
-const SkinAnalysis = () => {
+const SkinAnalysis = ({ luminosity, clarity, vibrancy, overall }) => {
+
     return (
         <Box>
             <Heading id="home-analysis-heading">Combination Skin Type</Heading>
             <Flex id='home-analysis-visuals'>
                 <Image src={skinanalysis} alt="skin analysis" boxSize="30%"></Image>
-                <Metrics />
+                <Metrics luminosity={luminosity} clarity={clarity} vibrancy={vibrancy} overall={overall} />
             </Flex>
             <Text p={4}>
                 Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.

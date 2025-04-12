@@ -47,7 +47,7 @@ const HomePage = () => {
       <Flex id="home-main" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
 
         <Box id="home-heading">
-          <Heading size="lg" fontFamily="Feather Bold" >Finish the checklist to get +1 streak!</Heading>
+          <Heading size="lg" fontFamily="Feather Bold">Finish the checklist to get +1 streak!</Heading>
         </Box>
 
         <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
@@ -60,8 +60,8 @@ const HomePage = () => {
                 <Image className="home-routine-image" src={imageMap[item]} alt={item}></Image>
               </Box>
             ))}
-          </CheckboxGroup>
-        </Grid>
+          </Grid>
+        </CheckboxGroup>
 
         <Box
           id="home-skinanalysis-button"
@@ -72,7 +72,7 @@ const HomePage = () => {
         </Box>
 
         <Box ref={skinAnalysisRef} w="100%">
-          <SkinAnalysis />
+          <SkinAnalysis luminosity={35} clarity={20} vibrancy={25} overall={30} />
         </Box>
 
         <div style={{ fontSize: '11px' }}>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
@@ -80,7 +80,7 @@ const HomePage = () => {
       </Flex>
 
       {/* Right Side Stack */}
-      <VStack id="home-side" pos="sticky" >
+      <VStack id="home-side" pos="sticky">
         <Calendar />
 
         <Heading size="lg" fontWeight="bold" color="#5A67BA">Leaderboard</Heading>
