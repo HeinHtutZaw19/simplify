@@ -26,7 +26,7 @@
     width: 100%;
     padding: 10px;
     min-width: 10vw;
-    background: #5A67BA; /*#DA8484*/
+    background: #5A67BA;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -66,20 +66,42 @@
 }
 
 #home-side {
-    border: 1px solid red;
     width: 25vw;
     padding: 15px;
     gap: 10px;
 }
 
 #home-calendar {
-    border: 1px solid green;
     background: #CCE0F2;
     width: 100%;
+    gap: 0;
 }
 
 #home-calendar-streak {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.home-calendar-day {
+    display: flex;
+    width: 2vw;
+    height: 2vw;
+    align-items: center;
+    justify-content: center;
+    margin: 1px auto 5px auto;
+    border-radius: 50%;
+}
+
+#home-side-leaderboard-heading {
+    margin-top: 15px;
+    font-family: 'Feather Bold';
+    font-size: 2.3vw;
+    color: #5A67BA;
+}
+
+@media (max-width: 768px) {
+    #home-side {
+        display: none;
+    }
 }
