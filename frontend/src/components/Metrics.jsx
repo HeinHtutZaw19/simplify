@@ -16,7 +16,7 @@ const Metrics = ({ luminosity, clarity, vibrancy, overall }) => {
                 </CircularProgress>
             </VStack>
             <CircularProgress w='65%' value={overall} color='#F7A442' thickness='5px' size='100%'>
-                <CircularProgressLabel fontSize='2vw'>{overall}%<Text'>Overall</Text></CircularProgressLabel>
+                <CircularProgressLabel fontSize='2vw'>{overall}%<Text>Overall</Text></CircularProgressLabel>
             </CircularProgress>
         </HStack>
     )

@@ -60,8 +60,8 @@ const HomePage = () => {
                 <Image className="home-routine-image" src={imageMap[item]} alt={item}></Image>
               </Box>
             ))}
-          </Grid>
-        </CheckboxGroup>
+          </CheckboxGroup>
+        </Grid>
 
         <Box
           id="home-skinanalysis-button"
@@ -102,7 +102,7 @@ const HomePage = () => {
 
       </VStack>
 
-    </Flex>
+    </Flex >
   )
 }
 
