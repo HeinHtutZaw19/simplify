@@ -83,16 +83,15 @@ const HomePage = () => {
       <VStack id="home-side" pos="sticky">
         <Calendar />
 
-        <Heading size="lg" fontWeight="bold" color="#5A67BA">Leaderboard</Heading>
-
-        <Box p={4} bg="#1e1f24" borderRadius="md" w="100%" color='white' display='flex' flexDirection='row'>
+        <Heading id="home-side-leaderboard-heading" size="lg">Leaderboard</Heading>
+        <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
           <Avatar />
           <Box pl={4} alignContent='center'>
             <Heading size="sm">Martha Anderson</Heading>
             <Text fontSize="sm">80$</Text>
           </Box>
         </Box>
-        <Box p={4} bg="#1e1f24" borderRadius="md" w="100%" color='white' display='flex' flexDirection='row'>
+        <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
           <Avatar />
           <Box pl={4} alignContent='center'>
             <Heading size="sm">Julia Clover</Heading>

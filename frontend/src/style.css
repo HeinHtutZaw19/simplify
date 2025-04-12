@@ -26,7 +26,7 @@
     width: 100%;
     padding: 10px;
     min-width: 10vw;
-    background: #5A67BA; /*#DA8484*/
+    background: #5A67BA;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -66,7 +66,6 @@
 }
 
 #home-side {
-    border: 1px solid red;
     width: 25vw;
     padding: 15px;
     gap: 10px;
@@ -92,4 +91,17 @@
     justify-content: center;
     margin: 1px auto 5px auto;
     border-radius: 50%;
+}
+
+#home-side-leaderboard-heading {
+    margin-top: 15px;
+    font-family: 'Feather Bold';
+    font-size: 2.3vw;
+    color: #5A67BA;
+}
+
+@media (max-width: 768px) {
+    #home-side {
+        display: none;
+    }
 }
