@@ -28,6 +28,28 @@ export const signupUser = async (user) => {
     }
 }
 
+export const loginUser = async (user) => {
+    const url = `${apiUrl}/api/login`
+    const params = {
+        ...header,
+        method: 'POST',
+        body: JSON.stringify(user),
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Login error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Login error:', error.message);
+    }
+}
+
 export const checkLogin = async () => {
     const url = `${apiUrl}/api/checklogin`;
     const params = {
