@@ -1,0 +1,51 @@
+.page {
+    background: white;
+    width: 100vw;
+    height: 100vh;
+}
+
+#home-main {
+    border: 1px solid green;
+    padding: 10px;
+    flex: 1;
+    flex-direction: column;
+    overflow-y: auto;
+    align-items: center;
+}
+
+#home-heading {
+    width: fit-content;
+    margin: 10px 10px 20px 10px;
+}
+
+#home-routine-grid {
+    border: 3px solid orange;
+    width: 75%;
+    gap: 25px;
+}
+
+.home-routine-box {
+    width: 100%;
+    padding: 10px;
+    min-width: 10vw;
+    background: #5A67BA; /*#DA8484*/
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.home-routine-checkbox {
+    align-self: flex-start;
+}
+
+.home-routine-image {
+    object-fit: contain;
+}
+
+#home-skinanalysis-button {
+    border: 1px solid blue;
+    align-items: center;
+    background: #3182CE;
+    align-content: center;
+}
