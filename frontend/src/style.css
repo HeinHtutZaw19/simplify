@@ -73,13 +73,23 @@
 }
 
 #home-calendar {
-    border: 1px solid green;
     background: #CCE0F2;
     width: 100%;
+    gap: 0;
 }
 
 #home-calendar-streak {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.home-calendar-day {
+    display: flex;
+    width: 2vw;
+    height: 2vw;
+    align-items: center;
+    justify-content: center;
+    margin: 1px auto 5px auto;
+    border-radius: 50%;
 }
