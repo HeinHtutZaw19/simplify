@@ -34,8 +34,8 @@ const Calendar = () => {
       <Text fontWeight="semibold" fontSize="1.6vw" color="#798B9F">{monthNames[currentMonth]} {currentYear}</Text>
       <Divider borderColor="#798B9F" borderWidth="1px" m={2} />
       <Grid templateColumns="repeat(7, 1fr)" w="100%">
-        {weekdays.map((d) => (
-          <Text key={d} fontWeight="bold" fontSize="sm" textAlign="center" mb={1} color="#798B9F">{d}</Text>
+        {weekdays.map((d, index) => (
+          <Text key={index} fontWeight="bold" fontSize="sm" textAlign="center" mb={1} color="#798B9F">{d}</Text>
         ))}
 
         {calendarDays.map((day, i) => (
