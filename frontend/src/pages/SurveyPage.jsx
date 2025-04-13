@@ -2,8 +2,6 @@ import { Progress, Button, Flex, Heading, Box } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
-
-
 import Question from '../components/Question'
 
 const SurveyPage = () => {
@@ -40,16 +38,14 @@ const SurveyPage = () => {
         if (currentStep < questions.length - 1) {
             setTimeout(() => {
                 setCurrentStep(currentStep + 1);
-            }, 200); 
+            }, 200);
             console.log(responses);
-        } 
+        }
         else {
-        console.log("Survey complete:", responses);
-        navigate('/signup');
+            console.log("Survey complete:", responses);
+            navigate('/signup');
         }
     };
-
-
 
     const navigate = useNavigate();
 
@@ -60,29 +56,27 @@ const SurveyPage = () => {
 
     const handleBackClick = async () => {
         setCurrentStep(currentStep - 1);
-    }    
-
+    }
 
     const progressStatus = ((currentStep + 1) / questions.length) * 100;
 
-
     return (
-        <Box w ='100%' p={20}>
+        <Box w='100%' p={20}>
             <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
-                {currentStep == 0 ? 
-                <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5}/></Button>
-                : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={7}/></Button>}
+                {currentStep == 0 ?
+                    <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
+                    : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
 
-                <Box p={2} py={2} alignContent='center' borderRadius="30px" bgColor='#C3D7F0'>
-                <Progress w='83vw' value={progressStatus} rounded={30} alignSelf='center' bgColor='#C3D7F0'/>
+                <Box w="84vw" alignContent='center' borderRadius="30px" bgColor='#C3D7F0'>
+                    <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor='#C3D7F0' />
                 </Box>
             </Box>
             <Flex flex="1" direction="column" alignItems="center" pt={50}>
                 <Question
-                question={questions[currentStep].question}
-                answers={questions[currentStep].answers}
-                selected={responses[questions[currentStep].question] || ''}
-                onSelect={handleSelectAnswer}
+                    question={questions[currentStep].question}
+                    answers={questions[currentStep].answers}
+                    selected={responses[questions[currentStep].question] || ''}
+                    onSelect={handleSelectAnswer}
                 />
             </Flex>
         </Box>

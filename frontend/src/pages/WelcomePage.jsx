@@ -20,16 +20,16 @@ const WelcomePage = () => {
     };
 
     return (
-        <Flex direction="column" align="center" minH="100vh" overflowY="auto" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+        <Flex className="flex-scroll" p={0} sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
             <Flex align="flex-start" width="100%" height="75vh" position="relative">
-                <Image src={logo} alt="Logo" boxSize="350px" ml="10%" />
+                <Image src={logo} alt="Logo" boxSize="350px" ml="10%" mr="10%" />
                 <Box
-                    position="absolute"
                     top="0"
                     right="0"
                     width="50%"
                     height="30%"
                     bg="blue.200"
+                    ml="auto"
                 />
             </Flex>
             <Flex align="center" justifyContent="center" width="100%" p="10" height="50%" position="relative">
@@ -61,19 +61,19 @@ const WelcomePage = () => {
                     </Flex>
                 </Flex>
             </Flex>
-            <Flex justifyContents="center" alignItems="center" width="100%" height="50%" p="10" position="relative">
+            <Flex justifyContent="center" alignItems="center" width="100%" height="50%" p="10" position="relative">
                 <Text fontSize="2xl" textAlign="left" maxW="50%" ml="10%"  >
                     <strong>Skin Lab </strong>that scans, analyzes, and personalizes your skincare—giving you routines and product recommendations tailored to your unique skin type
                 </Text>
                 <Image src={third} alt="Logo" boxSize="350px" ml={10} />
             </Flex>
-            <Flex justifyContents="center" alignItems="center" width="100%" height="50%" p="10" position="relative">
+            <Flex justifyContent="center" alignItems="center" width="100%" height="50%" p="10" position="relative">
                 <Image src={fourth} alt="Logo" boxSize="350px" ml="10%" />
                 <Text fontSize="2xl" textAlign="left" maxW="50%" ml={10} >
                     Stay consistent, keep your streaks, and watch your skincare progress shine on the <strong>leaderboard</strong>!
                 </Text>
             </Flex>
-            <Flex bgColor="white" justifyContents="center" alignItems="center" width="100%" p="10" position="relative">
+            <Flex bgColor="white" justifyContent="center" alignItems="center" width="100%" p="10" position="relative">
                 <Box
                     position="absolute"
                     top="0"
