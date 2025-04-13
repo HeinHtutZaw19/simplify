@@ -44,7 +44,7 @@ const HomePage = () => {
     // Full Page Flex
     <Flex className="page" overflow="hidden" color="black">
       {/* Middle content flex */}
-      <Flex id="home-main" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+      <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
 
         <Box id="home-heading">
           <Heading size="lg" fontFamily="Feather Bold">Finish the checklist to get +1 streak!</Heading>
