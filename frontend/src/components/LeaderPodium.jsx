@@ -3,7 +3,7 @@ import { FaCrown } from "react-icons/fa"
 
 const LeaderboardPodium = ({ first, second, third }) => {
     return (
-        <Flex justify="center" align="end" gap={{ base: 2, md: 4 }}>
+        <Flex justify="center" align="end" gap={{ base: 2, md: 4 }} pt={20}>
             {/* 2nd Place */}
             <Box
                 bg="gray.800"
