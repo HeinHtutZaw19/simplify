@@ -1,43 +1,67 @@
-import React from 'react'
-import { Flex, Box, Text, Avatar } from '@chakra-ui/react'
+import React from 'react';
+import { Flex, Box, Text, Avatar } from '@chakra-ui/react';
 import { PiArrowFatUpFill, PiArrowFatDownFill } from "react-icons/pi";
 
-const UserCard = ({ user, index }) => {
+const UserCard = ({ user }) => {
     return (
         <Flex
             key={user.id}
-            width="80%"
+            width={{ base: "100%", sm: "90%", md: "80%" }} // Adjust width based on screen size
             bg={user.name === "Henry" ? "#9D81F5" : "gray.50"}
             borderRadius="md"
-            p={1}
+            p={3} // Increase padding for better spacing
             boxShadow="sm"
-            display="flex"
+            flexDirection={{ base: "column", sm: "row" }} // Stack items vertically on smaller screens
             justifyContent="space-between"
             alignItems="center"
+            gap={4} // Add spacing between items
         >
-            <Avatar name={user.name} size="sm" />
-            <Text flex={1} px={30}>{user.name}</Text>
+            {/* Avatar */}
+            <Avatar name={user.name} size={{ base: "md", sm: "sm" }} />
+
+            {/* User Name */}
+            <Text
+                flex={1}
+                px={{ base: 2, sm: 4, md: 6 }}
+                textAlign={{ base: "center", sm: "left" }} // Center text on smaller screens
+                fontSize={{ base: "2xs", md: "xs" }}
+            >
+                {user.name}
+            </Text>
+
+            {/* User ID */}
             <Box
-                w="30px"
-                h="30px"
+                w={{ base: 40, sm: 30 }}
+                h={{ base: 40, sm: 30 }}
                 borderRadius="full"
                 border="1px solid"
                 borderColor="gray.400"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                fontSize="sm"
+                fontSize={{ base: "2xs", sm: "xs" }}
             >
                 {user.id}
             </Box>
-            <Text fontWeight="bold" px={10} flex={0.1}>{user.points}</Text>
+
+            {/* Points */}
+            <Text
+                fontWeight="bold"
+                px={{ base: 4, sm: 10 }}
+                flex={1}
+                fontSize={{ base: "2xs", md: "xs" }}
+            >
+                {user.points}
+            </Text>
+
+            {/* Trend Icon */}
             {user.trend === "up" ? (
-                <PiArrowFatUpFill color="green" />
+                <PiArrowFatUpFill color="green" size={20} />
             ) : (
-                <PiArrowFatDownFill color="red" />
+                <PiArrowFatDownFill color="red" size={20} />
             )}
         </Flex>
-    )
-}
+    );
+};
 
-export default UserCard
+export default UserCard;
