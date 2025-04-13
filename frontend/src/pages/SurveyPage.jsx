@@ -1,10 +1,23 @@
 import { Progress, Button, Flex, Heading, Box } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { checkLogin } from '../API/API';
 import Question from '../components/Question'
 
 const SurveyPage = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchLoginData = async () => {
+            const user = await checkLogin();
+            if (user) {
+                navigate('/');
+            }
+        }
+        fetchLoginData();
+    });
+
     const questions = [
         {
             question: "How dry/oily does your skin feel?",
@@ -46,8 +59,6 @@ const SurveyPage = () => {
             navigate('/signup');
         }
     };
-
-    const navigate = useNavigate();
 
     const handleCloseClick = async () => {
         console.log('logout clicked');
