@@ -67,7 +67,8 @@ const HomePage = () => {
           id="home-skinanalysis-button"
           borderRadius="md"
           as="button"
-          onClick={onSkinAnalysisClick}>
+          onClick={onSkinAnalysisClick}
+          bgColor="red.500">
           <Text textAlign="center" color="white">Skin Analysis <TriangleDownIcon color="white" /></Text>
         </Box>
 

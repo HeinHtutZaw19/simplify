@@ -64,6 +64,7 @@ const ChatPage = () => {
           flex="1"
           placeholder="Ask Anything You Want About Skincare!"
           value={input}
+          fontSize={{ base: "xs", md: "sm" }}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyPress}
         />
@@ -76,7 +77,7 @@ const ChatPage = () => {
         p={4}
         alignItems="center"
         justifyContent="center">
-        <Text fontSize="sm" color="black.500">
+        <Text fontSize={{ base: "xs", md: "sm" }} color="black.500">
           Simpli Chat can make mistakes. Please double-check your information!
         </Text>
       </Flex>
