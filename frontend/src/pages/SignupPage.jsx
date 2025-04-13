@@ -82,34 +82,44 @@ const SignupPage = () => {
     }
 
     return (
-        <Box w ='100%' p={20}>
+        <Box w='100%' p={20}>
             <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
-                <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5}/></Button>
+                <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
             </Box>
-        <Flex flex="1" direction="column" alignItems="center" px={525} pt={50}>
-            
-            <Heading mb={5}>
-                Get Started!
-            </Heading>
-            <Input placeholder='Username' name='username' value={signupInfo.username} onChange={handleChange} mt={3} rounded={10} backgroundColor="#E3EDF9" />
-            <Input placeholder='Email' name='email' value={signupInfo.email} onChange={handleChange} mt={3} rounded={10} backgroundColor="#E3EDF9" />
-            <Input type='password' placeholder='Password' name='password' value={signupInfo.password} onChange={handleChange} mt={3} rounded={10} backgroundColor="#E3EDF9" />
-            <Input
-                type='password'
-                placeholder='Confirm Password'
-                name='passwordConfirm'
-                value={signupInfo.passwordConfirm}
-                onChange={handleChange}
-                mt={3}
-                rounded={10}
-                backgroundColor="#E3EDF9"
-                style={{border:(signupInfo.password==signupInfo.passwordConfirm ? '': '2px solid red')}}
-            />
-            <span style={{ display: 'block', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px' }}>
-                Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
-            </span>
-            <Button onClick={onSignupClick} mt={8} width="200px" colorScheme="blue" rounded={12}>Sign Up</Button>
-        </Flex>
+            <Flex flex="1" direction="column" alignItems="center" pt={50}>
+                <Heading mb={5}>
+                    Get Started!
+                </Heading>
+                <Input placeholder='Username' name='username' value={signupInfo.username} onChange={handleChange} w="40vw" mt={3} rounded={10} backgroundColor="#E3EDF9" />
+                <Input placeholder='Email' name='email' value={signupInfo.email} onChange={handleChange} w="40vw" mt={3} rounded={10} backgroundColor="#E3EDF9" />
+                <Input
+                    type='password'
+                    placeholder='Password'
+                    name='password'
+                    value={signupInfo.password}
+                    onChange={handleChange}
+                    w="40vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor="#E3EDF9"
+                />
+                <Input
+                    type='password'
+                    placeholder='Confirm Password'
+                    name='passwordConfirm'
+                    value={signupInfo.passwordConfirm}
+                    onChange={handleChange}
+                    w="40vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor="#E3EDF9"
+                    style={{ border: (signupInfo.password == signupInfo.passwordConfirm ? '' : '2px solid red') }}
+                />
+                <span style={{ display: 'block', width:'40vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px' }}>
+                    Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
+                </span>
+                <Button onClick={onSignupClick} w="25vw" mt={8} colorScheme="blue" rounded={12}>Sign Up</Button>
+            </Flex>
         </Box>
     )
 }
