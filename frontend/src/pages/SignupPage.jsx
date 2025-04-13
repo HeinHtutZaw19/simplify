@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom"
 import { checkLogin } from '../API/API'
 import { CloseIcon } from '@chakra-ui/icons';
 
-
 const SignupPage = () => {
     const navigate = useNavigate();
 
@@ -77,7 +76,7 @@ const SignupPage = () => {
     }
 
     const handleCloseClick = async () => {
-        console.log('logout clicked');
+        console.log('close clicked');
         navigate('/welcome');
     }
 
