@@ -21,7 +21,7 @@ const NavItem = ({ icon, title, active, handler }) => {
                 >
                     <MenuButton w="100%">
                         <Flex>
-                            <Icon as={icon} fontSize="xl" color={active ? "#707FDD" : "#B5C0D9"} />
+                            <Icon ml={3} as={icon} fontSize="xl" color={active ? "#707FDD" : "#B5C0D9"} />
                             <Text ml={5} display={{ lg: "flex", md: "flex", sm: "none" }} color={active ? "#707FDD" : "#798B9F"} fontWeight={active ? "bold" : "normal"}>{title} </Text>
                         </Flex>
                     </MenuButton>

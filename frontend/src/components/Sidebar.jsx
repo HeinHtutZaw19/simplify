@@ -52,18 +52,19 @@ const Sidebar = () => {
                     alignItems={{ md: "flex-start", sm: "center" }}
                     mb={4}
 
-                    pl={7}
+                    pl={{ base: 0, md: 7 }}
                 >
 
                     <Flex mt={4} direction="row" align={{ base: "center", md: "flex-start" }} alignItems="center">
-                        <Avatar size={{ md: "md", sm: "sm" }} />
+                        <Avatar size={{ md: "md", sm: "sm" }} ml={{ base: 0, sm: 3 }} />
                         <Heading as="h3" size="sm" color="#5A67BA" p={3} display={{ md: "flex", sm: "none" }}> Henry </Heading>
                         <Button
                             leftIcon={<Icon as={IoLogOutOutline} />}
                             variant="link"
-                            display={{ md: "flex", sm: "none" }}
+                            display="flex"
                             onClick={handleLogoutClick}
-                            ml={10}
+                            ml={{ base: 10, sm: 0 }}
+                            _hover={{ transform: 'scale(1.1)' }}
                         >
                         </Button>
                     </Flex>
@@ -77,8 +78,8 @@ const Sidebar = () => {
                     </Flex>
 
                 </Flex>
-                <Box py={10} width="100%" justifyContent={"center"} alignItems="center" display={{ md: "flex", sm: "none" }}>
-                    <Image src={logo} alt="Logo" boxSize="70px" objectFit="cover" />
+                <Box py={10} width="100%" justifyContent={"center"} alignItems="center" display="flex">
+                    <Image src={logo} alt="Logo" boxSize="75%" objectFit="contain" />
                 </Box>
             </Flex>
         </Box>
