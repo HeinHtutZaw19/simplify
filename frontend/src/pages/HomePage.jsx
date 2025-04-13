@@ -8,20 +8,9 @@ import { checkLogin, logoutUser } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
 import Calendar from '../components/Calendar';
-import UserCard from '../components/UserCard';
-
-import toner from '../assets/toner.png';
-import serum from '../assets/serum.png';
-import moisturizer from '../assets/moisturizer.png';
-import sunscreen from '../assets/sunscreen.png';
+import Product from '../components/Product';
 
 const HomePage = () => {
-  const imageMap = {
-    Toner: toner,
-    Serum: serum,
-    Moisturizer: moisturizer,
-    Sunscreen: sunscreen,
-  };
   const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
 
@@ -53,12 +42,7 @@ const HomePage = () => {
         <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
           <CheckboxGroup colorScheme="green" defaultValue={[]}>
             {['Toner', 'Moisturizer', 'Serum', 'Sunscreen'].map((item) => (
-              <Box className="home-routine-box" key={item} borderRadius="lg">
-                <Checkbox className="home-routine-checkbox" value={item} size="lg">
-                  <Text color="white">{item}</Text>
-                </Checkbox>
-                <Image className="home-routine-image" src={imageMap[item]} alt={item}></Image>
-              </Box>
+              <Product key={item} item={item} />
             ))}
           </CheckboxGroup>
         </Grid>
