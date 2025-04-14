@@ -72,6 +72,13 @@ const LoginPage = () => {
             }));
             return;
         }
+        if ('passwordIncorrect' in res) {
+            setLoginInfo((state) => ({
+                ...state,
+                passwordError: 'Password incorrect'
+            }));
+            return;
+        }
         if (res._id) {
             navigate('/');
         }
@@ -127,6 +134,19 @@ const LoginPage = () => {
                     rounded={10}
                     backgroundColor="#E3EDF9"
                 />
+                {loginInfo.passwordError &&
+                    <Text
+                        w="30vw"
+                        mt={1}
+                        textAlign="left"
+                        px={2}
+                        fontSize="sm"
+                        color="red.500"
+                        fontWeight="bold"
+                    >
+                        {loginInfo.passwordError}
+                    </Text>
+                }
                 <Button onClick={onLoginClick} w="30vw" mt={3} colorScheme="blue" rounded={10}>Log in</Button>
                 <Divider w="30vw" m={6} borderColor="gray.800" />
                 <Button onClick={onGoogleClick} width="100%" colorScheme="blue" w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>

@@ -130,7 +130,7 @@ app.post('/api/login', async (req, res) => {
         // match hashed pw with the db
         const isMatch = await bcrypt.compare(password, foundUser.password);
         if (!isMatch) {
-            res.statusMessage = "Login error: wrong password";
+            res.statusMessage = "password";
             res.sendStatus(401);
             return;
         }

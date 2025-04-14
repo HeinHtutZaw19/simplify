@@ -24,7 +24,7 @@ export const signupUser = async (user) => {
             console.log('Signup error: Email taken');
             return { emailTaken: true };
         }
-        else if (!res.ok) {
+        if (!res.ok) {
             console.log('Signup error:', res.status);
             return {};
         }
@@ -50,7 +50,11 @@ export const loginUser = async (user) => {
             console.log('Login error: Email not found');
             return { emailNotFound: true };
         }
-        else if (!res.ok) {
+        if (res.status == 401 && res.statusText == "password") {
+            console.log('Login error: Password incorrect');
+            return { passwordIncorrect: true };
+        }
+        if (!res.ok) {
             console.log('Login error:', res.status);
             return {};
         }
