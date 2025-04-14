@@ -64,10 +64,17 @@ app.post('/api/signup', async (req, res) => {
         }
 
         // check for duplicate username or email
+        const usernameExists = await User.exists({ username: username });
+        if (usernameExists) {
+            console.log('Signup error: Username exists');
+            res.statusMessage = "username";
+            res.sendStatus(409);
+            return;
+        }
         const emailExists = await User.exists({ email: email });
         if (emailExists) {
             console.log('Signup error: Email exists');
-            res.statusMessage = "Signup error: Email exists";
+            res.statusMessage = "email";
             res.sendStatus(409);
             return;
         }
@@ -91,7 +98,7 @@ app.post('/api/signup', async (req, res) => {
             if (err) {
                 console.log('Session(signup) error:', err);
                 res.statusMessage = "Session(signup) error: " + err;
-                res.status(400);
+                res.sendStatus(400);
                 return;
             }
         })
@@ -109,18 +116,21 @@ app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        console.log('hereee')
         // find matching user details in db
         const foundUser = await User.findOne({ email: email });
+        console.log('hereee2')
         if (!foundUser) {
-            res.statusMessage = "Login error: email not found";
-            res.sendStatus(401);
+            console.log('Login error: email not found');
+            res.statusMessage = "email";
+            res.sendStatus(404);
             return;
         }
 
         // match hashed pw with the db
         const isMatch = await bcrypt.compare(password, foundUser.password);
         if (!isMatch) {
-            res.statusMessage = "Login error: wrong password";
+            res.statusMessage = "password";
             res.sendStatus(401);
             return;
         }
@@ -131,7 +141,7 @@ app.post('/api/login', async (req, res) => {
             if (err) {
                 console.log('Session(login) error:', err)
                 res.statusMessage = "Session(login) error: " + err;
-                res.status(400);
+                res.sendStatus(400);
                 return;
             }
         })
@@ -159,7 +169,7 @@ app.get('/api/logout', (req, res) => {
         if (err) {
             console.log('Session(logout) error:', err)
             res.statusMessage = "Session(logout) error:" + err;
-            res.status(400);
+            res.sendStatus(400);
             return;
         }
     })

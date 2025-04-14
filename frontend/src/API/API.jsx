@@ -16,9 +16,17 @@ export const signupUser = async (user) => {
     };
     try {
         const res = await fetch(url, params);
+        if (res.status == 409 && res.statusText == "username") {
+            console.log('Signup error: Username taken');
+            return { usernameTaken: true };
+        }
+        if (res.status == 409 && res.statusText == "email") {
+            console.log('Signup error: Email taken');
+            return { emailTaken: true };
+        }
         if (!res.ok) {
             console.log('Signup error:', res.status);
-            return;
+            return {};
         }
         const parsed = await res.json();
         return parsed;
@@ -38,9 +46,17 @@ export const loginUser = async (user) => {
     };
     try {
         const res = await fetch(url, params);
+        if (res.status == 404 && res.statusText == "email") {
+            console.log('Login error: Email not found');
+            return { emailNotFound: true };
+        }
+        if (res.status == 401 && res.statusText == "password") {
+            console.log('Login error: Password incorrect');
+            return { passwordIncorrect: true };
+        }
         if (!res.ok) {
             console.log('Login error:', res.status);
-            return;
+            return {};
         }
         const parsed = await res.json();
         return parsed;
