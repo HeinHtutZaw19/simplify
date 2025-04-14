@@ -43,7 +43,7 @@ const SignupPage = () => {
             return;
         }
 
-        // reset emailError
+        // reset error messages
         setSignupInfo((state) => ({
             ...state,
             usernameError: '',
@@ -57,6 +57,10 @@ const SignupPage = () => {
         const validEmail = signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/);
         if (!validEmail) {
             console.log('Invalid email');
+            setSignupInfo((state) => ({
+                ...state,
+                emailError: 'Invalid email'
+            }));
             return;
         }
 
@@ -78,14 +82,14 @@ const SignupPage = () => {
             'email': signupInfo.email,
             'password': signupInfo.password
         });
-        if (res.usernameTaken) {
+        if ('usernameTaken' in res) {
             setSignupInfo((state) => ({
                 ...state,
                 usernameError: 'Username taken'
             }));
             return;
         }
-        if (res.emailTaken) {
+        if ('emailTaken' in res) {
             setSignupInfo((state) => ({
                 ...state,
                 emailError: 'Email taken'

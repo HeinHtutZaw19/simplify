@@ -46,7 +46,11 @@ export const loginUser = async (user) => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok) {
+        if (res.status == 404 && res.statusText == "email") {
+            console.log('Login error: Email not found');
+            return { emailNotFound: true };
+        }
+        else if (!res.ok) {
             console.log('Login error:', res.status);
             return;
         }

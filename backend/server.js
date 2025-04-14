@@ -98,7 +98,7 @@ app.post('/api/signup', async (req, res) => {
             if (err) {
                 console.log('Session(signup) error:', err);
                 res.statusMessage = "Session(signup) error: " + err;
-                res.status(400);
+                res.sendStatus(400);
                 return;
             }
         })
@@ -116,11 +116,14 @@ app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        console.log('hereee')
         // find matching user details in db
         const foundUser = await User.findOne({ email: email });
+        console.log('hereee2')
         if (!foundUser) {
-            res.statusMessage = "Login error: email not found";
-            res.sendStatus(401);
+            console.log('Login error: email not found');
+            res.statusMessage = "email";
+            res.sendStatus(404);
             return;
         }
 
@@ -138,7 +141,7 @@ app.post('/api/login', async (req, res) => {
             if (err) {
                 console.log('Session(login) error:', err)
                 res.statusMessage = "Session(login) error: " + err;
-                res.status(400);
+                res.sendStatus(400);
                 return;
             }
         })
@@ -166,7 +169,7 @@ app.get('/api/logout', (req, res) => {
         if (err) {
             console.log('Session(logout) error:', err)
             res.statusMessage = "Session(logout) error:" + err;
-            res.status(400);
+            res.sendStatus(400);
             return;
         }
     })

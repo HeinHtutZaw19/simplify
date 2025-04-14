@@ -1,6 +1,6 @@
-import { Box, Input, Button, Flex, Heading, Divider } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { Box, Input, Button, Flex, Heading, Divider, Text } from '@chakra-ui/react'
 import { FaGoogle } from 'react-icons/fa';
 import { CloseIcon } from '@chakra-ui/icons';
 import { loginUser } from '../API/API';
@@ -21,7 +21,9 @@ const LoginPage = () => {
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',
-        password: ''
+        emailError: '',
+        password: '',
+        passwordError: ''
     })
 
     const handleChange = (e) => {
@@ -41,19 +43,36 @@ const LoginPage = () => {
             return;
         }
 
+        // reset error messages
+        setLoginInfo((state) => ({
+            ...state,
+            emailError: '',
+            passwordError: '',
+        }));
+
         // validate email format
         // <string>@<string>.<string>
         const validEmail = loginInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/);
         if (!validEmail) {
             console.log('Invalid email');
+            setLoginInfo((state) => ({
+                ...state,
+                emailError: 'Invalid email'
+            }));
             return;
         }
-
         const res = await loginUser({
             'email': loginInfo.email,
             'password': loginInfo.password
         });
-        if (res) {
+        if ('emailNotFound' in res) {
+            setLoginInfo((state) => ({
+                ...state,
+                emailError: 'Email not found'
+            }));
+            return;
+        }
+        if (res._id) {
             navigate('/');
         }
     }
@@ -84,6 +103,19 @@ const LoginPage = () => {
                     backgroundColor="#E3EDF9"
                     isInvalid={(loginInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !loginInfo.email ? false : true)}
                 />
+                {loginInfo.emailError &&
+                    <Text
+                        w="30vw"
+                        mt={1}
+                        textAlign="left"
+                        px={2}
+                        fontSize="sm"
+                        color="red.500"
+                        fontWeight="bold"
+                    >
+                        {loginInfo.emailError}
+                    </Text>
+                }
                 <Input
                     type='password'
                     placeholder='Password'
