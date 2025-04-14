@@ -26,7 +26,7 @@ export const signupUser = async (user) => {
         }
         else if (!res.ok) {
             console.log('Signup error:', res.status);
-            return;
+            return {};
         }
         const parsed = await res.json();
         return parsed;
@@ -52,7 +52,7 @@ export const loginUser = async (user) => {
         }
         else if (!res.ok) {
             console.log('Login error:', res.status);
-            return;
+            return {};
         }
         const parsed = await res.json();
         return parsed;
