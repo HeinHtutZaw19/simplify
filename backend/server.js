@@ -110,15 +110,17 @@ app.post('/api/login', async (req, res) => {
         const { email, password } = req.body;
 
         // find matching user details in db
-        const foundUser = await User.findOne({email: email});
+        const foundUser = await User.findOne({ email: email });
         if (!foundUser) {
+            res.statusMessage = "Login error: email not found";
             res.sendStatus(401);
             return;
         }
-        
+
         // match hashed pw with the db
         const isMatch = await bcrypt.compare(password, foundUser.password);
         if (!isMatch) {
+            res.statusMessage = "Login error: wrong password";
             res.sendStatus(401);
             return;
         }
@@ -128,6 +130,9 @@ app.post('/api/login', async (req, res) => {
         req.session.save(err => {
             if (err) {
                 console.log('Session(login) error:', err)
+                res.statusMessage = "Session(login) error: " + err;
+                res.status(400);
+                return;
             }
         })
 
@@ -136,6 +141,7 @@ app.post('/api/login', async (req, res) => {
     }
     catch (error) {
         console.error('Login error:', error.message);
+        res.statusMessage = "Login error: " + error.message;
         res.sendStatus(400);
     }
 });
@@ -152,6 +158,9 @@ app.get('/api/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.log('Session(logout) error:', err)
+            res.statusMessage = "Session(logout) error:" + err;
+            res.status(400);
+            return;
         }
     })
     res.sendStatus(200);
