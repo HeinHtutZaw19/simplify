@@ -89,8 +89,26 @@ const SignupPage = () => {
                 <Heading mb={5}>
                     Get Started!
                 </Heading>
-                <Input placeholder='Username' name='username' value={signupInfo.username} onChange={handleChange} w="40vw" mt={3} rounded={10} backgroundColor="#E3EDF9" />
-                <Input placeholder='Email' name='email' value={signupInfo.email} onChange={handleChange} w="40vw" mt={3} rounded={10} backgroundColor="#E3EDF9" />
+                <Input
+                    placeholder='Username'
+                    name='username'
+                    value={signupInfo.username}
+                    onChange={handleChange}
+                    w="40vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor="#E3EDF9" />
+                <Input
+                    placeholder='Email'
+                    name='email'
+                    value={signupInfo.email}
+                    onChange={handleChange}
+                    w="40vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor="#E3EDF9"
+                    isInvalid={(signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !signupInfo.email ? false : 'true')}
+                />
                 <Input
                     type='password'
                     placeholder='Password'
@@ -112,9 +130,9 @@ const SignupPage = () => {
                     mt={3}
                     rounded={10}
                     backgroundColor="#E3EDF9"
-                    style={{ border: (signupInfo.password == signupInfo.passwordConfirm ? '' : '2px solid red') }}
+                    isInvalid={(signupInfo.password == signupInfo.passwordConfirm || !signupInfo.passwordConfirm ? false : true)}
                 />
-                <span style={{ display: 'block', width:'40vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px' }}>
+                <span style={{ display: 'block', width: '40vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px' }}>
                     Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
                 </span>
                 <Button onClick={onSignupClick} w="25vw" mt={8} colorScheme="blue" rounded={12}>Sign Up</Button>
