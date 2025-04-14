@@ -58,6 +58,8 @@ app.post('/api/signup', async (req, res) => {
         const validEmail = email.toLowerCase().match(/^\S+@\S+\.\S+$/);
         if (!validEmail) {
             console.log('Signup error: Invalid email');
+            res.statusMessage = "Signup error: Invalid email";
+            res.sendStatus(401);
             return;
         }
 
@@ -65,6 +67,7 @@ app.post('/api/signup', async (req, res) => {
         const emailExists = await User.exists({ email: email });
         if (emailExists) {
             console.log('Signup error: Email exists');
+            res.statusMessage = "Signup error: Email exists";
             res.sendStatus(409);
             return;
         }
@@ -86,7 +89,10 @@ app.post('/api/signup', async (req, res) => {
         req.session.user = newUser;
         req.session.save(err => {
             if (err) {
-                console.log('Session(signup) error:', err)
+                console.log('Session(signup) error:', err);
+                res.statusMessage = "Session(signup) error: " + err;
+                res.status(400);
+                return;
             }
         })
 
