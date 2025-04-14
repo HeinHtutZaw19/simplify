@@ -24,6 +24,7 @@ const SignupPage = () => {
         password: '',
         passwordConfirm: '', // TODO: later we need to add other properties (like the survey answers) when doing signup
     })
+    const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\])[A-Za-z\d@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\]{8,}$/;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -52,12 +53,10 @@ const SignupPage = () => {
 
         // check password requirements
         // at least length 8, mix of lowercase,  uppercase, numbers, special chars
-        // TEMP: disabled password requirements for development (it was annoying)
-        const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\])[A-Za-z\d@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\]{8,}$/;
-        // if (!passwordRequirements.test(signupInfo.password)) {
-        //     console.log('Password requirements not met');
-        //     return;
-        // }
+        if (!passwordRequirements.test(signupInfo.password)) {
+            console.log('Password requirements not met');
+            return;
+        }
 
         // confirm password
         if (signupInfo.password !== signupInfo.passwordConfirm) {
@@ -94,16 +93,17 @@ const SignupPage = () => {
                     name='username'
                     value={signupInfo.username}
                     onChange={handleChange}
-                    w="40vw"
+                    w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9" />
+                    backgroundColor="#E3EDF9"
+                />
                 <Input
                     placeholder='Email'
                     name='email'
                     value={signupInfo.email}
                     onChange={handleChange}
-                    w="40vw"
+                    w="30vw"
                     mt={3}
                     rounded={10}
                     backgroundColor="#E3EDF9"
@@ -115,10 +115,11 @@ const SignupPage = () => {
                     name='password'
                     value={signupInfo.password}
                     onChange={handleChange}
-                    w="40vw"
+                    w="30vw"
                     mt={3}
                     rounded={10}
                     backgroundColor="#E3EDF9"
+                    isInvalid={(passwordRequirements.test(signupInfo.password) || !signupInfo.password ? false : true)}
                 />
                 <Input
                     type='password'
@@ -126,16 +127,16 @@ const SignupPage = () => {
                     name='passwordConfirm'
                     value={signupInfo.passwordConfirm}
                     onChange={handleChange}
-                    w="40vw"
+                    w="30vw"
                     mt={3}
                     rounded={10}
                     backgroundColor="#E3EDF9"
                     isInvalid={(signupInfo.password == signupInfo.passwordConfirm || !signupInfo.passwordConfirm ? false : true)}
                 />
-                <span style={{ display: 'block', width: '40vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px' }}>
+                <span style={{ display: 'block', width: '30vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px', color: (passwordRequirements.test(signupInfo.password) || !signupInfo.password ? 'black' : '#E53E3E') }}>
                     Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
                 </span>
-                <Button onClick={onSignupClick} w="25vw" mt={8} colorScheme="blue" rounded={12}>Sign Up</Button>
+                <Button onClick={onSignupClick} w="20vw" mt={8} colorScheme="blue" rounded={12}>Sign Up</Button>
             </Flex>
         </Box>
     )
