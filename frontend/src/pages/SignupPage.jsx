@@ -1,5 +1,5 @@
 import { signupUser } from '../API/API'
-import { Input, Button, Flex, Heading, Box } from '@chakra-ui/react'
+import { Input, Button, Flex, Heading, Box, Text } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { checkLogin } from '../API/API'
@@ -21,6 +21,7 @@ const SignupPage = () => {
     const [signupInfo, setSignupInfo] = useState({
         username: '',
         email: '',
+        emailError: '',
         password: '',
         passwordConfirm: '', // TODO: later we need to add other properties (like the survey answers) when doing signup
     })
@@ -40,6 +41,12 @@ const SignupPage = () => {
             console.log('All input fields must not be blank');
             return;
         }
+
+        // reset emailError
+        setSignupInfo((state) => ({
+            ...state,
+            emailError: ''
+        }));
 
         // TODO make sure users don't type anything stupid in these fields (special characters)
 
@@ -69,7 +76,14 @@ const SignupPage = () => {
             'email': signupInfo.email,
             'password': signupInfo.password
         });
-        if (res) {
+        if (res.emailTaken) {
+            setSignupInfo((state) => ({
+                ...state,
+                emailError: 'Email taken'
+            }));
+            return;
+        }
+        else if (res) {
             navigate('/');
         }
     }
@@ -107,8 +121,21 @@ const SignupPage = () => {
                     mt={3}
                     rounded={10}
                     backgroundColor="#E3EDF9"
-                    isInvalid={(signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !signupInfo.email ? false : 'true')}
+                    isInvalid={((signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !signupInfo.email) && !signupInfo.emailError ? false : 'true')}
                 />
+                {signupInfo.emailError &&
+                    <Text
+                        w="30vw"
+                        mt={1}
+                        textAlign="left"
+                        px={2}
+                        fontSize="sm"
+                        color="red.500"
+                        fontWeight="bold"
+                    >
+                        {signupInfo.emailError}
+                    </Text>
+                }
                 <Input
                     type='password'
                     placeholder='Password'
