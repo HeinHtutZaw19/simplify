@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { checkLogin } from '../API/API';
 import { Flex, Box, Image, Button, Text, SimpleGrid } from '@chakra-ui/react'
 import { FiUpload } from "react-icons/fi";
 import { FaRedo } from "react-icons/fa";
@@ -14,6 +16,18 @@ const boxes = [
   { x: 30, y: 50, color: 'red.500' },  // Red
 ];
 const SkinLabPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      const user = await checkLogin();
+      if (!user) {
+        navigate('/welcome');
+      }
+    }
+    fetchLoginData();
+  });
+
   return (
     <Flex className="page" overflow="hidden" color="black">
       <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
