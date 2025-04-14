@@ -20,6 +20,7 @@ const SignupPage = () => {
 
     const [signupInfo, setSignupInfo] = useState({
         username: '',
+        usernameError: '',
         email: '',
         emailError: '',
         password: '',
@@ -45,6 +46,7 @@ const SignupPage = () => {
         // reset emailError
         setSignupInfo((state) => ({
             ...state,
+            usernameError: '',
             emailError: ''
         }));
 
@@ -76,6 +78,13 @@ const SignupPage = () => {
             'email': signupInfo.email,
             'password': signupInfo.password
         });
+        if (res.usernameTaken) {
+            setSignupInfo((state) => ({
+                ...state,
+                usernameError: 'Username taken'
+            }));
+            return;
+        }
         if (res.emailTaken) {
             setSignupInfo((state) => ({
                 ...state,
@@ -83,7 +92,7 @@ const SignupPage = () => {
             }));
             return;
         }
-        else if (res) {
+        if (res._id) {
             navigate('/');
         }
     }
@@ -112,6 +121,19 @@ const SignupPage = () => {
                     rounded={10}
                     backgroundColor="#E3EDF9"
                 />
+                {signupInfo.usernameError &&
+                    <Text
+                        w="30vw"
+                        mt={1}
+                        textAlign="left"
+                        px={2}
+                        fontSize="sm"
+                        color="red.500"
+                        fontWeight="bold"
+                    >
+                        {signupInfo.usernameError}
+                    </Text>
+                }
                 <Input
                     placeholder='Email'
                     name='email'

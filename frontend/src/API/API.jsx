@@ -16,7 +16,11 @@ export const signupUser = async (user) => {
     };
     try {
         const res = await fetch(url, params);
-        if (res.status == 409) {
+        if (res.status == 409 && res.statusText == "username") {
+            console.log('Signup error: Username taken');
+            return { usernameTaken: true };
+        }
+        if (res.status == 409 && res.statusText == "email") {
             console.log('Signup error: Email taken');
             return { emailTaken: true };
         }
