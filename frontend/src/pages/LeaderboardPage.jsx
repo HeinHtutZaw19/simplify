@@ -1,5 +1,7 @@
 import { Image, Tabs, TabList, Tab, VStack, Flex, Text } from "@chakra-ui/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { checkLogin } from "../API/API.jsx"
 import UserCard from "../components/UserCard.jsx"
 import LeaderboardPodium from "../components/LeaderPodium.jsx"
 import mascot from "../assets/mascot.gif"
@@ -27,8 +29,19 @@ const top3 = [
 ]
 
 const LeaderboardPage = () => {
+  const navigate = useNavigate();
   const [primaryTab, setPrimaryTab] = useState("cumulative")
   const [secondaryTab, setSecondaryTab] = useState("regional")
+
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      const user = await checkLogin();
+      if (!user) {
+        navigate('/welcome');
+      }
+    }
+    fetchLoginData();
+  });
 
   return (
     <Flex direction="column" width="full" alignItems={"center"}>
@@ -116,7 +129,5 @@ const LeaderboardPage = () => {
     </Flex >
   )
 }
-
-
 
 export default LeaderboardPage

@@ -1,12 +1,23 @@
 import { Box, Input, Button, Flex, Heading, Divider } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaGoogle } from 'react-icons/fa';
 import { CloseIcon } from '@chakra-ui/icons';
 import { loginUser } from '../API/API';
+import { checkLogin } from '../API/API';
 
 const LoginPage = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchLoginData = async () => {
+            const user = await checkLogin();
+            if (user) {
+                navigate('/');
+            }
+        }
+        fetchLoginData();
+    });
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',

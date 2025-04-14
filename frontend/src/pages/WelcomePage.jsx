@@ -1,13 +1,24 @@
+import { useEffect } from 'react';
 import { Image, Button, Flex, Box, Text } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
+import { checkLogin } from '../API/API';
 import logo from '../assets/logo.png';
 import second from '../assets/2.png';
 import third from '../assets/3.png';
 import fourth from '../assets/4.png';
 
-
 const WelcomePage = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchLoginData = async () => {
+            const user = await checkLogin();
+            if (user) {
+                navigate('/');
+            }
+        }
+        fetchLoginData();
+    });
 
     const onLoginClick = async () => {
         console.log('login clicked');

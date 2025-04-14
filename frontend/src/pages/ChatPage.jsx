@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Flex, Input, Button, Wrap, HStack, Text, WrapItem } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
+import { checkLogin } from "../API/API";
 import Message from "../components/Message";
 
 const ChatPage = () => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+
   useEffect(() => {
+    const fetchLoginData = async () => {
+      const user = await checkLogin();
+      if (!user) {
+        navigate('/welcome');
+      }
+    }
     const chatBox = document.querySelector("#chat-box");
     chatBox.scrollTop = chatBox.scrollHeight;
+    fetchLoginData();
   }, [messages]);
 
   useEffect(() => {
