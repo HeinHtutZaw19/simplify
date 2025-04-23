@@ -32,8 +32,8 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-// GOOGLE_CLIENT_ID = "508877640299-lm4h8us2rfqn3ndi6er9oq94ucqi1ilm.apps.googleusercontent.com"
-// GOOGLE_CLIENT_SECRET = "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"
+// GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+// GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 // passport.use(new GoogleStrategy({
 //     clientID: GOOGLE_CLIENT_ID,
 //     clientSecret: GOOGLE_CLIENT_SECRET,
