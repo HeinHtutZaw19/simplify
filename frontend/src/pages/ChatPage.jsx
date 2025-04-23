@@ -7,6 +7,7 @@ import Message from "../components/Message";
 
 const ChatPage = () => {
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
@@ -16,10 +17,15 @@ const ChatPage = () => {
       if (!user) {
         navigate('/welcome');
       }
+      else {
+        setLoaded(true);
+      }
     }
-    const chatBox = document.querySelector("#chat-box");
-    chatBox.scrollTop = chatBox.scrollHeight;
     fetchLoginData();
+    if (loaded) {
+      const chatBox = document.querySelector("#chat-box");
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -48,54 +54,54 @@ const ChatPage = () => {
   };
 
   return (
-    <Flex direction="column" h="100%" w="100%" p={4} bg="blackAlpha.100">
-      <Box
-        flex="1"
-        bg="white"
-        borderRadius="md"
-        boxShadow="md"
-        overflowY="auto"
-        id="chat-box"
-        p={4}
-      >
-        <Flex direction="column" gap={4}>
-          {messages.map((message, index) => (
-            <Message
-              key={index}
-              index={index}
-              text={message.text}
-              isUser={message.sender === "You"}
-            />
-          ))}
-        </Flex>
-      </Box>
-
-      <HStack w="100%" mt={4}>
-        <Input
+    <> {loaded &&
+      <Flex direction="column" h="100%" w="100%" p={4} bg="blackAlpha.100">
+        <Box
           flex="1"
-          placeholder="Ask Anything You Want About Skincare!"
-          value={input}
-          fontSize={{ base: "xs", md: "sm" }}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyPress}
-        />
-        <Button bg="bg.subtle" variant="outline" onClick={handleSend}>
-          <TbSend />
-        </Button>
-      </HStack>
+          bg="white"
+          borderRadius="md"
+          boxShadow="md"
+          overflowY="auto"
+          id="chat-box"
+          p={4}
+        >
+          <Flex direction="column" gap={4}>
+            {messages.map((message, index) => (
+              <Message
+                key={index}
+                index={index}
+                text={message.text}
+                isUser={message.sender === "You"}
+              />
+            ))}
+          </Flex>
+        </Box>
 
-      <Flex
-        p={4}
-        alignItems="center"
-        justifyContent="center">
-        <Text fontSize={{ base: "xs", md: "sm" }} color="black.500">
-          Simpli Chat can make mistakes. Please double-check your information!
-        </Text>
-      </Flex>
-    </Flex>
+        <HStack w="100%" mt={4}>
+          <Input
+            flex="1"
+            placeholder="Ask Anything You Want About Skincare!"
+            value={input}
+            fontSize={{ base: "xs", md: "sm" }}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyPress}
+          />
+          <Button bg="bg.subtle" variant="outline" onClick={handleSend}>
+            <TbSend />
+          </Button>
+        </HStack>
+
+        <Flex
+          p={4}
+          alignItems="center"
+          justifyContent="center">
+          <Text fontSize={{ base: "xs", md: "sm" }} color="black.500">
+            Simpli Chat can make mistakes. Please double-check your information!
+          </Text>
+        </Flex>
+      </Flex>}
+    </>
   );
-
-
 };
 
 export default ChatPage;

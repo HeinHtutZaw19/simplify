@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Grid, GridItem, Flex, Text, Box, VStack, Heading, Icon, Checkbox, CheckboxGroup, Image, Button, Avatar } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { checkLogin, logoutUser } from '../API/API'
 
@@ -13,13 +13,16 @@ import Product from '../components/Product';
 const HomePage = () => {
   const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchLoginData = async () => {
       const user = await checkLogin();
       if (!user) {
-        //redirect to /welcome (to /signup for now)
         navigate('/welcome');
+      }
+      else {
+        setLoaded(true);
       }
     }
     fetchLoginData();
@@ -30,63 +33,60 @@ const HomePage = () => {
   }
 
   return (
-    // Full Page Flex
-    <Flex className="page" overflow="hidden" color="black">
-      {/* Middle content flex */}
-      <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+    <> {loaded &&
+      // Full Page Flex
+      <Flex className="page" overflow="hidden" color="black">
+        {/* Middle content flex */}
+        <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
 
-        <Box id="home-heading">
-          <Heading size="lg" fontFamily="Feather Bold">Finish the checklist to get +1 streak!</Heading>
-        </Box>
-
-        <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
-          <CheckboxGroup colorScheme="green" defaultValue={[]}>
-            {['Toner', 'Moisturizer', 'Serum', 'Sunscreen'].map((item) => (
-              <Product key={item} item={item} />
-            ))}
-          </CheckboxGroup>
-        </Grid>
-
-        <Box
-          id="home-skinanalysis-button"
-          borderRadius="md"
-          as="button"
-          onClick={onSkinAnalysisClick}
-          bgColor="red.500">
-          <Text textAlign="center" color="white">Skin Analysis <TriangleDownIcon color="white" /></Text>
-        </Box>
-
-        <Box ref={skinAnalysisRef} w="100%">
-          <SkinAnalysis luminosity={35} clarity={20} vibrancy={25} overall={30} />
-        </Box>
-
-        <div style={{ fontSize: '11px' }}>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
-
-      </Flex>
-
-      {/* Right Side Stack */}
-      <VStack id="home-side" pos="sticky">
-        <Calendar />
-
-        <Heading id="home-side-leaderboard-heading" size="lg">Leaderboard</Heading>
-        <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
-          <Avatar />
-          <Box pl={4} alignContent='center'>
-            <Heading size="sm">Martha Anderson</Heading>
-            <Text fontSize="sm">80$</Text>
+          <Box id="home-heading">
+            <Heading size="lg" fontFamily="Feather Bold">Finish the checklist to get +1 streak!</Heading>
           </Box>
-        </Box>
-        <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
-          <Avatar />
-          <Box pl={4} alignContent='center'>
-            <Heading size="sm">Julia Clover</Heading>
-            <Text fontSize="sm">50$</Text>
+
+          <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
+            <CheckboxGroup colorScheme="green" defaultValue={[]}>
+              {['Toner', 'Moisturizer', 'Serum', 'Sunscreen'].map((item) => (
+                <Product key={item} item={item} />
+              ))}
+            </CheckboxGroup>
+          </Grid>
+
+          <Box
+            id="home-skinanalysis-button"
+            borderRadius="md"
+            as="button"
+            onClick={onSkinAnalysisClick}
+            bgColor="red.500">
+            <Text textAlign="center" color="white">Skin Analysis <TriangleDownIcon color="white" /></Text>
           </Box>
-        </Box>
 
-      </VStack>
+          <Box ref={skinAnalysisRef} w="100%">
+            <SkinAnalysis luminosity={35} clarity={20} vibrancy={25} overall={30} />
+          </Box>
+          <div style={{ fontSize: '11px' }}>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
+        </Flex>
 
-    </Flex >
+        {/* Right Side Stack */}
+        <VStack id="home-side" pos="sticky">
+          <Calendar />
+          <Heading id="home-side-leaderboard-heading" size="lg">Leaderboard</Heading>
+          <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
+            <Avatar />
+            <Box pl={4} alignContent='center'>
+              <Heading size="sm">Martha Anderson</Heading>
+              <Text fontSize="sm">80$</Text>
+            </Box>
+          </Box>
+          <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
+            <Avatar />
+            <Box pl={4} alignContent='center'>
+              <Heading size="sm">Julia Clover</Heading>
+              <Text fontSize="sm">50$</Text>
+            </Box>
+          </Box>
+        </VStack>
+      </Flex >}
+    </>
   )
 }
 
