@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
 import bcrypt from 'bcryptjs';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { connectDB } from "./config/db.js";
 import User from './models/user.model.js';
 
@@ -30,6 +31,20 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
     })
 }
+
+// GOOGLE_CLIENT_ID = "508877640299-lm4h8us2rfqn3ndi6er9oq94ucqi1ilm.apps.googleusercontent.com"
+// GOOGLE_CLIENT_SECRET = "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"
+// passport.use(new GoogleStrategy({
+//     clientID: GOOGLE_CLIENT_ID,
+//     clientSecret: GOOGLE_CLIENT_SECRET,
+//     callbackURL: "https://localhost:4000/api/oauth/callback"
+// },
+//     function (accessToken, refreshToken, profile, cb) {
+//         User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//             return cb(err, user);
+//         });
+//     }
+// ));
 
 app.use(session({
     secret: 'VE9zUUDY8FWggzDg', //random string
@@ -155,6 +170,13 @@ app.post('/api/login', async (req, res) => {
         res.sendStatus(400);
     }
 });
+
+// app.post('/api/login', async (req, res) => {
+//     try {
+//     }
+//     catch (error) {
+//     }
+// });
 
 app.get('/api/checklogin', (req, res) => {
     let user = null;
