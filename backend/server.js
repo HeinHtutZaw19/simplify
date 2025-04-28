@@ -7,6 +7,7 @@ import cors from "cors";
 import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
 import User from './models/user.model.js';
+import querySimpli from './utils/chat.js';
 
 const app = express();
 dotenv.config();
@@ -175,6 +176,17 @@ app.get('/api/logout', (req, res) => {
     })
     res.sendStatus(200);
 });
+
+app.post('/api/chat', async (req, res) => {
+    try {
+        const userMessage = req.body.message;
+        const simpliMessage = await querySimpli(userMessage)
+        res.status(200).send(simpliMessage);
+    } catch {
+        res.sendStatus(500);
+    }
+})
+
 
 app.listen(PORT, () => {
     connectDB();

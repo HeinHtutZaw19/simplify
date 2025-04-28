@@ -102,3 +102,23 @@ export const logoutUser = async () => {
         console.error('Logout error:', error.message);
     }
 }
+
+export const chat = async (userMessage) => {
+    try {
+        const response = await fetch(`${apiUrl}/api/chat`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        console.log(response)
+        const data = await response.text();
+        console.log("response:" + data)
+        return data
+    } catch (err) {
+        console.error('Simpli error:', err)
+        return `Err: Simpli cannot give back an answer. ${err}`
+    }
+}
