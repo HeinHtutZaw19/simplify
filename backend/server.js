@@ -119,10 +119,8 @@ app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log('hereee')
         // find matching user details in db
         const foundUser = await User.findOne({ email: email });
-        console.log('hereee2')
         if (!foundUser) {
             console.log('Login error: email not found');
             res.statusMessage = "email";
@@ -178,6 +176,22 @@ app.get('/api/logout', (req, res) => {
     })
     res.sendStatus(200);
 });
+
+app.get(`/api/user/:username/chat`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        const foundChats = await Chat.find({ _id: { $in: user.chat } }).sort({ createdAt: 1 });
+        const chats = foundChats.flatMap((chat) => [
+            { text: chat.query, sender: "You" },
+            { text: chat.response, sender: "Simpli" }
+        ]);
+        res.status(200).send(chats);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
 
 app.post('/api/chat', async (req, res) => {
     try {

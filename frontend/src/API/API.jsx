@@ -103,6 +103,27 @@ export const logoutUser = async () => {
     }
 }
 
+export const getChatList = async (username) => {
+    const url = `${apiUrl}/api/user/${username}/chat`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get chat list error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get chat list error:', error.message);
+    }
+}
+
 export const chat = async (username, userQuery) => {
     try {
         const response = await fetch(`${apiUrl}/api/chat`, {
@@ -113,7 +134,7 @@ export const chat = async (username, userQuery) => {
             },
             body: JSON.stringify({ username: username, userQuery: userQuery })
         })
-        console.log(response)
+        // console.log(response)
         const data = await response.text();
         console.log("response:" + data)
         return data

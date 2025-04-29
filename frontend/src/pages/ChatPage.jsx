@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Flex, Input, Button, Wrap, HStack, Text, WrapItem } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
-import { checkLogin, chat } from "../API/API";
+import { checkLogin, chat, getChatList } from "../API/API";
 import Message from "../components/Message";
 
 const ChatPage = () => {
@@ -10,6 +10,22 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const chatBox = document.querySelector("#chat-box");
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }, [messages]);
+
+  useEffect(() => {
+    // load user's chat list
+    const setChatHistory = async (username) => {
+      const chatList = await getChatList(username);
+      setMessages(prevMessages => [...prevMessages, ...chatList]);
+    }
+    if (user) {
+      setChatHistory(user.username);
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -21,15 +37,11 @@ const ChatPage = () => {
         setUser(user);
       }
     }
-    const chatBox = document.querySelector("#chat-box");
-    chatBox.scrollTop = chatBox.scrollHeight;
     fetchLoginData();
-  }, [messages]);
 
-  useEffect(() => {
     //make dummy messages
     const dummyMessages = [
-      { text: "I'm Simplifi, your skincare AI assistant! How can I help?", sender: "Simpli" },
+      { text: "I'm Simpli, your skincare AI assistant! How can I help?", sender: "Simpli" },
       // { text: "I want to know more about trouble reset cicaffeine foam", sender: "You" },
       // {
       //   text: "Trouble Reset Cicaffeine Foam Summary\n\nProduct Name: Trouble Reset Cicaffeine Foam\nBrand: Simpli\n\nProduct Description:\nA gentle cleansing foam that helps to remove impurities and dead skin cells while maintaining the skin's natural pH balance. It is formulated with Cicaffeine™, a unique blend of Beta-Sitosterol and Caffeine, to help calm and revitalize the skin while enhancing elasticity and pore care.",
@@ -48,7 +60,7 @@ const ChatPage = () => {
     ])
     setInput('')
     const reply = await chat(user.username, input)
-    console.log(reply)
+    // console.log(reply)
     setMessages(prev => [
       ...prev,
       { text: reply, sender: 'Simpli' }
