@@ -9,12 +9,16 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchLoginData = async () => {
       const user = await checkLogin();
       if (!user) {
         navigate('/welcome');
+      }
+      else {
+        setUser(user);
       }
     }
     const chatBox = document.querySelector("#chat-box");
@@ -26,11 +30,12 @@ const ChatPage = () => {
     //make dummy messages
     const dummyMessages = [
       { text: "I'm Simplifi, your skincare AI assistant! How can I help?", sender: "Simpli" },
-      { text: "I want to know more about trouble reset cicaffeine foam", sender: "You" },
-      {
-        text: "Trouble Reset Cicaffeine Foam Summary\n\nProduct Name: Trouble Reset Cicaffeine Foam\nBrand: Simpli\n\nProduct Description:\nA gentle cleansing foam that helps to remove impurities and dead skin cells while maintaining the skin's natural pH balance. It is formulated with Cicaffeine™, a unique blend of Beta-Sitosterol and Caffeine, to help calm and revitalize the skin while enhancing elasticity and pore care.",
-        sender: "Simpli"
-      }];
+      // { text: "I want to know more about trouble reset cicaffeine foam", sender: "You" },
+      // {
+      //   text: "Trouble Reset Cicaffeine Foam Summary\n\nProduct Name: Trouble Reset Cicaffeine Foam\nBrand: Simpli\n\nProduct Description:\nA gentle cleansing foam that helps to remove impurities and dead skin cells while maintaining the skin's natural pH balance. It is formulated with Cicaffeine™, a unique blend of Beta-Sitosterol and Caffeine, to help calm and revitalize the skin while enhancing elasticity and pore care.",
+      //   sender: "Simpli"
+      // }
+    ];
     setMessages(dummyMessages);
   }, []);
 
@@ -42,7 +47,7 @@ const ChatPage = () => {
       { text: input, sender: 'You' }
     ])
     setInput('')
-    const reply = await chat(input)
+    const reply = await chat(user.username, input)
     console.log(reply)
     setMessages(prev => [
       ...prev,

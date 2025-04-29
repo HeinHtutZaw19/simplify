@@ -7,7 +7,9 @@ import cors from "cors";
 import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
 import User from './models/user.model.js';
+import Chat from './models/chat.model.js';
 import querySimpli from './utils/chat.js';
+import { RiSquareFill } from 'react-icons/ri';
 
 const app = express();
 dotenv.config();
@@ -179,14 +181,23 @@ app.get('/api/logout', (req, res) => {
 
 app.post('/api/chat', async (req, res) => {
     try {
-        const userMessage = req.body.message;
-        const simpliMessage = await querySimpli(userMessage)
-        res.status(200).send(simpliMessage);
+        const { username, userQuery } = req.body;
+        const simpliResponse = await querySimpli(userQuery)
+        const newChatObj = new Chat({
+            query: userQuery,
+            response: simpliResponse
+        });
+        const savedChat = await newChatObj.save();
+        await User.findOneAndUpdate(
+            { username: username },
+            { $push: { chat: savedChat._id } }
+        );
+        console.log('user:', username, 'saved chat with id:', savedChat._id);
+        res.status(200).send(simpliResponse);
     } catch {
         res.sendStatus(500);
     }
 })
-
 
 app.listen(PORT, () => {
     connectDB();
