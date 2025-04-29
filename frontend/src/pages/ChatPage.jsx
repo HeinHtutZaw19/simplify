@@ -1,20 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Flex, Input, Button, Wrap, HStack, Text, WrapItem } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Input,
+  Button,
+  HStack,
+  Text
+} from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import { checkLogin, chat, getChatList } from "../API/API";
 import Message from "../components/Message";
+import LoadingBubble from "../components/LoadingBubble";
 
 const ChatPage = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const bottomRef = useRef();
 
+//   useEffect(() => {
+//     const chatBox = document.querySelector("#chat-box");
+//     chatBox.scrollTop = chatBox.scrollHeight;
+//   }, [messages]);
+  
   useEffect(() => {
+    // scroll to bottom whenever messages or loading change
     const chatBox = document.querySelector("#chat-box");
     chatBox.scrollTop = chatBox.scrollHeight;
-  }, [messages]);
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
 
   useEffect(() => {
     // load user's chat list
@@ -50,21 +67,25 @@ const ChatPage = () => {
     ];
     setMessages(dummyMessages);
   }, []);
+  
+//   // initial dummy messages...
+//   useEffect(() => {
+//     setMessages([
+//       { text: "I want to know more about Trouble Reset Cicaffeine Foam", sender: "You" },
+//       { text: "Trouble Reset Cicaffeine Foam Summary…", sender: "Simpli" }
+//     ]);
+//   }, []);
 
   const handleSend = async () => {
-    // Don’t do anything if the input is just whitespace
-    if (input.trim() === '') return
-    setMessages(prev => [
-      ...prev,
-      { text: input, sender: 'You' }
-    ])
-    setInput('')
-    const reply = await chat(user.username, input)
+    if (input.trim() === '') return;
+    setMessages(prev => [...prev, { text: input, sender: 'You' }]);
+    setInput("");
+    setLoading(true);
+    const history = messages.map(msg => msg.text);
+    const reply = await chat(user.username, input, history);
+    setLoading(false);
     // console.log(reply)
-    setMessages(prev => [
-      ...prev,
-      { text: reply, sender: 'Simpli' }
-    ])
+    setMessages(prev => [...prev, { text: reply, sender: 'Simpli' }]);
   }
 
   const handleKeyPress = (e) => {
@@ -85,14 +106,15 @@ const ChatPage = () => {
         p={4}
       >
         <Flex direction="column" gap={4}>
-          {messages.map((message, index) => (
+          {messages.map((message, idx) => (
             <Message
-              key={index}
-              index={index}
+              key={idx}
               text={message.text}
               isUser={message.sender === "You"}
             />
           ))}
+          {loading && <LoadingBubble isUser={false} />}
+          <div ref={bottomRef} />
         </Flex>
       </Box>
 
@@ -110,18 +132,13 @@ const ChatPage = () => {
         </Button>
       </HStack>
 
-      <Flex
-        p={4}
-        alignItems="center"
-        justifyContent="center">
+      <Flex p={4} alignItems="center" justifyContent="center">
         <Text fontSize={{ base: "xs", md: "sm" }} color="black.500">
           Simpli Chat can make mistakes. Please double-check your information!
         </Text>
       </Flex>
     </Flex>
   );
-
-
 };
 
 export default ChatPage;

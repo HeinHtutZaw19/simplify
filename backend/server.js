@@ -10,6 +10,7 @@ import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
+import formatConvHistory from './utils/formatConvHistory.js';
 
 const app = express();
 dotenv.config();
@@ -195,8 +196,8 @@ app.get(`/api/user/:username/chat`, async (req, res) => {
 
 app.post('/api/chat', async (req, res) => {
     try {
-        const { username, userQuery } = req.body;
-        const simpliResponse = await querySimpli(userQuery)
+        const { username, userQuery, convHistory } = req.body;
+        const simpliResponse = await querySimpli(userQuery, convHistory);
         const newChatObj = new Chat({
             query: userQuery,
             response: simpliResponse
