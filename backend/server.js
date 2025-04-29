@@ -7,6 +7,7 @@ import cors from "cors";
 import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
 import User from './models/user.model.js';
+import querySimpli from './utils/chat.js';
 
 const app = express();
 dotenv.config();
@@ -58,19 +59,23 @@ app.post('/api/signup', async (req, res) => {
         const validEmail = email.toLowerCase().match(/^\S+@\S+\.\S+$/);
         if (!validEmail) {
             console.log('Signup error: Invalid email');
+            res.statusMessage = "Signup error: Invalid email";
+            res.sendStatus(401);
             return;
         }
 
         // check for duplicate username or email
-        const userExists = await User.exists({ username: username });
-        if (userExists) {
+        const usernameExists = await User.exists({ username: username });
+        if (usernameExists) {
             console.log('Signup error: Username exists');
+            res.statusMessage = "username";
             res.sendStatus(409);
             return;
         }
         const emailExists = await User.exists({ email: email });
         if (emailExists) {
             console.log('Signup error: Email exists');
+            res.statusMessage = "email";
             res.sendStatus(409);
             return;
         }
@@ -92,7 +97,10 @@ app.post('/api/signup', async (req, res) => {
         req.session.user = newUser;
         req.session.save(err => {
             if (err) {
-                console.log('Session(signup) error:', err)
+                console.log('Session(signup) error:', err);
+                res.statusMessage = "Session(signup) error: " + err;
+                res.sendStatus(400);
+                return;
             }
         })
 
@@ -109,16 +117,21 @@ app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        console.log('hereee')
         // find matching user details in db
-        const foundUser = await User.findOne({email: email});
+        const foundUser = await User.findOne({ email: email });
+        console.log('hereee2')
         if (!foundUser) {
-            res.sendStatus(401);
+            console.log('Login error: email not found');
+            res.statusMessage = "email";
+            res.sendStatus(404);
             return;
         }
-        
+
         // match hashed pw with the db
         const isMatch = await bcrypt.compare(password, foundUser.password);
         if (!isMatch) {
+            res.statusMessage = "password";
             res.sendStatus(401);
             return;
         }
@@ -128,6 +141,9 @@ app.post('/api/login', async (req, res) => {
         req.session.save(err => {
             if (err) {
                 console.log('Session(login) error:', err)
+                res.statusMessage = "Session(login) error: " + err;
+                res.sendStatus(400);
+                return;
             }
         })
 
@@ -136,6 +152,7 @@ app.post('/api/login', async (req, res) => {
     }
     catch (error) {
         console.error('Login error:', error.message);
+        res.statusMessage = "Login error: " + error.message;
         res.sendStatus(400);
     }
 });
@@ -152,10 +169,24 @@ app.get('/api/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.log('Session(logout) error:', err)
+            res.statusMessage = "Session(logout) error:" + err;
+            res.sendStatus(400);
+            return;
         }
     })
     res.sendStatus(200);
 });
+
+app.post('/api/chat', async (req, res) => {
+    try {
+        const userMessage = req.body.message;
+        const simpliMessage = await querySimpli(userMessage)
+        res.status(200).send(simpliMessage);
+    } catch {
+        res.sendStatus(500);
+    }
+})
+
 
 app.listen(PORT, () => {
     connectDB();

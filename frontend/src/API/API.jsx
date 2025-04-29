@@ -16,9 +16,17 @@ export const signupUser = async (user) => {
     };
     try {
         const res = await fetch(url, params);
+        if (res.status == 409 && res.statusText == "username") {
+            console.log('Signup error: Username taken');
+            return { usernameTaken: true };
+        }
+        if (res.status == 409 && res.statusText == "email") {
+            console.log('Signup error: Email taken');
+            return { emailTaken: true };
+        }
         if (!res.ok) {
             console.log('Signup error:', res.status);
-            return;
+            return {};
         }
         const parsed = await res.json();
         return parsed;
@@ -38,9 +46,17 @@ export const loginUser = async (user) => {
     };
     try {
         const res = await fetch(url, params);
+        if (res.status == 404 && res.statusText == "email") {
+            console.log('Login error: Email not found');
+            return { emailNotFound: true };
+        }
+        if (res.status == 401 && res.statusText == "password") {
+            console.log('Login error: Password incorrect');
+            return { passwordIncorrect: true };
+        }
         if (!res.ok) {
             console.log('Login error:', res.status);
-            return;
+            return {};
         }
         const parsed = await res.json();
         return parsed;
@@ -84,5 +100,25 @@ export const logoutUser = async () => {
     }
     catch (error) {
         console.error('Logout error:', error.message);
+    }
+}
+
+export const chat = async (userMessage) => {
+    try {
+        const response = await fetch(`${apiUrl}/api/chat`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        console.log(response)
+        const data = await response.text();
+        console.log("response:" + data)
+        return data
+    } catch (err) {
+        console.error('Simpli error:', err)
+        return `Err: Simpli cannot give back an answer. ${err}`
     }
 }

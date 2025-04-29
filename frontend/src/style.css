@@ -1,0 +1,127 @@
+.page {
+    background: white;
+    width: 100vw;
+    height: 100vh;
+}
+
+.flex-scroll {
+    padding: 10px;
+    flex: 1;
+    flex-direction: column;
+    overflow-y: auto;
+    align-items: center;
+}
+
+#home-heading {
+    width: fit-content;
+    margin: 10px 10px 20px 10px;
+}
+
+#home-routine-grid {
+    width: 60%;
+    gap: 20px;
+}
+
+.home-routine-box {
+    width: 100%;
+    padding: 10px;
+    min-width: 10vw;
+    background: #5A67BA;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Feather Bold';
+}
+
+.home-routine-checkbox {
+    align-self: flex-start;
+}
+
+.home-routine-image {
+    object-fit: contain;
+}
+
+#home-skinanalysis-button {
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #3182CE;
+    padding: 10px;
+    margin: 25px 0 25px 0;
+}
+
+#home-analysis-heading {
+    text-align: center;
+    font-family: 'Feather Bold';
+}
+
+#home-analysis-visuals {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 50px;
+}
+
+#home-side {
+    width: 25vw;
+    padding: 15px;
+    gap: 10px;
+}
+
+#home-calendar {
+    background: #CCE0F2;
+    width: 100%;
+    gap: 0;
+}
+
+#home-calendar-streak {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-calendar-day {
+    display: flex;
+    width: 2vw;
+    height: 2vw;
+    align-items: center;
+    justify-content: center;
+    margin: 1px auto 5px auto;
+    border-radius: 50%;
+}
+
+#home-side-leaderboard-heading {
+    margin-top: 15px;
+    font-family: 'Feather Bold';
+    font-size: 2.3vw;
+    color: #5A67BA;
+}
+
+@media (max-width: 768px) {
+    #home-side {
+        display: none;
+    }
+}
+
+.skinlab-detail-flex {
+    flex: 2;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#skinlab-image-div {
+    display: flex;
+    height: auto;
+    width: auto;
+    min-width: 300px;
+    position: relative;
+    align-items: stretch;
+    justify-content: center;
+    flex: 1
+}

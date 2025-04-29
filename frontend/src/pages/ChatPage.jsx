@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Flex, Input, Button, Wrap, HStack, Text, WrapItem } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
+import { checkLogin, chat } from "../API/API";
 import Message from "../components/Message";
 
 const ChatPage = () => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+
   useEffect(() => {
+    const fetchLoginData = async () => {
+      const user = await checkLogin();
+      if (!user) {
+        navigate('/welcome');
+      }
+    }
     const chatBox = document.querySelector("#chat-box");
     chatBox.scrollTop = chatBox.scrollHeight;
+    fetchLoginData();
   }, [messages]);
 
   useEffect(() => {
@@ -23,12 +34,21 @@ const ChatPage = () => {
     setMessages(dummyMessages);
   }, []);
 
-  const handleSend = () => {
-    if (input.trim() !== "") {
-      setMessages([...messages, { text: input, sender: "You" }]);
-      setInput("");
-    }
-  };
+  const handleSend = async () => {
+    // Don’t do anything if the input is just whitespace
+    if (input.trim() === '') return
+    setMessages(prev => [
+      ...prev,
+      { text: input, sender: 'You' }
+    ])
+    setInput('')
+    const reply = await chat(input)
+    console.log(reply)
+    setMessages(prev => [
+      ...prev,
+      { text: reply, sender: 'Simpli' }
+    ])
+  }
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -64,6 +84,7 @@ const ChatPage = () => {
           flex="1"
           placeholder="Ask Anything You Want About Skincare!"
           value={input}
+          fontSize={{ base: "xs", md: "sm" }}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyPress}
         />
@@ -76,7 +97,7 @@ const ChatPage = () => {
         p={4}
         alignItems="center"
         justifyContent="center">
-        <Text fontSize="sm" color="black.500">
+        <Text fontSize={{ base: "xs", md: "sm" }} color="black.500">
           Simpli Chat can make mistakes. Please double-check your information!
         </Text>
       </Flex>

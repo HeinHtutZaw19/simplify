@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true
     },
     age: {
         type: Number,
@@ -52,9 +51,3 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model("User", userSchema);
 export default User;
-
-// pfp: {
-//     // data: Buffer,
-//     // contentType: String
-//     type: String
-// },

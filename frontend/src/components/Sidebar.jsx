@@ -1,19 +1,29 @@
 import React, { useState } from 'react'
-import { Flex, Text, Heading, Avatar, Box } from '@chakra-ui/react'
+import { Flex, Text, Heading, Avatar, Box, Button, Icon, Image } from '@chakra-ui/react'
 import { FiHome } from 'react-icons/fi'
 import { MdLeaderboard } from 'react-icons/md'
 import { FaCamera } from 'react-icons/fa'
 import { IoChatbubbleEllipsesOutline, IoSettings } from "react-icons/io5";
 import { MdOutlineHelp } from "react-icons/md";
+import { IoLogOutOutline } from "react-icons/io5";
 import NavItem from './NavItem'
 import { useNavigate } from "react-router-dom"
+import { logoutUser } from '../API/API'
+import logo from '../assets/logo.png';
+
 
 const Sidebar = () => {
     const [tab, changeTab] = useState({
         active: "Routine"
     })
     const navigate = useNavigate();
-
+    const handleLogoutClick = async () => {
+        console.log('logout clicked');
+        const res = logoutUser();
+        if (res) {
+            navigate('/welcome');
+        }
+    }
     const handleChangeTab = (data) => {
         changeTab({ active: data });
         if (data === "Routine") {
@@ -25,7 +35,6 @@ const Sidebar = () => {
     }
     return (
         <Box
-            pl={7}
             bg='#CCE0F2'
             boxShadow="0 4px 12px 0 rgba(0,0,0,0.05)"
         >
@@ -42,11 +51,22 @@ const Sidebar = () => {
                     w="100%"
                     alignItems={{ md: "flex-start", sm: "center" }}
                     mb={4}
+
+                    pl={{ base: 0, md: 7 }}
                 >
 
-                    <Flex mt={4} align={{ base: "center", md: "flex-start" }}>
-                        <Avatar size={{ md: "md", sm: "sm" }} />
+                    <Flex mt={4} direction="row" align={{ base: "center", md: "flex-start" }} alignItems="center">
+                        <Avatar size={{ md: "md", sm: "sm" }} ml={{ base: 0, sm: 3 }} />
                         <Heading as="h3" size="sm" color="#5A67BA" p={3} display={{ md: "flex", sm: "none" }}> Henry </Heading>
+                        <Button
+                            leftIcon={<Icon as={IoLogOutOutline} />}
+                            variant="link"
+                            display="flex"
+                            onClick={handleLogoutClick}
+                            ml={{ base: 10, sm: 0 }}
+                            _hover={{ transform: 'scale(1.1)' }}
+                        >
+                        </Button>
                     </Flex>
                     {/* <Divider mt={4} borderColor="gray.100"/> */}
                     <Flex w="100%" justify="center" flexDir="column" mt={10}>
@@ -56,13 +76,11 @@ const Sidebar = () => {
                         <NavItem icon={IoChatbubbleEllipsesOutline} title={"Chat"} active={tab.active == "Chat"} handler={() => handleChangeTab("Chat")} />
                         <NavItem icon={MdLeaderboard} title={"Leaderboard"} active={tab.active == "Leaderboard"} handler={() => handleChangeTab("Leaderboard")} />
                     </Flex>
-                    <Flex w="100%" justify="center" flexDir="column" mt={10}>
-                        <Text fontSize="sm" color="gray.500" display={{ md: "flex", sm: "none" }}>OTHERS</Text>
-                        <NavItem icon={IoSettings} title={"Settings"} active={tab.active == "Settings"} handler={() => handleChangeTab("Settings")} />
-                        <NavItem icon={MdOutlineHelp} title={"Help"} active={tab.active == "Help"} handler={() => handleChangeTab("Help")} />
-                    </Flex>
-                </Flex>
 
+                </Flex>
+                <Box py={10} width="100%" justifyContent={"center"} alignItems="center" display="flex">
+                    <Image src={logo} alt="Logo" boxSize="75%" objectFit="contain" />
+                </Box>
             </Flex>
         </Box>
 

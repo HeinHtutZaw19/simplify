@@ -1,97 +1,99 @@
-import React from 'react'
-import { Flex, Box, Image, Button, Text } from '@chakra-ui/react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { checkLogin } from '../API/API';
+import { Flex, Box, Image, Button, Text, SimpleGrid } from '@chakra-ui/react'
 import { FiUpload } from "react-icons/fi";
 import { FaRedo } from "react-icons/fa";
 import SkinLabAnalysis from '../components/SkinLabAnalysis';
+import PatchDetail from '../components/PatchDetail';
+import BoxOverlayImage from '../components/BoxOverlayImage';
 import testImage from '../assets/skinanalysis.png';
 
+const boxes = [
+  { x: 50, y: 35, color: 'green.500' },   // Green
+  { x: 65, y: 50, color: 'blue.500' },   // Blue
+  { x: 50, y: 50, color: 'yellow.500' }, // Yellow
+  { x: 30, y: 50, color: 'red.500' },  // Red
+];
 const SkinLabPage = () => {
-  return (
-    <Flex flex="1" height="100vh" overflowY="auto" direction="column" alignItems="center" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-      <Box position="relative" mt="80px">
-        <Image src={testImage} height="400px" border="15px solid" rounded="15px" borderColor="blue.200" />
-        <Box
-          position="absolute"
-          top="200px"
-          left="190px"
-          width="40px"
-          height="40px"
-          border="2px solid #2b88ed"
-          borderRadius="md"
-          zIndex="2"
-        />
-        <Box
-          position="absolute"
-          top="220px"
-          left="230px"
-          width="200px"
-          height="2px"
-          background="#2b88ed"
-          transformOrigin="left center"
-          zIndex="1"
-        />
-        <Box
-          position="absolute"
-          top="160px"
-          left="430px"
-          width="120px"
-          height="120px"
-          border="7px solid #2b88ed"
-          borderRadius="7px"
-          overflow="hidden"
-          boxShadow="lg"
-          zIndex="1"
-        >
-          <Image src={testImage} transform="scale(6.0)" transformOrigin="top left" ml="-400px" mt="-420px" />
-        </Box>
+  const navigate = useNavigate();
 
-        <Box
-          position="absolute"
-          top="188px"
-          left="145px"
-          width="40px"
-          height="40px"
-          border="2px solid #2b88ed"
-          borderRadius="md"
-          zIndex="2"
-        />
-        <Box
-          position="absolute"
-          top="208px"
-          left="-115px"
-          width="260px"
-          height="2px"
-          background="#2b88ed"
-          transformOrigin="left center"
-          zIndex="1"
-        />
-        <Box
-          position="absolute"
-          top="148px"
-          left="-230px"
-          width="120px"
-          height="120px"
-          border="7px solid #2b88ed"
-          borderRadius="7px"
-          overflow="hidden"
-          boxShadow="lg"
-          zIndex="1"
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      const user = await checkLogin();
+      if (!user) {
+        navigate('/welcome');
+      }
+    }
+    fetchLoginData();
+  });
+
+  return (
+    <Flex className="page" overflow="hidden" color="black">
+      <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+
+        <Flex width={{ sm: "60%", md: "50%", lg: "100%" }} pb={0}>
+          {/*
+          Green Patch + Blue Patch
+        */}
+          <Flex className="skinlab-detail-flex" display={{ sm: 'none', md: 'none', lg: 'flex' }} alignItems="flex-start">
+            <PatchDetail color="green.500" description="The visible wrinkles indicate a reduction in collagen and elasticity, leading to rougher texture and an aged appearance of the skin." />
+            <PatchDetail color="blue.500" description="The sunburn mask pattern on the skin suggests prolonged UV exposure, causing redness, irritation, and potential long-term damage such as hyperpigmentation and premature aging." />
+          </Flex>
+          {/*
+          Image with overlay
+        */}
+          <BoxOverlayImage boxes={boxes} img={testImage} />
+          {/*
+          Yellow Patch + Red Patch
+        */}
+          <Flex className="skinlab-detail-flex" display={{ sm: 'none', md: 'none', lg: 'flex' }} alignItems="flex-end">
+            <PatchDetail color="yellow.500" description="The presence of pimples indicates inflammation and clogged pores, often caused by excess oil, bacteria, or hormonal imbalances, which can lead to redness, swelling, and potential scarring if untreated." />
+            <PatchDetail color="red.500" description="Enlarged or visible pores suggest excess oil production and potential buildup of dirt or dead skin cells, which can contribute to acne and uneven skin texture." />
+          </Flex>
+        </Flex>
+
+
+        {/*
+        Button Container
+      */}
+        <Flex direction="row" mt="15px" mb="40px" align="center" width={300}>
+          <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" colorScheme="blue">
+            Submit
+          </Button>
+          <Text fontSize={20} mr="15px" style={{ cursor: 'pointer' }}>
+            <FiUpload />
+          </Text>
+          <Text fontSize={15} style={{ cursor: 'pointer' }}>
+            <FaRedo />
+          </Text>
+        </Flex>
+        <SimpleGrid
+          columns={2}
+          spacing={6}
+          p={10}
+          display={{ sm: 'grid', md: 'grid', lg: 'none' }}
+          alignItems="flex-start"
         >
-          <Image src={testImage} transform="scale(6.0)" transformOrigin="top left" ml="-295px" mt="-395px" />
-        </Box>
-      </Box>
-      <Flex direction="row" mt="15px" mb="40px" align="center" width={300}>
-        <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" colorScheme="blue">
-          Submit
-        </Button>
-        <Text fontSize={20} mr="15px" style={{ cursor: 'pointer' }}>
-          <FiUpload />
-        </Text>
-        <Text fontSize={15} style={{ cursor: 'pointer' }}>
-          <FaRedo />
-        </Text>
+          <PatchDetail
+            color="green.500"
+            description="The visible wrinkles indicate a reduction in collagen and elasticity, leading to rougher texture and an aged appearance of the skin."
+          />
+          <PatchDetail
+            color="blue.500"
+            description="The sunburn mask pattern on the skin suggests prolonged UV exposure, causing redness, irritation, and potential long-term damage such as hyperpigmentation and premature aging."
+          />
+          <PatchDetail
+            color="yellow.500"
+            description="The presence of pimples indicates inflammation and clogged pores, often caused by excess oil, bacteria, or hormonal imbalances, which can lead to redness, swelling, and potential scarring if untreated."
+          />
+          <PatchDetail
+            color="red.500"
+            description="Enlarged or visible pores suggest excess oil production and potential buildup of dirt or dead skin cells, which can contribute to acne and uneven skin texture."
+          />
+        </SimpleGrid>
+        <SkinLabAnalysis luminosity={35} clarity={20} vibrancy={25} overall={30} />
       </Flex>
-      <SkinLabAnalysis />
     </Flex>
   )
 }
