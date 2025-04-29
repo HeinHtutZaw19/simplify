@@ -103,7 +103,7 @@ export const logoutUser = async () => {
     }
 }
 
-export const chat = async (userMessage) => {
+export const chat = async (userMessage, convHistory) => {
     try {
         const response = await fetch(`${apiUrl}/api/chat`, {
             method: 'POST',
@@ -111,9 +111,8 @@ export const chat = async (userMessage) => {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ message: userMessage })
+            body: JSON.stringify({ message: userMessage, conv_history: convHistory })
         })
-        console.log(response)
         const data = await response.text();
         console.log("response:" + data)
         return data

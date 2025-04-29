@@ -8,6 +8,7 @@ import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
 import User from './models/user.model.js';
 import querySimpli from './utils/chat.js';
+import formatConvHistory from './utils/formatConvHistory.js';
 
 const app = express();
 dotenv.config();
@@ -180,7 +181,8 @@ app.get('/api/logout', (req, res) => {
 app.post('/api/chat', async (req, res) => {
     try {
         const userMessage = req.body.message;
-        const simpliMessage = await querySimpli(userMessage)
+        const convHistory = req.body.conv_history;
+        const simpliMessage = await querySimpli(userMessage, convHistory)
         res.status(200).send(simpliMessage);
     } catch {
         res.sendStatus(500);
