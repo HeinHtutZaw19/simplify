@@ -9,7 +9,7 @@ import {
   Text
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
-import { checkLogin, chat } from "../API/API";
+import { checkLogin, chat, getChatList } from "../API/API";
 import Message from "../components/Message";
 import LoadingBubble from "../components/LoadingBubble";
 
@@ -17,19 +17,15 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef();
 
-  useEffect(() => {
-    const fetchLoginData = async () => {
-      const user = await checkLogin();
-      if (!user) {
-        navigate('/welcome');
-      }
-    };
-    fetchLoginData();
-  }, []); // only on mount
-
+//   useEffect(() => {
+//     const chatBox = document.querySelector("#chat-box");
+//     chatBox.scrollTop = chatBox.scrollHeight;
+//   }, [messages]);
+  
   useEffect(() => {
     // scroll to bottom whenever messages or loading change
     const chatBox = document.querySelector("#chat-box");
@@ -37,26 +33,60 @@ const ChatPage = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  // initial dummy messages...
   useEffect(() => {
-    setMessages([
-      { text: "I want to know more about Trouble Reset Cicaffeine Foam", sender: "You" },
-      { text: "Trouble Reset Cicaffeine Foam Summary…", sender: "Simpli" }
-    ]);
+    // load user's chat list
+    const setChatHistory = async (username) => {
+      const chatList = await getChatList(username);
+      setMessages(prevMessages => [...prevMessages, ...chatList]);
+    }
+    if (user) {
+      setChatHistory(user.username);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      const user = await checkLogin();
+      if (!user) {
+        navigate('/welcome');
+      }
+      else {
+        setUser(user);
+      }
+    }
+    fetchLoginData();
+
+    //make dummy messages
+    const dummyMessages = [
+      { text: "I'm Simpli, your skincare AI assistant! How can I help?", sender: "Simpli" },
+      // { text: "I want to know more about trouble reset cicaffeine foam", sender: "You" },
+      // {
+      //   text: "Trouble Reset Cicaffeine Foam Summary\n\nProduct Name: Trouble Reset Cicaffeine Foam\nBrand: Simpli\n\nProduct Description:\nA gentle cleansing foam that helps to remove impurities and dead skin cells while maintaining the skin's natural pH balance. It is formulated with Cicaffeine™, a unique blend of Beta-Sitosterol and Caffeine, to help calm and revitalize the skin while enhancing elasticity and pore care.",
+      //   sender: "Simpli"
+      // }
+    ];
+    setMessages(dummyMessages);
   }, []);
+  
+//   // initial dummy messages...
+//   useEffect(() => {
+//     setMessages([
+//       { text: "I want to know more about Trouble Reset Cicaffeine Foam", sender: "You" },
+//       { text: "Trouble Reset Cicaffeine Foam Summary…", sender: "Simpli" }
+//     ]);
+//   }, []);
 
   const handleSend = async () => {
     if (input.trim() === '') return;
     setMessages(prev => [...prev, { text: input, sender: 'You' }]);
     setInput("");
     setLoading(true);
-
     const history = messages.map(msg => msg.text);
-    const reply = await chat(input, history);
-
+    const reply = await chat(user.username, input, history);
     setLoading(false);
+    // console.log(reply)
     setMessages(prev => [...prev, { text: reply, sender: 'Simpli' }]);
-  };
+  }
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
