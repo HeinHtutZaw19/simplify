@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Box, Input, Button, Flex, Heading, Divider, Text } from '@chakra-ui/react'
 import { FaGoogle } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import { checkLogin } from '../API/API';
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const emailInputRef = useRef(null);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -18,10 +19,13 @@ const LoginPage = () => {
             }
             else {
                 setLoaded(true);
+                setTimeout(() => {
+                    emailInputRef.current?.focus();
+                }, 0);
             }
         }
         fetchLoginData();
-    });
+    }, []);
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',
@@ -115,6 +119,7 @@ const LoginPage = () => {
                         rounded={10}
                         backgroundColor="#E3EDF9"
                         isInvalid={(loginInfo.email.match(emailRegex) || !loginInfo.email ? false : true)}
+                        ref={emailInputRef}
                     />
                     {loginInfo.emailError &&
                         <Text
