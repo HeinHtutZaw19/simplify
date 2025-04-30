@@ -106,6 +106,7 @@ const Sidebar = () => {
                         <NavItem icon={IoChatbubbleEllipsesOutline} title={"Chat"} active={tab.active == "chat"} handler={() => handleChangeTab("chat")} />
                         <NavItem icon={MdLeaderboard} title={"Leaderboard"} active={tab.active == "leaderboard"} handler={() => handleChangeTab("leaderboard")} />
                         <NavItem icon={colorMode === 'light' ? MoonIcon : SunIcon} title = {colorMode === 'light' ? "Dark Mode" : 'Light Mode'} active={false} handler = {toggleColorMode}/>
+                        <NavItem title ={"Admin Page"} active={tab.active == "admin"} handler={() => handleChangeTab("admin")}/>
                     </Flex>
 
                 </Flex>
