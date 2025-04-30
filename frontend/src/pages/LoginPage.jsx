@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Box, Input, Button, Flex, Heading, Divider, Text } from '@chakra-ui/react'
 import { FaGoogle } from 'react-icons/fa';
@@ -7,10 +7,10 @@ import { loginUser } from '../API/API';
 import { checkLogin } from '../API/API';
 import Colors from '../utils/Colors.jsx';
 
-
 const LoginPage = () => {
     const colors = Colors();
     const navigate = useNavigate();
+    const emailInputRef = useRef(null);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -21,10 +21,13 @@ const LoginPage = () => {
             }
             else {
                 setLoaded(true);
+                setTimeout(() => {
+                    emailInputRef.current?.focus();
+                }, 0);
             }
         }
         fetchLoginData();
-    });
+    }, []);
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',
@@ -32,6 +35,7 @@ const LoginPage = () => {
         password: '',
         passwordError: ''
     })
+    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -116,7 +120,8 @@ const LoginPage = () => {
                     mt={3}
                     rounded={10}
                     backgroundColor={colors.MAIN2}
-                    isInvalid={(loginInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !loginInfo.email ? false : true)}
+                    isInvalid={(loginInfo.email.match(emailRegex) || !loginInfo.email ? false : true)}
+                    ref={emailInputRef}
                 />
                 {loginInfo.emailError &&
                     <Text
