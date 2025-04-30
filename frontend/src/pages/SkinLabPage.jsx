@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { checkLogin } from '../API/API';
-import { Flex, Box, Image, Button, Text, SimpleGrid } from '@chakra-ui/react'
+import { Flex, Box, Image, Button, Text, SimpleGrid, Input } from '@chakra-ui/react'
 import { FiUpload } from "react-icons/fi";
 import { FaRedo } from "react-icons/fa";
 import SkinLabAnalysis from '../components/SkinLabAnalysis';
@@ -9,6 +9,7 @@ import PatchDetail from '../components/PatchDetail';
 import BoxOverlayImage from '../components/BoxOverlayImage';
 import testImage from '../assets/skinanalysis.png';
 import Colors from '../utils/Colors';
+import WebCam from '../components/WebCam';
 
 
 const boxes = [
@@ -21,6 +22,7 @@ const SkinLabPage = () => {
   const colors = Colors();
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
+
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -35,13 +37,16 @@ const SkinLabPage = () => {
     fetchLoginData();
   });
 
+  const handleSubmit = () => {
+
+  };
+
+
   return (
 
     <> {loaded &&
       <Flex className="page" overflow="hidden" color="black" bg={colors.MAIN1}>
         <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-
-
           <Flex width={{ sm: "60%", md: "50%", lg: "100%" }} pb={0}>
             {/*
           Green Patch + Blue Patch
@@ -63,22 +68,7 @@ const SkinLabPage = () => {
             </Flex>
           </Flex>
 
-
-          {/*
-        Button Container
-      */}
-        <Flex direction="row" mt="15px" mb="40px" align="center" width={300}>
-          <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }}>
-            Submit
-          </Button>
-          <Text fontSize={20} mr="15px" style={{ cursor: 'pointer' }} color={colors.TEXT2}>
-            <FiUpload />
-          </Text>
-          <Text fontSize={15} style={{ cursor: 'pointer' }} color={colors.TEXT2}>
-            <FaRedo />
-          </Text>
-
-          </Flex>
+          {/* Grid for Alternative Display of Patch Descriptions */}
           <SimpleGrid
             columns={2}
             spacing={6}
@@ -103,6 +93,13 @@ const SkinLabPage = () => {
               description="Enlarged or visible pores suggest excess oil production and potential buildup of dirt or dead skin cells, which can contribute to acne and uneven skin texture."
             />
           </SimpleGrid>
+
+          {/* Webcam */}
+          <Flex py={10} width={{ sm: "100%", md: "100%", lg: "120%" }} >
+            <WebCam handleSubmitClick={handleSubmit}/>
+          </Flex>
+
+          {/* Skin Lab Analysis */}
           <SkinLabAnalysis luminosity={35} clarity={20} vibrancy={25} overall={30} />
         </Flex>
       </Flex>}
