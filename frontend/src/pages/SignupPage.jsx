@@ -10,12 +10,16 @@ import Colors from '../utils/Colors.jsx';
 const SignupPage = () => {
     const colors = Colors();
     const navigate = useNavigate();
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         const fetchLoginData = async () => {
             const user = await checkLogin();
             if (user) {
                 navigate('/');
+            }
+            else {
+                setLoaded(true);
             }
         }
         fetchLoginData();
@@ -110,6 +114,7 @@ const SignupPage = () => {
     }
 
     return (
+        <> {loaded &&
         <Box w='100%' p={20}>
             <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
                 <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
@@ -194,7 +199,9 @@ const SignupPage = () => {
                 </span>
                 <Button onClick={onSignupClick} w="20vw" mt={8} bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={12}>Sign Up</Button>
             </Flex>
-        </Box>
+        </Box>}
+        </>
+
     )
 }
 

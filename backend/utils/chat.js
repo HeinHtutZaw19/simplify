@@ -5,6 +5,7 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import { RunnablePassthrough, RunnableSequence } from "@langchain/core/runnables";
 import retriever from "./retriever.js";
 import combineDocuments from "./combineDocuments.js";
+import formatConvHistory from "./formatConvHistory.js";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
@@ -23,10 +24,12 @@ const llm = new ChatOpenAI({
     modelName: 'gpt-3.5-turbo'
 })
 
-
 const greetingResponse = "Hi, I'm Simpli! I am your personal skin-care assistant 😊";
 const answerTemplate = `
-You are named Simpli, a helpful assistant only answering to skin-care related questions. Use the provided context to answer the question. Do not make up an answer. Return empty string if you have no information on the query.
+You are named Simpli, a helpful, enthusiastic assistant bot only answering to skin-care related questions.
+Use the provided context and the conversation history to answer the question. Do not make up an answer.
+Try to find the answer in the context first.
+If the answer is in the context, prioritize it. Otherwise, check the conversation history.
 If there are answers, 
     Always:
     • Write in multiple paragraphs  
@@ -38,6 +41,7 @@ If there are answers,
 If there is no answer respond with:
     "I'm sorry, I couldn't find an answer to your question. Please reach out to contact@simplify.com for further assistance💖."
 Context: {context}
+conversation history: {conv_history}
 Question: {question}
 Answer:
 `;
@@ -56,23 +60,22 @@ function cosineSimilarity(vecA, vecB) {
 }
 
 async function isGreeting(message) {
-    const greetings = ["hi", "hey", "good morning", "good evening"];
-
     const messageEmbedding = await getEmbedding(message);
-
-    for (const greet of greetings) {
-        const greetEmbedding = await getEmbedding(greet);
-        const similarity = cosineSimilarity(messageEmbedding, greetEmbedding);
-        if (similarity > 0.8) {
-            return true;
-        }
+    const greetEmbedding = await getEmbedding("hi");
+    const similarity = cosineSimilarity(messageEmbedding, greetEmbedding);
+    if (similarity > 0.8) {
+        return true;
     }
     return false;
 }
 
 const answerPrompt = PromptTemplate.fromTemplate(answerTemplate)
 
-const standaloneQuestionTemplate = " Given a question, convert it to a standalone question. Question : {question} standalone question: "
+const standaloneQuestionTemplate = ` Given some conversation history (if any) and a question,
+convert it to a standalone question.
+conversation history: {conv_history}
+question : {question}
+standalone question: `
 const standaloneQuestionPrompt = PromptTemplate.fromTemplate(standaloneQuestionTemplate)
 const standaloneQuestionChain = standaloneQuestionPrompt.pipe(llm).pipe(new StringOutputParser())
 
@@ -86,25 +89,33 @@ const answerChain = answerPrompt.pipe(llm).pipe(new StringOutputParser())
 const chain = RunnableSequence.from([
     {
         standalone_question: standaloneQuestionChain,
-        original_input: new RunnablePassthrough()
+        original_input: new RunnablePassthrough(),
     },
     {
         context: retrieverChain,
-        question: ({ original_input }) => original_input.question
+        question: ({ original_input }) => original_input.question,
+        conv_history: ({ original_input }) => original_input.conv_history
     },
     answerChain
 ])
 
-// const response = await chain.invoke({ question: "" })
-// console.log(response)
-
-const querySimpli = async (query) => {
+const querySimpli = async (query, convHistory) => {
+    console.log(formatConvHistory(convHistory))
+    console.log(await standaloneQuestionChain.invoke({
+        conv_history: formatConvHistory(convHistory),
+        question: query
+    }))
     const flag = await isGreeting(query)
+    let response = ''
     if (flag) {
-        console.log("this is greeting")
-        return greetingResponse;
+        response = greetingResponse;
+    } else {
+        response = await chain.invoke({
+            question: query,
+            conv_history: formatConvHistory(convHistory)
+        });
     }
-    const response = await chain.invoke({ question: query });
+    console.log(response)
     return response
 }
 export default querySimpli

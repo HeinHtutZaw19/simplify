@@ -17,13 +17,16 @@ const HomePage = () => {
   const colors = Colors();
   const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchLoginData = async () => {
       const user = await checkLogin();
       if (!user) {
-        //redirect to /welcome (to /signup for now)
         navigate('/welcome');
+      }
+      else {
+        setLoaded(true);
       }
     }
     fetchLoginData();
@@ -41,6 +44,7 @@ const HomePage = () => {
 
   return (
     // Full Page Flex
+    <> {loaded &&
     <Flex className="page" overflow="hidden" color="black" bg={colors.MAIN1}>
       {/* Middle content flex */}
       <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
@@ -86,11 +90,10 @@ const HomePage = () => {
 
       </Flex>
 
-      {/* Right Side Stack */}
-      <VStack id="home-side" pos="sticky">
-        <Calendar />
-
-        <Heading id="home-side-leaderboard-heading" color={colors.SECONDARY3} size="lg">Leaderboard</Heading>
+        {/* Right Side Stack */}
+        <VStack id="home-side" pos="sticky">
+          <Calendar />
+          <Heading id="home-side-leaderboard-heading" color={colors.SECONDARY3} size="lg">Leaderboard</Heading>
         <Box p={4} bg={colors.SECONDARY5} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row'>
           <Avatar />
           <Box pl={4} alignContent='center'>
@@ -108,8 +111,8 @@ const HomePage = () => {
 
       </VStack>
 
-    </Flex >
-    
+    </Flex >}
+    </>
   )
 }
 

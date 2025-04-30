@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, Button, Flex, Box, Text } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
 import { checkLogin } from '../API/API';
@@ -12,12 +12,16 @@ import Colors from '../utils/Colors.jsx'
 const WelcomePage = () => {
     const colors = Colors();
     const navigate = useNavigate();
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         const fetchLoginData = async () => {
             const user = await checkLogin();
             if (user) {
                 navigate('/');
+            }
+            else {
+                setLoaded(true);
             }
         }
         fetchLoginData();
@@ -34,6 +38,7 @@ const WelcomePage = () => {
     };
 
     return (
+      <> {loaded &&
         <Flex className="flex-scroll" p={0} sx={{ '&::-webkit-scrollbar': { display: 'none' } }} >
             <Flex align="flex-start" width="100%" height="75vh" position="relative">
                 <Image src={logo} alt="Logo" boxSize="350px" ml="10%" mr="10%" />
@@ -99,7 +104,8 @@ const WelcomePage = () => {
                     bg= {colors.MAIN4}
                 />
             </Flex>
-        </Flex >
+        </Flex >}
+        </>
 
     );
 };

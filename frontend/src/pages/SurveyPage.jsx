@@ -10,12 +10,16 @@ import Colors from '../utils/Colors.jsx';
 const SurveyPage = () => {
     const colors = Colors();
     const navigate = useNavigate();
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         const fetchLoginData = async () => {
             const user = await checkLogin();
             if (user) {
                 navigate('/');
+            }
+            else {
+                setLoaded(true);
             }
         }
         fetchLoginData();
@@ -75,25 +79,27 @@ const SurveyPage = () => {
     const progressStatus = ((currentStep + 1) / questions.length) * 100;
 
     return (
-        <Box w='100%' p={20}>
-            <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
-                {currentStep == 0 ?
-                    <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
-                    : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
+        <> {loaded &&
+            <Box w='100%' p={20}>
+                <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
+                    {currentStep == 0 ?
+                        <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
+                        : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
+
 
                 <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
                     <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor={colors.MAIN3} />
                 </Box>
-            </Box>
-            <Flex flex="1" direction="column" alignItems="center" pt={50}>
-                <Question
-                    question={questions[currentStep].question}
-                    answers={questions[currentStep].answers}
-                    selected={responses[questions[currentStep].question] || ''}
-                    onSelect={handleSelectAnswer}
-                />
-            </Flex>
-        </Box>
+                <Flex flex="1" direction="column" alignItems="center" pt={50}>
+                    <Question
+                        question={questions[currentStep].question}
+                        answers={questions[currentStep].answers}
+                        selected={responses[questions[currentStep].question] || ''}
+                        onSelect={handleSelectAnswer}
+                    />
+                </Flex>
+            </Box>}
+        </>
     )
 }
 

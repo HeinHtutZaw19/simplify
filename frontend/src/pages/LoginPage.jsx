@@ -11,12 +11,16 @@ import Colors from '../utils/Colors.jsx';
 const LoginPage = () => {
     const colors = Colors();
     const navigate = useNavigate();
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         const fetchLoginData = async () => {
             const user = await checkLogin();
             if (user) {
                 navigate('/');
+            }
+            else {
+                setLoaded(true);
             }
         }
         fetchLoginData();
@@ -97,6 +101,7 @@ const LoginPage = () => {
     }
 
     return (
+        <> {loaded &&
         <Box w='100%' p={20} >
             <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
                 <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
@@ -154,7 +159,9 @@ const LoginPage = () => {
                 <Divider w="30vw" m={6} borderColor="gray.800" />
                 <Button onClick={onGoogleClick} width="100%" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
             </Flex>
-        </Box>
+        </Box>}
+        </>
+
     )
 }
 

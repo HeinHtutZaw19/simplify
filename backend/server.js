@@ -7,7 +7,10 @@ import cors from "cors";
 import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
 import User from './models/user.model.js';
+import Chat from './models/chat.model.js';
 import querySimpli from './utils/chat.js';
+import { RiSquareFill } from 'react-icons/ri';
+import formatConvHistory from './utils/formatConvHistory.js';
 
 const app = express();
 dotenv.config();
@@ -117,10 +120,8 @@ app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log('hereee')
         // find matching user details in db
         const foundUser = await User.findOne({ email: email });
-        console.log('hereee2')
         if (!foundUser) {
             console.log('Login error: email not found');
             res.statusMessage = "email";
@@ -177,16 +178,41 @@ app.get('/api/logout', (req, res) => {
     res.sendStatus(200);
 });
 
-app.post('/api/chat', async (req, res) => {
+app.get(`/api/user/:username/chat`, async (req, res) => {
     try {
-        const userMessage = req.body.message;
-        const simpliMessage = await querySimpli(userMessage)
-        res.status(200).send(simpliMessage);
-    } catch {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        const foundChats = await Chat.find({ _id: { $in: user.chat } }).sort({ createdAt: 1 });
+        const chats = foundChats.flatMap((chat) => [
+            { text: chat.query, sender: "You" },
+            { text: chat.response, sender: "Simpli" }
+        ]);
+        res.status(200).send(chats);
+    } catch (error) {
+        console.log(error)
         res.sendStatus(500);
     }
 })
 
+app.post('/api/chat', async (req, res) => {
+    try {
+        const { username, userQuery, convHistory } = req.body;
+        const simpliResponse = await querySimpli(userQuery, convHistory);
+        const newChatObj = new Chat({
+            query: userQuery,
+            response: simpliResponse
+        });
+        const savedChat = await newChatObj.save();
+        await User.findOneAndUpdate(
+            { username: username },
+            { $push: { chat: savedChat._id } }
+        );
+        console.log('user:', username, 'saved chat with id:', savedChat._id);
+        res.status(200).send(simpliResponse);
+    } catch {
+        res.sendStatus(500);
+    }
+})
 
 app.listen(PORT, () => {
     connectDB();
