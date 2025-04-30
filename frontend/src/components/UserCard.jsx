@@ -1,13 +1,15 @@
 import React from 'react';
 import { Flex, Box, Text, Avatar } from '@chakra-ui/react';
 import { PiArrowFatUpFill, PiArrowFatDownFill } from "react-icons/pi";
+import Colors from '../utils/Colors';
 
 const UserCard = ({ user }) => {
+    const colors = Colors();
     return (
         <Flex
             key={user.id}
             width={{ base: "100%", sm: "90%", md: "80%" }} // Adjust width based on screen size
-            bg={user.name === "Henry" ? "#9D81F5" : "gray.50"}
+            bg={user.name === "Henry" ? colors.BRIGHT2 : colors.MAIN1}
             borderRadius="md"
             p={3} // Increase padding for better spacing
             boxShadow="sm"
@@ -25,6 +27,7 @@ const UserCard = ({ user }) => {
                 px={{ base: 2, sm: 4, md: 6 }}
                 textAlign={{ base: "center", sm: "left" }} // Center text on smaller screens
                 fontSize={{ base: "2xs", md: "xs" }}
+                color={colors.TEXT1}
             >
                 {user.name}
             </Text>
@@ -35,7 +38,7 @@ const UserCard = ({ user }) => {
                 h={{ base: 40, sm: 30 }}
                 borderRadius="full"
                 border="1px solid"
-                borderColor="gray.400"
+                borderColor={colors.TEXT4}
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
@@ -50,6 +53,7 @@ const UserCard = ({ user }) => {
                 px={{ base: 4, sm: 10 }}
                 flex={1}
                 fontSize={{ base: "2xs", md: "xs" }}
+                color={colors.TEXT1}
             >
                 {user.points}
             </Text>

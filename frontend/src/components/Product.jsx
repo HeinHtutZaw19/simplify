@@ -5,6 +5,8 @@ import serum from '../assets/serum.png';
 import moisturizer from '../assets/moisturizer.png';
 import sunscreen from '../assets/sunscreen.png';
 
+import Colors from '../utils/Colors';
+
 const imageMap = {
     Toner: toner,
     Serum: serum,
@@ -20,10 +22,11 @@ const instructionMap = {
 };
 
 
-const Product = ({ item }) => {
+const Product = ({ item, isChecked }) => {
+    const colors = Colors();
     return (
-        <Tooltip label={instructionMap[item]} hasArrow placement="top">
-            <Box className="home-routine-box" key={item} borderRadius="lg" transition="transform 0.2s ease-in-out"
+        <Tooltip label={instructionMap[item]} hasArrow placement="top" >
+            <Box className="home-routine-box" bg={colors.BRIGHT4} key={item} borderRadius="lg" opacity={isChecked ? 0.45 : 1} transition="transform 0.2s ease-in-out"
                 _hover={{
                     transform: 'scale(1.1)',
                 }}>

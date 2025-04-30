@@ -5,6 +5,8 @@ import { checkLogin } from "../API/API.jsx"
 import UserCard from "../components/UserCard.jsx"
 import LeaderboardPodium from "../components/LeaderPodium.jsx"
 import mascot from "../assets/mascot.gif"
+import Colors from '../utils/Colors';
+
 
 const THEME_COLOR = "#5A67BA"
 
@@ -29,6 +31,8 @@ const top3 = [
 ]
 
 const LeaderboardPage = () => {
+  const colors = Colors();
+
   const navigate = useNavigate();
   const [primaryTab, setPrimaryTab] = useState("cumulative")
   const [secondaryTab, setSecondaryTab] = useState("regional")
@@ -54,7 +58,7 @@ const LeaderboardPage = () => {
         >
           <TabList>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={10}
               py={2}
               borderRadius="md"
@@ -62,7 +66,7 @@ const LeaderboardPage = () => {
               Cumulative
             </Tab>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={10}
               py={2}
               borderRadius="md"
@@ -79,7 +83,7 @@ const LeaderboardPage = () => {
         >
           <TabList>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={4}
               py={2}
               borderRadius="md"
@@ -87,7 +91,7 @@ const LeaderboardPage = () => {
               Regional
             </Tab>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={4}
               py={2}
               borderRadius="md"
@@ -97,7 +101,7 @@ const LeaderboardPage = () => {
           </TabList>
         </Tabs>
       </VStack>
-      <Flex w="full" direction={{ lg: "row", md: "row", sm: "column" }} justifyContent="center" alignItems={"center"} bg={THEME_COLOR} height="full">
+      <Flex w="full" direction={{ lg: "row", md: "row", sm: "column" }} justifyContent="center" alignItems={"center"} bg={colors.BRIGHT5} height="full">
         <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} mt={90} mb={5} justifyContent={" center"} alignItems="center">
           <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
         </Flex>
@@ -116,7 +120,7 @@ const LeaderboardPage = () => {
           <Text
             fontSize={{ base: "xs", md: "sm" }}
             ml={5}
-            textColor="white"
+            textColor={colors.MAIN1}
             textAlign="center"
             fontWeight="bold"
             mt={5}

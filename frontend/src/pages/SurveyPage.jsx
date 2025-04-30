@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom"
 import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { checkLogin } from '../API/API';
 import Question from '../components/Question'
+import Colors from '../utils/Colors.jsx';
+
 
 const SurveyPage = () => {
+    const colors = Colors();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -78,8 +81,8 @@ const SurveyPage = () => {
                     <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
                     : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
 
-                <Box w="84vw" alignContent='center' borderRadius="30px" bgColor='#C3D7F0'>
-                    <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor='#C3D7F0' />
+                <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
+                    <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor={colors.MAIN3} />
                 </Box>
             </Box>
             <Flex flex="1" direction="column" alignItems="center" pt={50}>

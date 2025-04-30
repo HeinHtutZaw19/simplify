@@ -7,7 +7,10 @@ import second from '../assets/2.png';
 import third from '../assets/3.png';
 import fourth from '../assets/4.png';
 
+import Colors from '../utils/Colors.jsx'
+
 const WelcomePage = () => {
+    const colors = Colors();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,7 +34,7 @@ const WelcomePage = () => {
     };
 
     return (
-        <Flex className="flex-scroll" p={0} sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+        <Flex className="flex-scroll" p={0} sx={{ '&::-webkit-scrollbar': { display: 'none' } }} >
             <Flex align="flex-start" width="100%" height="75vh" position="relative">
                 <Image src={logo} alt="Logo" boxSize="350px" ml="10%" mr="10%" />
                 <Box
@@ -39,7 +42,7 @@ const WelcomePage = () => {
                     right="0"
                     width="50%"
                     height="30%"
-                    bg="blue.200"
+                    bg= {colors.MAIN4}
                     ml="auto"
                 />
             </Flex>
@@ -52,20 +55,22 @@ const WelcomePage = () => {
                     <Flex direction="column" p="2" mt={5}>
                         <Button
                             onClick={onSignupClick}
-                            color="black"
+                            color={colors.TEXT1}
                             rounded={17}
                             px={10}
-                            backgroundColor="#C3D7F0"
+                            backgroundColor= {colors.MAIN3}
+                            _hover={{ bg: colors.MAIN5 }}
                         >
                             Get Started
                         </Button>
                         <Button
                             onClick={onLoginClick}
-                            color="black"
+                            color={colors.TEXT1}
                             rounded={17}
                             mt={5}
                             px={10}
-                            backgroundColor="#C3D7F0"
+                            backgroundColor=  {colors.MAIN3}
+                            _hover={{ bg: colors.SECONDARY1 }}
                         >
                             Sign In
                         </Button>
@@ -91,7 +96,7 @@ const WelcomePage = () => {
                     right="0"
                     width="100%"
                     height="100%"
-                    bg="blue.200"
+                    bg= {colors.MAIN4}
                 />
             </Flex>
         </Flex >

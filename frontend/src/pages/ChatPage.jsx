@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Flex, Input, Button, Wrap, HStack, Text, WrapItem } from "@chakra-ui/react";
+import { Box, Flex, Input, Button, Wrap, HStack, Text } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import { checkLogin, chat } from "../API/API";
 import Message from "../components/Message";
+import Colors from '../utils/Colors';
 
 const ChatPage = () => {
+
+  const colors = Colors();
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -57,10 +60,10 @@ const ChatPage = () => {
   };
 
   return (
-    <Flex direction="column" h="100%" w="100%" p={4} bg="blackAlpha.100">
+    <Flex direction="column" h="100%" w="100%" p={4} bg={colors.MAIN2}>
       <Box
         flex="1"
-        bg="white"
+        bg={colors.MAIN1}
         borderRadius="md"
         boxShadow="md"
         overflowY="auto"
@@ -81,6 +84,7 @@ const ChatPage = () => {
 
       <HStack w="100%" mt={4}>
         <Input
+          borderColor={colors.SECONDARY1}
           flex="1"
           placeholder="Ask Anything You Want About Skincare!"
           value={input}
@@ -88,7 +92,7 @@ const ChatPage = () => {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyPress}
         />
-        <Button bg="bg.subtle" variant="outline" onClick={handleSend}>
+        <Button bg="bg.subtle" variant="outline" borderColor={colors.SECONDARY1} onClick={handleSend}>
           <TbSend />
         </Button>
       </HStack>
@@ -97,7 +101,7 @@ const ChatPage = () => {
         p={4}
         alignItems="center"
         justifyContent="center">
-        <Text fontSize={{ base: "xs", md: "sm" }} color="black.500">
+        <Text fontSize={{ base: "xs", md: "sm" }} color={colors.TEXT1}>
           Simpli Chat can make mistakes. Please double-check your information!
         </Text>
       </Flex>

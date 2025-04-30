@@ -5,8 +5,11 @@ import { FaGoogle } from 'react-icons/fa';
 import { CloseIcon } from '@chakra-ui/icons';
 import { loginUser } from '../API/API';
 import { checkLogin } from '../API/API';
+import Colors from '../utils/Colors.jsx';
+
 
 const LoginPage = () => {
+    const colors = Colors();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -94,7 +97,7 @@ const LoginPage = () => {
     }
 
     return (
-        <Box w='100%' p={20}>
+        <Box w='100%' p={20} >
             <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
                 <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
             </Box>
@@ -107,7 +110,7 @@ const LoginPage = () => {
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
+                    backgroundColor={colors.MAIN2}
                     isInvalid={(loginInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !loginInfo.email ? false : true)}
                 />
                 {loginInfo.emailError &&
@@ -132,7 +135,7 @@ const LoginPage = () => {
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
+                    backgroundColor={colors.MAIN2}
                 />
                 {loginInfo.passwordError &&
                     <Text
@@ -147,9 +150,9 @@ const LoginPage = () => {
                         {loginInfo.passwordError}
                     </Text>
                 }
-                <Button onClick={onLoginClick} w="30vw" mt={3} colorScheme="blue" rounded={10}>Log in</Button>
+                <Button onClick={onLoginClick} w="30vw" mt={3}  bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={10}>Log in</Button>
                 <Divider w="30vw" m={6} borderColor="gray.800" />
-                <Button onClick={onGoogleClick} width="100%" colorScheme="blue" w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
+                <Button onClick={onGoogleClick} width="100%" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
             </Flex>
         </Box>
     )

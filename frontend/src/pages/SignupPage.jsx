@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { checkLogin } from '../API/API'
 import { CloseIcon } from '@chakra-ui/icons';
+import Colors from '../utils/Colors.jsx';
+
 
 const SignupPage = () => {
+    const colors = Colors();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -123,7 +126,7 @@ const SignupPage = () => {
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
+                    backgroundColor={colors.MAIN2}
                 />
                 {signupInfo.usernameError &&
                     <Text
@@ -146,7 +149,7 @@ const SignupPage = () => {
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
+                    backgroundColor={colors.MAIN2}
                     isInvalid={((signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !signupInfo.email) && !signupInfo.emailError ? false : 'true')}
                 />
                 {signupInfo.emailError &&
@@ -171,7 +174,7 @@ const SignupPage = () => {
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
+                    backgroundColor={colors.MAIN2}
                     isInvalid={(passwordRequirements.test(signupInfo.password) || !signupInfo.password ? false : true)}
                 />
                 <Input
@@ -183,13 +186,13 @@ const SignupPage = () => {
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
+                    backgroundColor={colors.MAIN2}
                     isInvalid={(signupInfo.password == signupInfo.passwordConfirm || !signupInfo.passwordConfirm ? false : true)}
                 />
-                <span style={{ display: 'block', width: '30vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px', color: (passwordRequirements.test(signupInfo.password) || !signupInfo.password ? 'black' : '#E53E3E') }}>
+                <span style={{ display: 'block', width: '30vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px', color: (passwordRequirements.test(signupInfo.password) || !signupInfo.password ? colors.TEXT1 : '#E53E3E') }}>
                     Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
                 </span>
-                <Button onClick={onSignupClick} w="20vw" mt={8} colorScheme="blue" rounded={12}>Sign Up</Button>
+                <Button onClick={onSignupClick} w="20vw" mt={8} bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={12}>Sign Up</Button>
             </Flex>
         </Box>
     )
