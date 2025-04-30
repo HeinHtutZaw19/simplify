@@ -5,6 +5,8 @@ import { checkLogin } from "../API/API.jsx"
 import UserCard from "../components/UserCard.jsx"
 import LeaderboardPodium from "../components/LeaderPodium.jsx"
 import mascot from "../assets/mascot.gif"
+import Colors from '../utils/Colors';
+
 
 const THEME_COLOR = "#5A67BA"
 
@@ -29,6 +31,8 @@ const top3 = [
 ]
 
 const LeaderboardPage = () => {
+  const colors = Colors();
+
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
   const [primaryTab, setPrimaryTab] = useState("cumulative")
@@ -49,88 +53,91 @@ const LeaderboardPage = () => {
 
   return (
     <> {loaded &&
-      <Flex direction="column" width="full" alignItems={"center"}>
-        <VStack align="center" spacing={2} m={5} flex={1}>
-          <Tabs
-            mt={2}
-            index={primaryTab === "cumulative" ? 0 : 1}
-            onChange={(i) => setPrimaryTab(i === 0 ? "cumulative" : "monthly")}
-            variant="outline"
-          >
-            <TabList>
-              <Tab
-                _selected={{ bg: THEME_COLOR, color: "white" }}
-                px={10}
-                py={2}
-                borderRadius="md"
-              >
-                Cumulative
-              </Tab>
-              <Tab
-                _selected={{ bg: THEME_COLOR, color: "white" }}
-                px={10}
-                py={2}
-                borderRadius="md"
-              >
-                Monthly
-              </Tab>
-            </TabList>
-          </Tabs>
+    <Flex direction="column" width="full" alignItems={"center"}>
+      {/* VStack */}
+      <VStack align="center" spacing={2} m={5} flex={1}>
+        <Tabs
+          mt={2}
+          index={primaryTab === "cumulative" ? 0 : 1}
+          onChange={(i) => setPrimaryTab(i === 0 ? "cumulative" : "monthly")}
+          variant="outline"
+        >
+          <TabList>
+            <Tab
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
+              px={10}
+              py={2}
+              borderRadius="md"
+            >
+              Cumulative
+            </Tab>
+            <Tab
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
+              px={10}
+              py={2}
+              borderRadius="md"
+            >
+              Monthly
+            </Tab>
+          </TabList>
+        </Tabs>
 
-          <Tabs
-            index={secondaryTab === "regional" ? 0 : 1}
-            onChange={(i) => setSecondaryTab(i === 0 ? "regional" : "global")}
-            variant="outline"
-          >
-            <TabList>
-              <Tab
-                _selected={{ bg: THEME_COLOR, color: "white" }}
-                px={4}
-                py={2}
-                borderRadius="md"
-              >
-                Regional
-              </Tab>
-              <Tab
-                _selected={{ bg: THEME_COLOR, color: "white" }}
-                px={4}
-                py={2}
-                borderRadius="md"
-              >
-                Global
-              </Tab>
-            </TabList>
-          </Tabs>
-        </VStack>
-        <Flex w="full" direction={{ lg: "row", md: "row", sm: "column" }} justifyContent="center" alignItems={"center"} bg={THEME_COLOR} height="full">
-          <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} mt={90} mb={5} justifyContent={" center"} alignItems="center">
-            <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
-          </Flex>
-          <VStack alignItems="center" height="500px" overflowY={"auto"} flex={{ base: 2, md: 1, lg: 1 }} p={5} >
-            {mockLeaderboard.map((user, index) => (
-              <UserCard key={index} user={user} />
-            ))}
+        <Tabs
+          index={secondaryTab === "regional" ? 0 : 1}
+          onChange={(i) => setSecondaryTab(i === 0 ? "regional" : "global")}
+          variant="outline"
+        >
+          <TabList>
+            <Tab
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
+              px={4}
+              py={2}
+              borderRadius="md"
+            >
+              Regional
+            </Tab>
+            <Tab
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
+              px={4}
+              py={2}
+              borderRadius="md"
+            >
+              Global
+            </Tab>
+          </TabList>
+        </Tabs>
+      </VStack>
+      <Flex w="full" direction={{ lg: "row", md: "row", sm: "column" }} justifyContent="center" alignItems={"center"} bg={colors.BRIGHT5} height="full">
+        <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} mt={90} mb={5} justifyContent={" center"} alignItems="center">
+          <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
+        </Flex>
+        <VStack alignItems="center" height="500px" overflowY={"auto"} flex={{ base: 2, md: 1, lg: 1 }} p={5} >
+          {mockLeaderboard.map((user, index) => (
+            <UserCard key={index} user={user} />
+          ))}
+            
           </VStack>
           <Flex display={{ lg: "flex", md: "flex", sm: "none" }} direction="column" flex={1} justifyContent={"center"} alignItems="center">
             <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
             <Image src={mascot} alt="mascot.gif" boxSize="50%" mt={10} flex={1} ></Image>
           </Flex>
 
-          <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} px={5} mb={5} justifyContent={" center"} alignItems="center">
-            <Image src={mascot} alt="mascot.gif" boxSize="100px"  ></Image>
-            <Text
-              fontSize={{ base: "xs", md: "sm" }}
-              ml={5}
-              textColor="white"
-              textAlign="center"
-              fontWeight="bold"
-              mt={5}
-            >
-              Keep up the good work!
-            </Text>
-          </Flex>
+        <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} px={5} mb={5} justifyContent={" center"} alignItems="center">
+          <Image src={mascot} alt="mascot.gif" boxSize="100px"  ></Image>
+          <Text
+            fontSize={{ base: "xs", md: "sm" }}
+            ml={5}
+            textColor={colors.MAIN1}
+            textAlign="center"
+            fontWeight="bold"
+            mt={5}
+          >
+            Keep up the good work!
+          </Text>
+
         </Flex>
-      </Flex >}
+      </Flex >
+      </Flex>}
     </>
   )
 }

@@ -3,11 +3,13 @@ import { Flex, Heading, Image, Text, List, Box, ListItem } from '@chakra-ui/reac
 import { CheckIcon } from '@chakra-ui/icons';
 import Metrics from './Metrics.jsx'
 import skinanalysis from '../assets/skinanalysis.png';
+import Colors from '../utils/Colors.jsx';
+
 
 const SkinAnalysis = ({ luminosity, clarity, vibrancy, overall }) => {
-
+    const colors = Colors();
     return (
-        <Box>
+        <Box color={colors.TEXT1}>
             <Heading id="home-analysis-heading">Combination Skin Type</Heading>
             <Flex id='home-analysis-visuals'>
                 <Image src={skinanalysis} alt="skin analysis" boxSize="30%"></Image>
