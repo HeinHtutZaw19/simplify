@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Flex, Text, Heading, Avatar, Box, Button, Icon, Image } from '@chakra-ui/react'
 import { FiHome } from 'react-icons/fi'
 import { MdLeaderboard } from 'react-icons/md'
@@ -7,16 +7,24 @@ import { IoChatbubbleEllipsesOutline, IoSettings } from "react-icons/io5";
 import { MdOutlineHelp } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
 import NavItem from './NavItem'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { logoutUser } from '../API/API'
 import logo from '../assets/logo.png';
 
 
-const Sidebar = () => {
+const Sidebar = (currentTab) => {
     const [tab, changeTab] = useState({
         active: "Routine"
     })
     const navigate = useNavigate();
+    const currentPage = useLocation();
+
+    useEffect(() => {
+        const currentPath = location.pathname;
+        const currentTab = (currentPath == "/") ? "routine" : currentPath.substring(1);
+        changeTab({ active: currentTab });
+    }, [])
+
     const handleLogoutClick = async () => {
         console.log('logout clicked');
         const res = logoutUser();
@@ -26,7 +34,7 @@ const Sidebar = () => {
     }
     const handleChangeTab = (data) => {
         changeTab({ active: data });
-        if (data === "Routine") {
+        if (data === "routine") {
             navigate('/');
         }
         else {
@@ -71,10 +79,10 @@ const Sidebar = () => {
                     {/* <Divider mt={4} borderColor="gray.100"/> */}
                     <Flex w="100%" justify="center" flexDir="column" mt={10}>
                         <Text fontSize="sm" color="gray.500" display={{ md: "flex", sm: "none" }}>MENU</Text>
-                        <NavItem icon={FiHome} title={"Routine"} active={tab.active == "Routine"} handler={() => handleChangeTab("Routine")} />
-                        <NavItem icon={FaCamera} title={"SkinLab"} active={tab.active === "SkinLab"} handler={() => handleChangeTab("SkinLab")} />
-                        <NavItem icon={IoChatbubbleEllipsesOutline} title={"Chat"} active={tab.active == "Chat"} handler={() => handleChangeTab("Chat")} />
-                        <NavItem icon={MdLeaderboard} title={"Leaderboard"} active={tab.active == "Leaderboard"} handler={() => handleChangeTab("Leaderboard")} />
+                        <NavItem icon={FiHome} title={"Routine"} active={tab.active == "routine"} handler={() => handleChangeTab("routine")} />
+                        <NavItem icon={FaCamera} title={"SkinLab"} active={tab.active === "skinlab"} handler={() => handleChangeTab("skinlab")} />
+                        <NavItem icon={IoChatbubbleEllipsesOutline} title={"Chat"} active={tab.active == "chat"} handler={() => handleChangeTab("chat")} />
+                        <NavItem icon={MdLeaderboard} title={"Leaderboard"} active={tab.active == "leaderboard"} handler={() => handleChangeTab("leaderboard")} />
                     </Flex>
 
                 </Flex>
