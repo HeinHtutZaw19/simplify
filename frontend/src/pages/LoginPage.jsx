@@ -150,6 +150,9 @@ const LoginPage = () => {
                 <Button onClick={onLoginClick} w="30vw" mt={3} colorScheme="blue" rounded={10}>Log in</Button>
                 <Divider w="30vw" m={6} borderColor="gray.800" />
                 <Button onClick={onGoogleClick} width="100%" colorScheme="blue" w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
+                <a href="http://localhost:4000/auth/google">
+                    <button>Login with Google</button>
+                </a>
             </Flex>
         </Box>
     )

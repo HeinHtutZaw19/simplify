@@ -5,8 +5,10 @@ import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
 import bcrypt from 'bcryptjs';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
 import { connectDB } from "./config/db.js";
+import './config/passport.js';
 import User from './models/user.model.js';
 
 const app = express();
@@ -32,19 +34,7 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-// GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-// GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-// passport.use(new GoogleStrategy({
-//     clientID: GOOGLE_CLIENT_ID,
-//     clientSecret: GOOGLE_CLIENT_SECRET,
-//     callbackURL: "https://localhost:4000/api/oauth/callback"
-// },
-//     function (accessToken, refreshToken, profile, cb) {
-//         User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//             return cb(err, user);
-//         });
-//     }
-// ));
+app.use(cookieParser());
 
 app.use(session({
     secret: 'VE9zUUDY8FWggzDg', //random string
@@ -63,6 +53,9 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/api/signup', async (req, res) => {
     try {
@@ -131,10 +124,8 @@ app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log('hereee')
         // find matching user details in db
         const foundUser = await User.findOne({ email: email });
-        console.log('hereee2')
         if (!foundUser) {
             console.log('Login error: email not found');
             res.statusMessage = "email";
@@ -171,12 +162,22 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// app.post('/api/login', async (req, res) => {
-//     try {
-//     }
-//     catch (error) {
-//     }
-// });
+// Google login route
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+// Google callback
+app.get('/auth/google/callback',
+    passport.authenticate('google', {
+        failureRedirect: 'http://localhost:5173/login',
+        session: true
+    }),
+    (req, res) => {
+        // success — redirect to your app
+        res.redirect('http://localhost:5173');
+    }
+);
 
 app.get('/api/checklogin', (req, res) => {
     let user = null;
