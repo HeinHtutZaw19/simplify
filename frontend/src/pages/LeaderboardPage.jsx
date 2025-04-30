@@ -54,6 +54,7 @@ const LeaderboardPage = () => {
   return (
     <> {loaded &&
     <Flex direction="column" width="full" alignItems={"center"}>
+      {/* VStack */}
       <VStack align="center" spacing={2} m={5} flex={1}>
         <Tabs
           mt={2}
@@ -135,7 +136,8 @@ const LeaderboardPage = () => {
           </Text>
 
         </Flex>
-      </Flex >}
+      </Flex >
+      </Flex>}
     </>
   )
 }

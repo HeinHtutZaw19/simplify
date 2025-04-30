@@ -85,6 +85,7 @@ const SurveyPage = () => {
                     {currentStep == 0 ?
                         <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
                         : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
+                </Box>
 
 
                 <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
