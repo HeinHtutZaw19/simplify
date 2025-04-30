@@ -30,6 +30,8 @@ const SignupPage = () => {
         password: '',
         passwordConfirm: '', // TODO: later we need to add other properties (like the survey answers) when doing signup
     })
+    const usernameRegex = /^[0-9A-Za-z]{3,16}$/;
+    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
     const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\])[A-Za-z\d@$!%*?&^#()_\-+={}[\]:;"'<>,.?/~`|\\]{8,}$/;
 
     const handleChange = (e) => {
@@ -54,11 +56,19 @@ const SignupPage = () => {
             emailError: ''
         }));
 
-        // TODO make sure users don't type anything stupid in these fields (special characters)
+        // validate username
+        const validUsername = signupInfo.username.match(usernameRegex);
+        if (!validUsername) {
+            console.log('Invalid username');
+            setSignupInfo((state) => ({
+                ...state,
+                usernameError: 'Username must be 3-16 characters long, and only contain letters and numbers'
+            }));
+            return;
+        }
 
         // validate email format
-        // <string>@<string>.<string>
-        const validEmail = signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/);
+        const validEmail = signupInfo.email.match(emailRegex);
         if (!validEmail) {
             console.log('Invalid email');
             setSignupInfo((state) => ({
@@ -152,7 +162,7 @@ const SignupPage = () => {
                         mt={3}
                         rounded={10}
                         backgroundColor="#E3EDF9"
-                        isInvalid={((signupInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !signupInfo.email) && !signupInfo.emailError ? false : 'true')}
+                        isInvalid={((signupInfo.email.match(emailRegex) || !signupInfo.email) && !signupInfo.emailError ? false : 'true')}
                     />
                     {signupInfo.emailError &&
                         <Text

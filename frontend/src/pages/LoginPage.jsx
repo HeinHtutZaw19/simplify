@@ -29,6 +29,7 @@ const LoginPage = () => {
         password: '',
         passwordError: ''
     })
+    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -113,7 +114,7 @@ const LoginPage = () => {
                         mt={3}
                         rounded={10}
                         backgroundColor="#E3EDF9"
-                        isInvalid={(loginInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !loginInfo.email ? false : true)}
+                        isInvalid={(loginInfo.email.match(emailRegex) || !loginInfo.email ? false : true)}
                     />
                     {loginInfo.emailError &&
                         <Text
