@@ -162,22 +162,32 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// Google login route
-app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+app.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+}));
 
-// Google callback
-app.get('/auth/google/callback',
-    passport.authenticate('google', {
-        failureRedirect: 'http://localhost:5173/login',
-        session: true
-    }),
-    (req, res) => {
-        // success — redirect to your app
-        res.redirect('http://localhost:5173');
-    }
-);
+app.get('/auth/google/callback', (req, res, next) => {
+    passport.authenticate('google', async (err, user, info) => {
+        if (err) return res.status(500).json({ error: 'Server error' });
+        if (!user) return res.status(401).json({ error: 'User not found' });
+
+        // ✅ Manually set session user
+        req.session.user = user;
+
+        // Optionally save the session
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.status(500).json({ error: 'Failed to save session' });
+            }
+
+            // Redirect to frontend or send a JSON response
+            res.redirect('http://localhost:5173/skinlab');
+        });
+    })(req, res, next);
+});
+
 
 app.get('/api/checklogin', (req, res) => {
     let user = null;
