@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, HStack, Text, Avatar, VStack } from "@chakra-ui/react";
 import Simpli from "../assets/Simpli.jpg";
+import ReactMarkdown from 'react-markdown'
 
 const Message = ({ index, text, isUser }) => {
     return (
@@ -21,14 +22,16 @@ const Message = ({ index, text, isUser }) => {
             <Box
                 bg={isUser ? "#CCE0F2" : "#5A6ACF"}
                 color={isUser ? "black" : "white"}
-                px={4}
+                px={8}
                 py={2}
                 borderRadius="md"
                 maxW="100%"
                 wordBreak="break-word"
 
             >
-                <Text fontSize={{ base: "xs", md: "sm" }}>{text}</Text>
+                <Text fontSize={{ base: "xs", md: "sm" }}>
+                    <ReactMarkdown>{text}</ReactMarkdown>
+                </Text>
             </Box>
             {isUser && <Avatar size="sm" />}
         </HStack>
