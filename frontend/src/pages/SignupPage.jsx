@@ -1,12 +1,13 @@
 import { signupUser } from '../API/API'
 import { Input, Button, Flex, Heading, Box, Text } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from "react-router-dom"
 import { checkLogin } from '../API/API'
 import { CloseIcon } from '@chakra-ui/icons';
 
 const SignupPage = () => {
     const navigate = useNavigate();
+    const usernameInputRef = useRef(null);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -17,10 +18,13 @@ const SignupPage = () => {
             }
             else {
                 setLoaded(true);
+                setTimeout(() => {
+                    usernameInputRef.current?.focus();
+                }, 0);
             }
         }
         fetchLoginData();
-    });
+    }, []);
 
     const [signupInfo, setSignupInfo] = useState({
         username: '',
@@ -139,6 +143,7 @@ const SignupPage = () => {
                         mt={3}
                         rounded={10}
                         backgroundColor="#E3EDF9"
+                        ref={usernameInputRef}
                     />
                     {signupInfo.usernameError &&
                         <Text
