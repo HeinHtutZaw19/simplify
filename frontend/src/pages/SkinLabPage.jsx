@@ -8,6 +8,8 @@ import SkinLabAnalysis from '../components/SkinLabAnalysis';
 import PatchDetail from '../components/PatchDetail';
 import BoxOverlayImage from '../components/BoxOverlayImage';
 import testImage from '../assets/skinanalysis.png';
+import Colors from '../utils/Colors';
+
 
 const boxes = [
   { x: 50, y: 35, color: 'green.500' },   // Green
@@ -16,6 +18,7 @@ const boxes = [
   { x: 30, y: 50, color: 'red.500' },  // Red
 ];
 const SkinLabPage = () => {
+  const colors = Colors();
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
 
@@ -33,9 +36,11 @@ const SkinLabPage = () => {
   });
 
   return (
+
     <> {loaded &&
-      <Flex className="page" overflow="hidden" color="black">
+      <Flex className="page" overflow="hidden" color="black" bg={colors.MAIN1}>
         <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+
 
           <Flex width={{ sm: "60%", md: "50%", lg: "100%" }} pb={0}>
             {/*
@@ -62,16 +67,17 @@ const SkinLabPage = () => {
           {/*
         Button Container
       */}
-          <Flex direction="row" mt="15px" mb="40px" align="center" width={300}>
-            <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" colorScheme="blue">
-              Submit
-            </Button>
-            <Text fontSize={20} mr="15px" style={{ cursor: 'pointer' }}>
-              <FiUpload />
-            </Text>
-            <Text fontSize={15} style={{ cursor: 'pointer' }}>
-              <FaRedo />
-            </Text>
+        <Flex direction="row" mt="15px" mb="40px" align="center" width={300}>
+          <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }}>
+            Submit
+          </Button>
+          <Text fontSize={20} mr="15px" style={{ cursor: 'pointer' }} color={colors.TEXT2}>
+            <FiUpload />
+          </Text>
+          <Text fontSize={15} style={{ cursor: 'pointer' }} color={colors.TEXT2}>
+            <FaRedo />
+          </Text>
+
           </Flex>
           <SimpleGrid
             columns={2}

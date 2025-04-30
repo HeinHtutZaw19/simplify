@@ -15,6 +15,7 @@ import SurveyPage from './pages/SurveyPage'
 
 //Components
 import Sidebar from './components/Sidebar'
+import ProfilePage from './pages/ProfilePage'
 
 function App() {
   const location = useLocation()
@@ -35,6 +36,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/survey" element={<SurveyPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </Flex>
     </Flex>
