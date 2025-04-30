@@ -5,6 +5,7 @@ import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { checkLogin } from '../API/API';
 import Question from '../components/Question'
 import Colors from '../utils/Colors.jsx';
+import WebCam from '../components/WebCam.jsx';
 
 
 const SurveyPage = () => {
@@ -47,6 +48,7 @@ const SurveyPage = () => {
 
     const [currentStep, setCurrentStep] = useState(0);
     const [responses, setResponses] = useState({});
+    const [isLast, setIsLast] = useState(false);
 
     const handleSelectAnswer = (answer) => {
         const currentKey = questions[currentStep].question;
@@ -61,11 +63,23 @@ const SurveyPage = () => {
             }, 200);
             console.log(responses);
         }
+        else if (currentStep == questions.length - 1){
+            setTimeout(() => {
+                setCurrentStep(currentStep + 1);
+            }, 200);
+            console.log(responses);
+            setIsLast(true);
+        }
         else {
             console.log("Survey complete:", responses);
             navigate('/signup');
         }
     };
+
+    const handleSubmit = () => {
+        console.log("Survey complete:", responses);
+        navigate('/signup');
+    }
 
     const handleCloseClick = async () => {
         console.log('logout clicked');
@@ -74,20 +88,23 @@ const SurveyPage = () => {
 
     const handleBackClick = async () => {
         setCurrentStep(currentStep - 1);
+        setIsLast(false);
     }
 
     const progressStatus = ((currentStep + 1) / questions.length) * 100;
 
     return (
-        <> {loaded &&
-            <Box w='100%' p={20}>
+        <> {loaded && (
+
+            <Box w='100%' px={20} pt={10}>
                 <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
                     {currentStep == 0 ?
                         <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
                         : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
                 </Box>
 
-
+                {!isLast ? (
+                <>
                 <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
                     <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor={colors.MAIN3} />
                 </Box>
@@ -99,7 +116,16 @@ const SurveyPage = () => {
                         onSelect={handleSelectAnswer}
                     />
                 </Flex>
-            </Box>}
+                </>
+                ) : (
+                    <>
+                        <Box w="84vw" alignContent='center' >
+                            <WebCam handleSubmitClick={handleSubmit}/>
+                        </Box>
+                    </>
+                )}
+            </Box>
+            )}
         </>
     )
 }
