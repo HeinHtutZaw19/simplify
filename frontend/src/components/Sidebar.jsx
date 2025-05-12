@@ -80,6 +80,7 @@ const Sidebar = (props) => {
                             ml={{ base: 0, sm: 3 }}
                             onClick={() => handleChangeTab("Profile")}
                             cursor="pointer"
+                            shadow="md"
                         />
 
                         <Heading as="h3" size="sm" color={colors.BRIGHT4} p={3} display={{ md: "flex", sm: "none" }}
