@@ -17,18 +17,13 @@ const ChatPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false); // for loading text bubbles
   const bottomRef = useRef();
-
-//   useEffect(() => {
-//     const chatBox = document.querySelector("#chat-box");
-//     chatBox.scrollTop = chatBox.scrollHeight;
-//   }, [messages]);
   
   useEffect(() => {
     if (loaded) {
       // scroll to bottom whenever messages or loading change
       const chatBox = document.querySelector("#chat-box");
       chatBox.scrollTop = chatBox.scrollHeight;
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, loading, loaded]);
 
@@ -59,22 +54,9 @@ const ChatPage = () => {
     //make dummy messages
     const dummyMessages = [
       { text: "I'm Simpli, your skincare AI assistant! How can I help?", sender: "Simpli" },
-      // { text: "I want to know more about trouble reset cicaffeine foam", sender: "You" },
-      // {
-      //   text: "Trouble Reset Cicaffeine Foam Summary\n\nProduct Name: Trouble Reset Cicaffeine Foam\nBrand: Simpli\n\nProduct Description:\nA gentle cleansing foam that helps to remove impurities and dead skin cells while maintaining the skin's natural pH balance. It is formulated with Cicaffeine™, a unique blend of Beta-Sitosterol and Caffeine, to help calm and revitalize the skin while enhancing elasticity and pore care.",
-      //   sender: "Simpli"
-      // }
     ];
     setMessages(dummyMessages);
   }, []);
-  
-//   // initial dummy messages...
-//   useEffect(() => {
-//     setMessages([
-//       { text: "I want to know more about Trouble Reset Cicaffeine Foam", sender: "You" },
-//       { text: "Trouble Reset Cicaffeine Foam Summary…", sender: "Simpli" }
-//     ]);
-//   }, []);
 
   const handleSend = async () => {
     if (input.trim() === '') return;
@@ -115,7 +97,7 @@ const ChatPage = () => {
               />
             ))}
             {loading && <LoadingBubble isUser={false} />}
-            <div ref={bottomRef} />
+            {/* <div ref={bottomRef} /> */}
           </Flex>
         </Box>
              
