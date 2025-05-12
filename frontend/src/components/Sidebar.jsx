@@ -13,9 +13,9 @@ import { logoutUser } from '../API/API'
 import logo from '../assets/logo.png';
 import Colors from '../utils/Colors.jsx';
 
-const Sidebar = () => {
+const Sidebar = (props) => {
     //Color toggle
-    const {colorMode, toggleColorMode} = useColorMode();
+    const { colorMode, toggleColorMode } = useColorMode();
     const colors = Colors();
 
     //Tab Toggle
@@ -72,9 +72,12 @@ const Sidebar = () => {
                 >
 
                     <Flex mt={4} direction="row" align={{ base: "center", md: "flex-start" }} alignItems="center">
-                        <Avatar 
-                            size={{ md: "md", sm: "sm" }}
-                            ml={{ base: 0, sm: 3 }} 
+                        <Image
+                            src={props.user.pfp}
+                            alt='Profile picture'
+                            borderRadius='full'
+                            boxSize={{md: '48px', sm: '32px'}}
+                            ml={{ base: 0, sm: 3 }}
                             onClick={() => handleChangeTab("Profile")}
                             cursor="pointer"
                         />
@@ -82,15 +85,15 @@ const Sidebar = () => {
                         <Heading as="h3" size="sm" color={colors.BRIGHT4} p={3} display={{ md: "flex", sm: "none" }}
                             onClick={() => handleChangeTab("Profile")}
                             cursor="pointer"
-                        > 
-                        Henry
+                        >
+                            {props.user.username}
                         </Heading>
 
                         <Button
                             leftIcon={<Icon as={IoLogOutOutline} />}
                             variant="link"
                             display="flex"
-                            color ={colors.TEXT4}
+                            color={colors.TEXT4}
                             onClick={handleLogoutClick}
                             ml={{ base: 10, sm: 0 }}
                             _hover={{ transform: 'scale(1.1)' }}
@@ -105,8 +108,8 @@ const Sidebar = () => {
                         <NavItem icon={FaCamera} title={"SkinLab"} active={tab.active === "skinlab"} handler={() => handleChangeTab("skinlab")} />
                         <NavItem icon={IoChatbubbleEllipsesOutline} title={"Chat"} active={tab.active == "chat"} handler={() => handleChangeTab("chat")} />
                         <NavItem icon={MdLeaderboard} title={"Leaderboard"} active={tab.active == "leaderboard"} handler={() => handleChangeTab("leaderboard")} />
-                        <NavItem icon={colorMode === 'light' ? MoonIcon : SunIcon} title = {colorMode === 'light' ? "Dark Mode" : 'Light Mode'} active={false} handler = {toggleColorMode}/>
-                        <NavItem title ={"Admin Page"} active={tab.active == "admin"} handler={() => handleChangeTab("admin")}/>
+                        <NavItem icon={colorMode === 'light' ? MoonIcon : SunIcon} title={colorMode === 'light' ? "Dark Mode" : 'Light Mode'} active={false} handler={toggleColorMode} />
+                        <NavItem title={"Admin Page"} active={tab.active == "admin"} handler={() => handleChangeTab("admin")} />
                     </Flex>
 
                 </Flex>

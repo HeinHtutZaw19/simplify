@@ -30,7 +30,7 @@ const HomePage = () => {
       }
     }
     fetchLoginData();
-  });
+  }, []);
 
   const onSkinAnalysisClick = () => {
     skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
