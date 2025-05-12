@@ -116,6 +116,7 @@ const LoginPage = () => {
                     name='email'
                     value={loginInfo.email}
                     onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                     w="30vw"
                     mt={3}
                     rounded={10}
@@ -142,6 +143,7 @@ const LoginPage = () => {
                     name='password'
                     value={loginInfo.password}
                     onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                     w="30vw"
                     mt={3}
                     rounded={10}

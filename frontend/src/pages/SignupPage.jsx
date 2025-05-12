@@ -142,6 +142,7 @@ const SignupPage = () => {
                         name='username'
                         value={signupInfo.username}
                         onChange={handleChange}
+                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
                         w="30vw"
                         mt={3}
                         rounded={10}
@@ -166,6 +167,7 @@ const SignupPage = () => {
                         name='email'
                         value={signupInfo.email}
                         onChange={handleChange}
+                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
                         w="30vw"
                         mt={3}
                         rounded={10}
@@ -191,6 +193,7 @@ const SignupPage = () => {
                         name='password'
                         value={signupInfo.password}
                         onChange={handleChange}
+                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
                         w="30vw"
                         mt={3}
                         rounded={10}
@@ -203,6 +206,7 @@ const SignupPage = () => {
                         name='passwordConfirm'
                         value={signupInfo.passwordConfirm}
                         onChange={handleChange}
+                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
                         w="30vw"
                         mt={3}
                         rounded={10}
