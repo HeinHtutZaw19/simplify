@@ -5,7 +5,10 @@ import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
 import bcrypt from 'bcryptjs';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
 import { connectDB } from "./config/db.js";
+import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
 import querySimpli from './utils/chat.js';
@@ -35,6 +38,8 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
+app.use(cookieParser());
+
 app.use(session({
     secret: 'VE9zUUDY8FWggzDg', //random string
     resave: false,
@@ -52,6 +57,9 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/api/signup', async (req, res) => {
     try {
@@ -105,10 +113,10 @@ app.post('/api/signup', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
-        })
 
-        // return created user
-        res.json(newUser);
+            // return created user
+            res.json(newUser);
+        })
     }
     catch (error) {
         console.error('Signup error:', error.message);
@@ -146,16 +154,45 @@ app.post('/api/login', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
+            // return created user
+            res.json(foundUser);
         })
-
-        // return created user
-        res.json(foundUser);
     }
     catch (error) {
         console.error('Login error:', error.message);
         res.statusMessage = "Login error: " + error.message;
         res.sendStatus(400);
     }
+});
+
+app.get('/api/login/google', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+}));
+
+app.get('/api/login/google/callback', (req, res, next) => {
+    passport.authenticate('google', async (err, user, info) => {
+        if (err) {
+            console.error('Google login error:', err);
+            return res.redirect('http://localhost:5173/login');
+        }
+
+        if (!user) {
+            console.warn('Google login failed: email not found');
+            return res.redirect('http://localhost:5173/login');
+        }
+
+        req.session.user = user;
+
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.redirect('http://localhost:5173/login');
+            }
+            res.redirect('http://localhost:5173');
+        });
+
+    })(req, res, next);
 });
 
 app.get('/api/checklogin', (req, res) => {
