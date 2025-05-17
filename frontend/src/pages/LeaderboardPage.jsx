@@ -5,6 +5,8 @@ import { checkLogin } from "../API/API.jsx"
 import UserCard from "../components/UserCard.jsx"
 import LeaderboardPodium from "../components/LeaderPodium.jsx"
 import mascot from "../assets/mascot.gif"
+import Colors from '../utils/Colors';
+
 
 const THEME_COLOR = "#5A67BA"
 
@@ -29,7 +31,10 @@ const top3 = [
 ]
 
 const LeaderboardPage = () => {
+  const colors = Colors();
+
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
   const [primaryTab, setPrimaryTab] = useState("cumulative")
   const [secondaryTab, setSecondaryTab] = useState("regional")
 
@@ -39,12 +44,17 @@ const LeaderboardPage = () => {
       if (!user) {
         navigate('/welcome');
       }
+      else {
+        setLoaded(true);
+      }
     }
     fetchLoginData();
   });
 
   return (
+    <> {loaded &&
     <Flex direction="column" width="full" alignItems={"center"}>
+      {/* VStack */}
       <VStack align="center" spacing={2} m={5} flex={1}>
         <Tabs
           mt={2}
@@ -54,7 +64,7 @@ const LeaderboardPage = () => {
         >
           <TabList>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={10}
               py={2}
               borderRadius="md"
@@ -62,7 +72,7 @@ const LeaderboardPage = () => {
               Cumulative
             </Tab>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={10}
               py={2}
               borderRadius="md"
@@ -79,7 +89,7 @@ const LeaderboardPage = () => {
         >
           <TabList>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={4}
               py={2}
               borderRadius="md"
@@ -87,7 +97,7 @@ const LeaderboardPage = () => {
               Regional
             </Tab>
             <Tab
-              _selected={{ bg: THEME_COLOR, color: "white" }}
+              _selected={{ bg: colors.BRIGHT5, color: colors.MAIN1 }}
               px={4}
               py={2}
               borderRadius="md"
@@ -97,7 +107,7 @@ const LeaderboardPage = () => {
           </TabList>
         </Tabs>
       </VStack>
-      <Flex w="full" direction={{ lg: "row", md: "row", sm: "column" }} justifyContent="center" alignItems={"center"} bg={THEME_COLOR} height="full">
+      <Flex w="full" direction={{ lg: "row", md: "row", sm: "column" }} justifyContent="center" alignItems={"center"} bg={colors.BRIGHT5} height="full">
         <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} mt={90} mb={5} justifyContent={" center"} alignItems="center">
           <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
         </Flex>
@@ -105,28 +115,30 @@ const LeaderboardPage = () => {
           {mockLeaderboard.map((user, index) => (
             <UserCard key={index} user={user} />
           ))}
-        </VStack>
-        <Flex display={{ lg: "flex", md: "flex", sm: "none" }} direction="column" flex={1} justifyContent={"center"} alignItems="center">
-          <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
-          <Image src={mascot} alt="mascot.gif" boxSize="50%" mt={10} flex={1} ></Image>
-        </Flex>
+            
+          </VStack>
+          <Flex display={{ lg: "flex", md: "flex", sm: "none" }} direction="column" flex={1} justifyContent={"center"} alignItems="center">
+            <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
+            <Image src={mascot} alt="mascot.gif" boxSize="50%" mt={10} flex={1} ></Image>
+          </Flex>
 
         <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} px={5} mb={5} justifyContent={" center"} alignItems="center">
           <Image src={mascot} alt="mascot.gif" boxSize="100px"  ></Image>
           <Text
             fontSize={{ base: "xs", md: "sm" }}
             ml={5}
-            textColor="white"
+            textColor={colors.MAIN1}
             textAlign="center"
             fontWeight="bold"
             mt={5}
           >
             Keep up the good work!
           </Text>
-        </Flex>
 
-      </Flex>
-    </Flex >
+        </Flex>
+      </Flex >
+      </Flex>}
+    </>
   )
 }
 

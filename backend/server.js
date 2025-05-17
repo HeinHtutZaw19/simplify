@@ -10,6 +10,10 @@ import cookieParser from 'cookie-parser';
 import { connectDB } from "./config/db.js";
 import './config/passport.js';
 import User from './models/user.model.js';
+import Chat from './models/chat.model.js';
+import querySimpli from './utils/chat.js';
+import { RiSquareFill } from 'react-icons/ri';
+import formatConvHistory from './utils/formatConvHistory.js';
 
 const app = express();
 dotenv.config();
@@ -210,6 +214,42 @@ app.get('/api/logout', (req, res) => {
     })
     res.sendStatus(200);
 });
+
+app.get(`/api/user/:username/chat`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        const foundChats = await Chat.find({ _id: { $in: user.chat } }).sort({ createdAt: 1 });
+        const chats = foundChats.flatMap((chat) => [
+            { text: chat.query, sender: "You" },
+            { text: chat.response, sender: "Simpli" }
+        ]);
+        res.status(200).send(chats);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
+
+app.post('/api/chat', async (req, res) => {
+    try {
+        const { username, userQuery, convHistory } = req.body;
+        const simpliResponse = await querySimpli(userQuery, convHistory);
+        const newChatObj = new Chat({
+            query: userQuery,
+            response: simpliResponse
+        });
+        const savedChat = await newChatObj.save();
+        await User.findOneAndUpdate(
+            { username: username },
+            { $push: { chat: savedChat._id } }
+        );
+        console.log('user:', username, 'saved chat with id:', savedChat._id);
+        res.status(200).send(simpliResponse);
+    } catch {
+        res.sendStatus(500);
+    }
+})
 
 app.listen(PORT, () => {
     connectDB();

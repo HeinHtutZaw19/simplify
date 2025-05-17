@@ -102,3 +102,44 @@ export const logoutUser = async () => {
         console.error('Logout error:', error.message);
     }
 }
+
+export const getChatList = async (username) => {
+    const url = `${apiUrl}/api/user/${username}/chat`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get chat list error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get chat list error:', error.message);
+    }
+}
+
+export const chat = async (username, userQuery, convHistory) => {
+    try {
+        const response = await fetch(`${apiUrl}/api/chat`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: username, userQuery: userQuery, convHistory: convHistory })
+        })
+        // console.log(response)
+        const data = await response.text();
+        console.log("response:" + data)
+        return data
+    } catch (err) {
+        console.error('Simpli error:', err)
+        return `Err: Simpli cannot give back an answer. ${err}`
+    }
+}

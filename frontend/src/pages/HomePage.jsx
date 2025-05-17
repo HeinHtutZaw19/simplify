@@ -2,24 +2,31 @@ import React, { useRef } from 'react'
 import { Grid, GridItem, Flex, Text, Box, VStack, Heading, Icon, Checkbox, CheckboxGroup, Image, Button, Avatar } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { checkLogin, logoutUser } from '../API/API'
+import { checkLogin } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
 import Calendar from '../components/Calendar';
 import Product from '../components/Product';
+import Colors from '../utils/Colors';
+
+const productItems = ['Toner', 'Moisturizer', 'Serum', 'Sunscreen'];
 
 const HomePage = () => {
+  const colors = Colors();
   const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchLoginData = async () => {
       const user = await checkLogin();
       if (!user) {
-        //redirect to /welcome (to /signup for now)
         navigate('/welcome');
+      }
+      else {
+        setLoaded(true);
       }
     }
     fetchLoginData();
@@ -29,31 +36,50 @@ const HomePage = () => {
     skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  const [checked, setChecked] = useState([]);
+  const allChecked = checked.length === productItems.length;
+  const handleCheck = (values) => {
+    setChecked(values);
+  }
+
   return (
     // Full Page Flex
-    <Flex className="page" overflow="hidden" color="black">
+    <> {loaded &&
+    <Flex className="page" overflow="hidden" color="black" bg={colors.MAIN1}>
       {/* Middle content flex */}
       <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
 
         <Box id="home-heading">
-          <Heading size="lg" fontFamily="Feather Bold">Finish the checklist to get +1 streak!</Heading>
+          <Heading size="lg" color={colors.TEXT1} fontFamily="Feather Bold">Finish the checklist to get +1 streak!</Heading>
         </Box>
 
         <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
-          <CheckboxGroup colorScheme="green" defaultValue={[]}>
-            {['Toner', 'Moisturizer', 'Serum', 'Sunscreen'].map((item) => (
-              <Product key={item} item={item} />
+          <CheckboxGroup colorScheme="yellow" value={checked} onChange={handleCheck}>
+            {productItems.map((item) => (
+              <Product key={item} item={item} isChecked={checked.includes(item)}/>
             ))}
           </CheckboxGroup>
         </Grid>
-
+        
+        {allChecked && (
+          <Box
+            id="home-skinanalysis-button"
+            borderRadius="md"
+            as="button"
+            bg={colors.BRIGHT3}
+            _hover={{ bg: colors.BRIGHT5 }}
+            >
+            <Text textAlign="center" color={colors.MAIN1}>Routine Finished!</Text>
+          </Box>
+        )}
+        
         <Box
           id="home-skinanalysis-button"
           borderRadius="md"
           as="button"
           onClick={onSkinAnalysisClick}
-          bgColor="red.500">
-          <Text textAlign="center" color="white">Skin Analysis <TriangleDownIcon color="white" /></Text>
+          bg={colors.BRIGHT3}>
+          <Text textAlign="center" color={colors.MAIN1}>Skin Analysis <TriangleDownIcon color={colors.MAIN1} /></Text>
         </Box>
 
         <Box ref={skinAnalysisRef} w="100%">
@@ -64,19 +90,18 @@ const HomePage = () => {
 
       </Flex>
 
-      {/* Right Side Stack */}
-      <VStack id="home-side" pos="sticky">
-        <Calendar />
-
-        <Heading id="home-side-leaderboard-heading" size="lg">Leaderboard</Heading>
-        <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
+        {/* Right Side Stack */}
+        <VStack id="home-side" pos="sticky">
+          <Calendar />
+          <Heading id="home-side-leaderboard-heading" color={colors.SECONDARY3} size="lg">Leaderboard</Heading>
+        <Box p={4} bg={colors.SECONDARY5} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row'>
           <Avatar />
           <Box pl={4} alignContent='center'>
             <Heading size="sm">Martha Anderson</Heading>
             <Text fontSize="sm">80$</Text>
           </Box>
         </Box>
-        <Box p={4} bg="#1e1f24" borderRadius="xl" w="100%" color='white' display='flex' flexDirection='row'>
+        <Box p={4} bg={colors.SECONDARY5} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row'>
           <Avatar />
           <Box pl={4} alignContent='center'>
             <Heading size="sm">Julia Clover</Heading>
@@ -86,7 +111,8 @@ const HomePage = () => {
 
       </VStack>
 
-    </Flex >
+    </Flex >}
+    </>
   )
 }
 

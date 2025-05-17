@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Box, Input, Button, Flex, Heading, Divider, Text } from '@chakra-ui/react'
 import { FaGoogle } from 'react-icons/fa';
 import { CloseIcon } from '@chakra-ui/icons';
 import { loginUser, checkLogin } from '../API/API';
+import Colors from '../utils/Colors.jsx';
 
 const LoginPage = () => {
+    const colors = Colors();
     const navigate = useNavigate();
+    const emailInputRef = useRef(null);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         const fetchLoginData = async () => {
@@ -14,9 +18,15 @@ const LoginPage = () => {
             if (user) {
                 navigate('/');
             }
+            else {
+                setLoaded(true);
+                setTimeout(() => {
+                    emailInputRef.current?.focus();
+                }, 0);
+            }
         }
         fetchLoginData();
-    });
+    }, []);
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',
@@ -24,6 +34,7 @@ const LoginPage = () => {
         password: '',
         passwordError: ''
     })
+    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -94,7 +105,8 @@ const LoginPage = () => {
     }
 
     return (
-        <Box w='100%' p={20}>
+        <> {loaded &&
+        <Box w='100%' p={20} >
             <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
                 <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
             </Box>
@@ -104,11 +116,13 @@ const LoginPage = () => {
                     name='email'
                     value={loginInfo.email}
                     onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
-                    isInvalid={(loginInfo.email.toLowerCase().match(/^\S+@\S+\.\S+$/) || !loginInfo.email ? false : true)}
+                    backgroundColor={colors.MAIN2}
+                    isInvalid={(loginInfo.email.match(emailRegex) || !loginInfo.email ? false : true)}
+                    ref={emailInputRef}
                 />
                 {loginInfo.emailError &&
                     <Text
@@ -129,10 +143,11 @@ const LoginPage = () => {
                     name='password'
                     value={loginInfo.password}
                     onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                     w="30vw"
                     mt={3}
                     rounded={10}
-                    backgroundColor="#E3EDF9"
+                    backgroundColor={colors.MAIN2}
                 />
                 {loginInfo.passwordError &&
                     <Text
@@ -147,11 +162,13 @@ const LoginPage = () => {
                         {loginInfo.passwordError}
                     </Text>
                 }
-                <Button onClick={onLoginClick} w="30vw" mt={3} colorScheme="blue" rounded={10}>Log in</Button>
+                <Button onClick={onLoginClick} w="30vw" mt={3}  bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={10}>Log in</Button>
                 <Divider w="30vw" m={6} borderColor="gray.800" />
-                <Button onClick={onGoogleClick} width="100%" colorScheme="blue" w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
+                <Button onClick={onGoogleClick} width="100%" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
             </Flex>
-        </Box>
+        </Box>}
+        </>
+
     )
 }
 
