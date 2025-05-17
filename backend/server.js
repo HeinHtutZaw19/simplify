@@ -214,6 +214,33 @@ app.post('/api/chat', async (req, res) => {
     }
 })
 
+app.delete('/api/chat', async (req, res) => {
+    try {
+        console.log("DELETE /api/chat");
+        const { username } = req.body;
+        if (!username) {
+            return res.status(400).json({ error: 'Missing username in request body' });
+        }
+
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        await Chat.deleteMany({ _id: { $in: user.chat } });
+
+        // 3) Clear the user's chat array
+        user.chat = [];
+        await user.save();
+
+        console.log(`Deleted all chats for user: ${username}`);
+        return res.status(200).json({ message: 'Chat history cleared' });
+    } catch (err) {
+        console.error('Error in DELETE /api/chat:', err);
+        return res.sendStatus(500);
+    }
+});
+
 app.listen(PORT, () => {
     connectDB();
     console.log(`Server started on http://localhost:${PORT}`);

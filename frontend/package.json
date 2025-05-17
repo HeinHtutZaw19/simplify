@@ -12,10 +12,14 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.10.7",
+    "@tensorflow-models/body-pix": "^2.2.1",
+    "@tensorflow/tfjs": "^4.22.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.1",
-    "simplify": "file:.."
+    "react-webcam": "^7.2.0",
+    "simplify": "file:..",
+    "tensorflow-models": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

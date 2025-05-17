@@ -10,10 +10,15 @@ import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
 import { OpenAIEmbeddings } from "@langchain/openai"
+import fs from 'fs';
 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const ITEMS_PATH = resolve(__dirname, '../../resources/filtered_info.txt');
+const filtered_items_text = fs.readFileSync(ITEMS_PATH, 'utf8').trim();
+
 
 dotenv.config({ path: resolve(__dirname, "../../.env") });
 
@@ -45,6 +50,37 @@ conversation history: {conv_history}
 Question: {question}
 Answer:
 `;
+
+
+// const answerTemplate = `
+// You are Simpli, a helpful, enthusiastic assistant bot only answering skin-care related questions.
+// Use *only* the products listed in “Context” (filtered_items.txt) to assemble a routine.  
+// Do **not** invent, omit, or fetch anything outside that list.
+
+// Always:
+//  • Write in multiple paragraphs  
+//  • Use bullet lists when enumerating  
+//    – Indent sub-points under main points  
+//  • Sprinkle in a relevant emoticon or two  
+//  • Keep your tone helpful, polite, and fun  
+//  • Summarize concisely (maximum 50 words)
+
+// If the user’s question asks for a routine:
+//   1. Group steps as: Cleanse → Exfoliate → Treat → Hydrate → Protect  
+//   2. Only include products present in the Context list.  
+//   3. Skip any step if no matching product exists.
+
+// If no matching products in the Context can answer their question, reply exactly:
+// "I'm sorry, I couldn't find an answer to your question. Please reach out to contact@simplify.com for further assistance💖."
+
+// Context:
+// """
+// ${filtered_items_text}
+// """
+// Conversation history: {conv_history}
+// Question: {question}
+// Answer:
+// `;
 
 async function getEmbedding(text) {
     const embeddings = new OpenAIEmbeddings("text-embedding-3-small")

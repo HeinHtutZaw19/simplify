@@ -143,3 +143,18 @@ export const chat = async (username, userQuery, convHistory) => {
         return `Err: Simpli cannot give back an answer. ${err}`
     }
 }
+export const deleteChat = async (username) => {
+    try {
+        console.log("deleteChat")
+        const res = await fetch(`${apiUrl}/api/chat`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username }),
+        });
+        if (!res.ok) throw new Error(await res.text());
+    } catch (err) {
+        console.error("Failed to delete chat:", err);
+    }
+};
