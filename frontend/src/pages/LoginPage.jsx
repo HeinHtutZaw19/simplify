@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Input, Button, Flex, Heading, Divider, Text } from '@chakra-ui/react'
 import { FaGoogle } from 'react-icons/fa';
 import { CloseIcon } from '@chakra-ui/icons';
-import { loginUser } from '../API/API';
-import { checkLogin } from '../API/API';
+import { loginUser, checkLogin } from '../API/API';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -86,6 +85,7 @@ const LoginPage = () => {
 
     const onGoogleClick = async () => {
         console.log('google clicked')
+        window.location.href = "http://localhost:4000/api/login/google";
     }
 
     const handleCloseClick = async () => {
@@ -150,9 +150,6 @@ const LoginPage = () => {
                 <Button onClick={onLoginClick} w="30vw" mt={3} colorScheme="blue" rounded={10}>Log in</Button>
                 <Divider w="30vw" m={6} borderColor="gray.800" />
                 <Button onClick={onGoogleClick} width="100%" colorScheme="blue" w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
-                <a href="http://localhost:4000/auth/google">
-                    <button>Login with Google</button>
-                </a>
             </Flex>
         </Box>
     )

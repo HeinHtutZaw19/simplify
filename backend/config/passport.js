@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 passport.serializeUser((user, done) => {
-    done(null, user.email); // or user._id if you prefer
+    done(null, user.email);
 });
 
 passport.deserializeUser(async (email, done) => {
@@ -20,15 +20,17 @@ passport.deserializeUser(async (email, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:4000/auth/google/callback',
+    callbackURL: 'http://localhost:4000/api/login/google/callback',
 },
 async (accessToken, refreshToken, profile, done) => {
     try {
         const email = profile.emails[0].value;
-        const existingUser = await User.findOne({ email });
+        console.log('google user email clicked:', email)
+        const existingUser = await User.findOne({ email: email });
         if (!existingUser) {
             // Prevent login
-            return done(null, false, { message: 'User not found' });
+            console.log('google oauth: email not found')
+            return done(null, null, { message: 'User email not found' });
         }
 
         // Log in existing user

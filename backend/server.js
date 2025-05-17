@@ -109,10 +109,10 @@ app.post('/api/signup', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
-        })
 
-        // return created user
-        res.json(newUser);
+            // return created user
+            res.json(newUser);
+        })
     }
     catch (error) {
         console.error('Signup error:', error.message);
@@ -150,10 +150,9 @@ app.post('/api/login', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
+            // return created user
+            res.json(foundUser);
         })
-
-        // return created user
-        res.json(foundUser);
     }
     catch (error) {
         console.error('Login error:', error.message);
@@ -162,32 +161,35 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-app.get('/auth/google', passport.authenticate('google', {
+app.get('/api/login/google', passport.authenticate('google', {
     scope: ['profile', 'email'],
     prompt: 'select_account'
 }));
 
-app.get('/auth/google/callback', (req, res, next) => {
+app.get('/api/login/google/callback', (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
-        if (err) return res.status(500).json({ error: 'Server error' });
-        if (!user) return res.status(401).json({ error: 'User not found' });
+        if (err) {
+            console.error('Google login error:', err);
+            return res.redirect('http://localhost:5173/login');
+        }
 
-        // ✅ Manually set session user
+        if (!user) {
+            console.warn('Google login failed: email not found');
+            return res.redirect('http://localhost:5173/login');
+        }
+
         req.session.user = user;
 
-        // Optionally save the session
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-                return res.status(500).json({ error: 'Failed to save session' });
+                return res.redirect('http://localhost:5173/login');
             }
-
-            // Redirect to frontend or send a JSON response
-            res.redirect('http://localhost:5173/skinlab');
+            res.redirect('http://localhost:5173');
         });
+
     })(req, res, next);
 });
-
 
 app.get('/api/checklogin', (req, res) => {
     let user = null;
