@@ -16,9 +16,6 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const ITEMS_PATH = resolve(__dirname, '../../resources/filtered_info.txt');
-const filtered_items_text = fs.readFileSync(ITEMS_PATH, 'utf8').trim();
-
 
 dotenv.config({ path: resolve(__dirname, "../../.env") });
 
