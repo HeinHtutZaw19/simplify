@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Input, Button, Flex, Heading, Divider, Text } from '@chakra-ui/react'
 import { FaGoogle } from 'react-icons/fa';
 import { CloseIcon } from '@chakra-ui/icons';
-import { loginUser } from '../API/API';
-import { checkLogin } from '../API/API';
+import { loginUser, checkLogin } from '../API/API';
 import Colors from '../utils/Colors.jsx';
 
 const LoginPage = () => {
@@ -97,6 +96,7 @@ const LoginPage = () => {
 
     const onGoogleClick = async () => {
         console.log('google clicked')
+        window.location.href = "http://localhost:4000/api/login/google";
     }
 
     const handleCloseClick = async () => {
@@ -116,6 +116,7 @@ const LoginPage = () => {
                     name='email'
                     value={loginInfo.email}
                     onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                     w="30vw"
                     mt={3}
                     rounded={10}
@@ -142,6 +143,7 @@ const LoginPage = () => {
                     name='password'
                     value={loginInfo.password}
                     onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                     w="30vw"
                     mt={3}
                     rounded={10}

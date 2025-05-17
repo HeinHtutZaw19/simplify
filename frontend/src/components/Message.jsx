@@ -33,9 +33,9 @@ const Message = ({ index, text, isUser }) => {
                 wordBreak="break-word"
 
             >
-                <Text fontSize={{ base: "xs", md: "sm" }}>
+                <Box fontSize={{ base: "xs", md: "sm" }}>
                     <ReactMarkdown>{text}</ReactMarkdown>
-                </Text>
+                </Box>
             </Box>
             {isUser && <Avatar size="sm" />}
         </HStack>
