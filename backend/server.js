@@ -27,7 +27,7 @@ const isProd = process.env.NODE_ENV === 'production';
 console.log(isProd)
 
 app.use(cors({
-    origin: isProd ? 'https://simplify-e3px.onrender.com/' : `http://localhost:${FRONTEND_PORT}`,
+    origin: `http://localhost:${FRONTEND_PORT}`,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
