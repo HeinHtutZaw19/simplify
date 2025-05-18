@@ -19,10 +19,13 @@ import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
-console.log(PORT)
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+console.log(PORT, CLIENT_URL)
+
+app.set('trust proxy', 1);
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
