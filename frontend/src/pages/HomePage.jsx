@@ -4,20 +4,22 @@ import { TriangleDownIcon } from '@chakra-ui/icons';
 
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { checkLogin } from '../API/API'
+import { checkLogin, getUserRoutine } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
 import Calendar from '../components/Calendar';
 import Product from '../components/Product';
 import Colors from '../utils/Colors';
 
-const productItems = ['Toner', 'Moisturizer', 'Serum', 'Sunscreen'];
+// const productItems = ['Toner', 'Moisturizer', 'Serum', 'Sunscreen'];
 
 const HomePage = () => {
   const colors = Colors();
   const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState(null);
+  const [routine, setRoutine] = useState([])
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -26,18 +28,31 @@ const HomePage = () => {
         navigate('/welcome');
       }
       else {
+        setUser(user);
         setLoaded(true);
       }
     }
     fetchLoginData();
-  });
+  }, []);
+
+  useEffect(() => {
+    // load user's product list
+    const setProductList = async (username) => {
+      const productList = await getUserRoutine(username);
+      console.log('product list:', productList);
+      setRoutine(productList);
+    }
+    if (user) {
+      setProductList(user.username);
+    }
+  }, [user])
 
   const onSkinAnalysisClick = () => {
     skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   const [checked, setChecked] = useState([]);
-  const allChecked = checked.length === productItems.length;
+  const allChecked = checked.length === routine.length;
   const handleCheck = (values) => {
     setChecked(values);
   }
@@ -55,8 +70,8 @@ const HomePage = () => {
 
         <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
           <CheckboxGroup colorScheme="yellow" value={checked} onChange={handleCheck}>
-            {productItems.map((item) => (
-              <Product key={item} item={item} isChecked={checked.includes(item)}/>
+            {routine.map((product) => (
+              <Product key={product._id} product={product} isChecked={checked.includes(product.name)}/>
             ))}
           </CheckboxGroup>
         </Grid>

@@ -18,6 +18,11 @@ const ChatPage = () => {
   const [loading, setLoading] = useState(false); // for loading text bubbles
   const bottomRef = useRef();
 
+  //make dummy messages
+  const dummyMessages = [
+    { text: "I'm Simpli, your skincare AI assistant! How can I help?", sender: "Simpli" },
+  ];
+
   useEffect(() => {
     if (loaded) {
       // scroll to bottom whenever messages or loading change
@@ -31,7 +36,7 @@ const ChatPage = () => {
     // load user's chat list
     const setChatHistory = async (username) => {
       const chatList = await getChatList(username);
-      setMessages(prevMessages => [...prevMessages, ...chatList]);
+      setMessages([...dummyMessages, ...chatList]);
     }
     if (user) {
       setChatHistory(user.username);
@@ -50,11 +55,6 @@ const ChatPage = () => {
       }
     }
     fetchLoginData();
-
-    //make dummy messages
-    const dummyMessages = [
-      { text: "I'm Simpli, your skincare AI assistant! How can I help?", sender: "Simpli" },
-    ];
     setMessages(dummyMessages);
   }, []);
 

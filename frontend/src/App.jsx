@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import { Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 //Pages
 import HomePage from './pages/HomePage'
