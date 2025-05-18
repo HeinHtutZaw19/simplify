@@ -22,9 +22,12 @@ dotenv.config();
 
 const PORT = process.env.PORT || 4000;
 var FRONTEND_PORT = 5173;
+const isProd = process.env.NODE_ENV === 'production';
+
+console.log(isProd)
 
 app.use(cors({
-    origin: `http://localhost:${FRONTEND_PORT}`,
+    origin: isProd ? 'https://simplify-e3px.onrender.com/' : `http://localhost:${FRONTEND_PORT}`,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
@@ -34,7 +37,6 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-const isProd = process.env.NODE_ENV === 'production';
 
 app.use(session({
     secret: 'VE9zUUDY8FWggzDg', //random string
