@@ -52,8 +52,8 @@ const HomePage = () => {
   }
 
   const [checked, setChecked] = useState([]);
-  const allChecked = true;
-  if (routine.length) {
+  var allChecked = true;
+  if (routine) {
     allChecked = checked.length === routine.length;
   }
   const handleCheck = (values) => {
