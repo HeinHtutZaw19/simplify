@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:4000'
+const apiUrl = 'https://simplify-e3px.onrender.com'
 
 const header = {
     headers: {

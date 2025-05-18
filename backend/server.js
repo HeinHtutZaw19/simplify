@@ -19,9 +19,11 @@ import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
-const CLIENT_URL = process.env.NODE_ENV == 'production' ? process.env.CLIENT_URL : 'http://localhost:5173';
+console.log(process.env.CLIENT_URL, process.env.NODE_ENV)
+const CLIENT_URL = process.env.NODE_ENV == 'production' ? 'https://simplify-e3px.onrender.com' : 'http://localhost:5173';
 console.log(PORT, CLIENT_URL)
 
+const __dirname = path.resolve();
 app.set('trust proxy', 1);
 
 app.use(cors({
@@ -289,7 +291,6 @@ app.post("/api/selfie", async (req, res) => {
 });
 
 
-const __dirname = path.resolve();
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
