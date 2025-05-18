@@ -8,6 +8,7 @@ import bcrypt from 'bcryptjs';
 import { connectDB } from "./config/db.js";
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
+import Product from './models/product.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
@@ -87,17 +88,55 @@ app.post('/api/signup', async (req, res) => {
         const salted = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salted);
 
+        // mock data for initial products (change to actual recommended products from survey later)
+        const mockProduct1 = new Product({
+            name: 'product 1',
+            price: 10,
+            imageUrl: 'https://pngimg.com/d/number1_PNG14888.png',
+            instruction: 'instruction 1'
+        })
+        const savedProduct1 = await mockProduct1.save();
+        const mockProduct2 = new Product({
+            name: 'product 2',
+            price: 10,
+            imageUrl: 'https://i.pinimg.com/736x/85/f5/be/85f5bedff0758abea714994d3c398559.jpg',
+            instruction: 'instruction 2'
+        })
+        const savedProduct2 = await mockProduct2.save();
+        const mockProduct3 = new Product({
+            name: 'product 3',
+            price: 10,
+            imageUrl: 'https://i.pinimg.com/600x315/c0/a0/07/c0a0077f1c0cae02626f8f8281f0df35.jpg',
+            instruction: 'instruction 3'
+        })
+        const savedProduct3 = await mockProduct3.save();
+        const mockProduct4 = new Product({
+            name: 'product 4',
+            price: 10,
+            imageUrl: 'https://t3.ftcdn.net/jpg/01/37/43/16/360_F_137431664_H1WqRW3AmzOpZsYqboJ9fGUZ1P6YnS2u.jpg',
+            instruction: 'instruction 4'
+        })
+        const savedProduct4 = await mockProduct4.save();
+
+        const mockRoutine = [
+            savedProduct1._id,
+            savedProduct2._id,
+            savedProduct3._id,
+            savedProduct4._id
+        ]
+
         // create user in db
         const newUser = new User({
             username: username,
             email: email,
             password: hashed,
+            routine: mockRoutine
         })
-        await newUser.save();
-        console.log('User created:', username);
+        const savedUser = await newUser.save();
+        console.log('User created:', savedUser);
 
         // make new session
-        req.session.user = newUser;
+        req.session.user = savedUser;
         req.session.save(err => {
             if (err) {
                 console.log('Session(signup) error:', err);
@@ -108,7 +147,7 @@ app.post('/api/signup', async (req, res) => {
         })
 
         // return created user
-        res.json(newUser);
+        res.json(savedUser);
     }
     catch (error) {
         console.error('Signup error:', error.message);
