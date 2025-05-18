@@ -22,9 +22,15 @@ Give percentage to each following skin condition (luminosity, clarity, vibracy, 
 - Clarity (clear, blemished, etc.)
 - Vibracy (vibrant, pale, etc.)
 - Overall
+
+Use different heading for each section, bold words and italic words if necessary. Use one or two emoji for each section. After each section or subsection, make a line break.
+If the image is not clear, please say "The image is not clear enough to analyze the skin condition." and do not provide any further information.
+If the image is not a selfie, please say "The image is not a selfie." and do not provide any further information.
+If the image is not a face, please say "The image is not a face." and do not provide any further information.
+If the image is not a human face, please say "The image is not a human face." and do not provide any further information.
 `;
 
-const evaluate_selfie = async (image, prompt = PROMPT) => {
+export const evaluateSelfie = async (image, prompt = PROMPT) => {
     const response = await openai.chat.completions.create({
         model: "gpt-4.1-mini",
         messages: [{
@@ -44,5 +50,22 @@ const evaluate_selfie = async (image, prompt = PROMPT) => {
     return response.choices[0].message.content;
 }
 
-const response = await evaluate_selfie("https://cdn.shopify.com/s/files/1/0105/8429/3412/files/4_98aeafba-9579-481f-938d-15329c17632a_480x480.png?v=1617889634")
-console.log(response);
+export async function uploadToSupabase(localPath, destFilename) {
+    const fileStream = fs.createReadStream(localPath);
+    const { data, error } = await supabase
+        .storage
+        .from("selfies")
+        .upload(destFilename, fileStream, { contentType: "image/jpeg" });
+
+    if (error) throw error;
+
+    const { publicUrl } = supabase
+        .storage
+        .from("selfies")
+        .getPublicUrl(data.path);
+
+    return publicUrl;
+}
+
+// const response = await evaluateSelfie("https://cdn.shopify.com/s/files/1/0105/8429/3412/files/4_98aeafba-9579-481f-938d-15329c17632a_480x480.png?v=1617889634")
+// console.log(response);

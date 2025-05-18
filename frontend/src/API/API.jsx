@@ -158,3 +158,28 @@ export const deleteChat = async (username) => {
         console.error("Failed to delete chat:", err);
     }
 };
+
+export const uploadSelfie = async (payload) => {
+    let headers = {};
+    let body;
+    if (payload instanceof FormData) {
+        body = payload;
+    } else if (payload && typeof payload === 'object' && 'image' in payload) {
+        headers['Content-Type'] = 'application/json';
+        body = JSON.stringify(payload);
+    } else {
+        throw new Error('Invalid payload for uploadSelfie');
+    }
+    const res = await fetch(`${apiUrl}/api/selfie`, {
+        method: 'POST',
+        credentials: 'include',
+        headers,
+        body,
+    });
+    if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || `Upload failed: ${res.status}`);
+    }
+    return res.json();
+};
+

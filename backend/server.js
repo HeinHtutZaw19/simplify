@@ -14,6 +14,7 @@ import Chat from './models/chat.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
+import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 
 const app = express();
 dotenv.config();
@@ -275,6 +276,21 @@ app.delete('/api/chat', async (req, res) => {
     } catch (err) {
         console.error('Error in DELETE /api/chat:', err);
         return res.sendStatus(500);
+    }
+});
+
+
+app.post("/api/selfie", async (req, res) => {
+    try {
+        const publicUrl = req.body.image;
+        if (!publicUrl) {
+            return res.status(400).json({ message: "No image provided" });
+        }
+        const analysis = await evaluateSelfie(publicUrl);
+        return res.status(200).json({ message: analysis });
+    } catch (err) {
+        console.error("Error in /api/selfie:", err);
+        return res.status(500).json({ message: "Error processing image" });
     }
 });
 
