@@ -254,6 +254,18 @@ app.post('/api/chat', async (req, res) => {
     }
 })
 
+app.get(`/api/user/:username/routine`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        const foundProducts = await Product.find({ _id: { $in: user.routine } }).sort({ createdAt: 1 });
+        res.status(200).send(foundProducts);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
+
 app.listen(PORT, () => {
     connectDB();
     console.log(`Server started on http://localhost:${PORT}`);
