@@ -16,6 +16,9 @@ import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
 import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from './config/cloudinaryConfig.js';
 
 const app = express();
 dotenv.config();
@@ -62,6 +65,15 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'simplify',
+        allowed_formats: ['jpg', 'jpeg', 'png'],
+    },
+});
+const upload = multer({ storage });
 
 app.post('/api/signup', async (req, res) => {
     try {
@@ -342,6 +354,14 @@ app.post("/api/selfie", async (req, res) => {
         console.error("Error in /api/selfie:", err);
         return res.status(500).json({ message: "Error processing image" });
     }
+});
+
+app.post('/api/upload', upload.single('image'), (req, res) => {
+    if (!req.file || !req.file.path) {
+        return res.status(400).json({ message: 'Upload failed' });
+    }
+
+    res.status(200).json({ imageUrl: req.file.path });
 });
 
 app.listen(PORT, () => {

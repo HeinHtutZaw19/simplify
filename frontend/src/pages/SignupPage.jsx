@@ -29,7 +29,7 @@ const SignupPage = () => {
             }
         }
         fetchLoginData();
-        console.log(surveyData)
+        console.log('full survey data:', surveyData);
         if (!surveyData) {
             console.log('no survey data, navigating to /survey');
             navigate('/survey');

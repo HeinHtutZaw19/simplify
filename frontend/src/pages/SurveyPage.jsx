@@ -2,7 +2,7 @@ import { Progress, Button, Flex, Heading, Box } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { checkLogin } from '../API/API';
+import { checkLogin, uploadImage } from '../API/API';
 import Question from '../components/Question'
 import Colors from '../utils/Colors.jsx';
 import WebCam from '../components/WebCam.jsx';
@@ -13,20 +13,9 @@ const SurveyPage = () => {
     const [loaded, setLoaded] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
     const [responses, setResponses] = useState({});
+    const [image, setImage] = useState(null);
+    const [photoFile, setPhotoFile] = useState(null);
     const [isLast, setIsLast] = useState(false);
-
-    useEffect(() => {
-        const fetchLoginData = async () => {
-            const user = await checkLogin();
-            if (user) {
-                navigate('/');
-            }
-            else {
-                setLoaded(true);
-            }
-        }
-        fetchLoginData();
-    });
 
     const questions = [
         {
@@ -47,6 +36,23 @@ const SurveyPage = () => {
         }
     ];
 
+    useEffect(() => {
+        const fetchLoginData = async () => {
+            const user = await checkLogin();
+            if (user) {
+                navigate('/');
+            }
+            else {
+                setLoaded(true);
+            }
+        }
+        fetchLoginData();
+    }, []);
+
+    useEffect(() => {
+        console.log('survey responses:', responses);
+    }, [responses]);
+
     const handleSelectAnswer = (answer) => {
         const currentKey = questions[currentStep].question;
         setResponses((prev) => ({
@@ -58,24 +64,49 @@ const SurveyPage = () => {
             setTimeout(() => {
                 setCurrentStep(currentStep + 1);
             }, 200);
-            console.log(responses);
         }
         else if (currentStep == questions.length - 1) {
             setTimeout(() => {
                 setCurrentStep(currentStep + 1);
             }, 200);
-            console.log(responses);
             setIsLast(true);
         }
         else {
-            console.log("Survey complete:", responses);
+            console.log("Survey complete");
             // navigate('/signup');
         }
     };
 
-    const handleSubmit = () => {
-        console.log("Survey complete:", responses);
-        navigate('/signup', { state: { surveyData: responses } });
+    const handleSubmit = async () => {
+        if (!photoFile && !image) {
+            console.log('No image/file selected: submission cancelled');
+            return;
+        }
+
+        console.log('survey submit clicked');
+
+        // save photo
+        const formData = new FormData();
+
+        if (photoFile) {
+            console.log('submission photo(file):', photoFile);
+            formData.append('image', photoFile);
+        }
+        else if (image) {
+            console.log('submission photo(webcam)');
+            const res = await fetch(image);
+            const blob = await res.blob();
+            const file = new File([blob], 'survey_webcam_photo.png', { type: blob.type });
+            formData.append('image', file);
+        }
+
+        const result = await uploadImage(formData);
+        if (result.imageUrl) {
+            console.log('Uploaded to:', result.imageUrl);
+            navigate('/signup', { state: { surveyData: responses } });
+        } else {
+            console.error(result.error);
+        }
     }
 
     const handleCloseClick = async () => {
@@ -91,7 +122,6 @@ const SurveyPage = () => {
 
     return (
         <> {loaded && (
-
             <Box w='100%' px={20} pt={10}>
                 <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
                     {currentStep == 0 ?
@@ -116,7 +146,7 @@ const SurveyPage = () => {
                 ) : (
                     <>
                         <Box w="84vw" alignContent='center' >
-                            <WebCam handleSubmitClick={handleSubmit} />
+                            <WebCam handleSubmitClick={handleSubmit} image={image} setImage={setImage} photoFile={photoFile} setPhotoFile={setPhotoFile} />
                         </Box>
                     </>
                 )}

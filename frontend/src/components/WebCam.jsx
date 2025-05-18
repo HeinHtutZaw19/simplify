@@ -5,24 +5,24 @@ import { FiUpload } from "react-icons/fi";
 import { FaRedo } from "react-icons/fa";
 import Colors from '../utils/Colors';
 
-
 const videoConstraints = {
     facingMode: "user"
 };
 
-const WebCam = ({ handleSubmitClick, image, setImage }) => {
+const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile }) => {
     const colors = Colors();
     const webcamRef = useRef(null);
     const fileRef = useRef(null);
-    const [photoFile, setPhotoFile] = useState(null);
 
     const handlePhoto = () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        console.log(imageSrc)
+        // console.log(imageSrc)
         setImage(imageSrc);
+        setPhotoFile(null);
     };
 
     const handleRetake = () => {
+        setPhotoFile(null);
         setImage(null);
     };
 
@@ -31,10 +31,13 @@ const WebCam = ({ handleSubmitClick, image, setImage }) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setPhotoFile(file);
+        setImage(null);
+        console.log('photofile:', file);
     };
 
     const handleClickRedo = () => {
         setPhotoFile(null);
+        setImage(null);
     };
 
     return (
