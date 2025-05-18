@@ -206,3 +206,25 @@ export const uploadSelfie = async (payload) => {
 };
 
 
+
+
+export const fetchLeaderboard = async () => {
+    const url = `${apiUrl}/api/leaderboard`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error fetching leaderboard:', res.status);
+            return [];
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch leaderboard error:', e.message);
+    }
+}

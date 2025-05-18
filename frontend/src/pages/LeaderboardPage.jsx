@@ -7,8 +7,7 @@ import LeaderboardPodium from "../components/LeaderPodium.jsx"
 import mascot from "../assets/mascot.gif"
 import Colors from '../utils/Colors';
 
-
-const THEME_COLOR = "#5A67BA"
+import { fetchLeaderboard } from "../API/API.jsx"
 
 const mockLeaderboard = [
   { id: 10, name: "User 1", points: 400, trend: "up" },
@@ -37,6 +36,10 @@ const LeaderboardPage = () => {
   const [loaded, setLoaded] = useState(false);
   const [primaryTab, setPrimaryTab] = useState("cumulative")
   const [secondaryTab, setSecondaryTab] = useState("regional")
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [topboard, setTopboard] = useState([]);
+  const [name, setName] = useState("");
+  
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -45,11 +48,23 @@ const LeaderboardPage = () => {
         navigate('/welcome');
       }
       else {
+        const username = user.username;
+        setName(username);
+        console.log("username:", username);
         setLoaded(true);
       }
-    }
+    };
+    const getLeaderboard = async () => {
+      const leaderboard = await fetchLeaderboard();
+      console.log("Fetched Leaderboard data:", leaderboard);
+      setLeaderboard(leaderboard);
+      const top = leaderboard.slice(0,3);
+      setTopboard(top);
+      
+    };
     fetchLoginData();
-  });
+    getLeaderboard();
+  }, [navigate]);
 
   return (
     <> {loaded &&
@@ -112,13 +127,15 @@ const LeaderboardPage = () => {
           <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
         </Flex>
         <VStack alignItems="center" height="500px" overflowY={"auto"} flex={{ base: 2, md: 1, lg: 1 }} p={5} >
-          {mockLeaderboard.map((user, index) => (
-            <UserCard key={index} user={user} />
+          {leaderboard.map((user, index) => (
+            <UserCard key={index} user={user} name={name}/>
           ))}
             
           </VStack>
           <Flex display={{ lg: "flex", md: "flex", sm: "none" }} direction="column" flex={1} justifyContent={"center"} alignItems="center">
-            <LeaderboardPodium flex={1} first={top3[0]} second={top3[1]} third={top3[2]} />
+            <LeaderboardPodium flex={1} first={topboard[0] || { username: "", points: 0 }} 
+              second={topboard[1]|| { username: "", points: 0 }}
+              third={topboard[2] || { username: "", points: 0 }} />
             <Image src={mascot} alt="mascot.gif" boxSize="50%" mt={10} flex={1} ></Image>
           </Flex>
 

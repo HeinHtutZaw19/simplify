@@ -17,6 +17,9 @@ import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
 import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 
+// Leaderboard
+import leaderboard from './utils/leaderboard.js';
+
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -343,6 +346,10 @@ app.post("/api/selfie", async (req, res) => {
         return res.status(500).json({ message: "Error processing image" });
     }
 });
+
+
+// Leaderboard
+app.use(leaderboard);
 
 app.listen(PORT, () => {
     connectDB();

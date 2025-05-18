@@ -3,13 +3,13 @@ import { Flex, Box, Text, Avatar } from '@chakra-ui/react';
 import { PiArrowFatUpFill, PiArrowFatDownFill } from "react-icons/pi";
 import Colors from '../utils/Colors';
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, name }) => {
     const colors = Colors();
     return (
         <Flex
             key={user.id}
             width={{ base: "100%", sm: "90%", md: "80%" }} // Adjust width based on screen size
-            bg={user.name === "Henry" ? colors.BRIGHT2 : colors.MAIN1}
+            bg={user.username === name ? colors.BRIGHT2 : colors.MAIN1}
             borderRadius="md"
             p={3} // Increase padding for better spacing
             boxShadow="sm"
@@ -19,7 +19,7 @@ const UserCard = ({ user }) => {
             gap={4} // Add spacing between items
         >
             {/* Avatar */}
-            <Avatar name={user.name} size={{ base: "md", sm: "sm" }} />
+            <Avatar name={user.username} size={{ base: "md", sm: "sm" }} />
 
             {/* User Name */}
             <Text
@@ -29,11 +29,11 @@ const UserCard = ({ user }) => {
                 fontSize={{ base: "2xs", md: "xs" }}
                 color={colors.TEXT1}
             >
-                {user.name}
+                {user.username}
             </Text>
 
             {/* User ID */}
-            <Box
+            {/* <Box
                 w={{ base: 40, sm: 30 }}
                 h={{ base: 40, sm: 30 }}
                 borderRadius="full"
@@ -45,7 +45,7 @@ const UserCard = ({ user }) => {
                 fontSize={{ base: "2xs", sm: "xs" }}
             >
                 {user.id}
-            </Box>
+            </Box> */}
 
             {/* Points */}
             <Text
@@ -55,15 +55,15 @@ const UserCard = ({ user }) => {
                 fontSize={{ base: "2xs", md: "xs" }}
                 color={colors.TEXT1}
             >
-                {user.points}
+                {user.streak}
             </Text>
 
             {/* Trend Icon */}
-            {user.trend === "up" ? (
+            {/* {user.trend === "up" ? (
                 <PiArrowFatUpFill color="green" size={20} />
             ) : (
                 <PiArrowFatDownFill color="red" size={20} />
-            )}
+            )} */}
         </Flex>
     );
 };
