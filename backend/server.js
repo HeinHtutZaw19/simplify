@@ -130,7 +130,8 @@ app.post('/api/signup', async (req, res) => {
             username: username,
             email: email,
             password: hashed,
-            routine: mockRoutine
+            pfp: 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg',
+            routine: mockRoutine,
         })
         const savedUser = await newUser.save();
         console.log('User created:', savedUser);
