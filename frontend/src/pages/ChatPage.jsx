@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Flex, Input, Button, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, Input, Button, HStack, Text, Spacer } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
-import { checkLogin, chat, getChatList } from "../API/API";
+import { checkLogin, chat, getChatList, deleteChat } from "../API/API";
 import Message from "../components/Message";
 import Colors from '../utils/Colors';
 import LoadingBubble from "../components/LoadingBubble";
@@ -116,10 +116,15 @@ const ChatPage = () => {
           </Button>
         </HStack>
 
-        <Flex p={4} alignItems="center" justifyContent="center">
+        <Flex p={4} alignItems="center">
+          <Spacer />
           <Text fontSize={{ base: "xs", md: "sm" }} color={colors.TEXT1}>
             Simpli Chat can make mistakes. Please double-check your information!
           </Text>
+          <Spacer />
+          <Button colorScheme="red" variant="outline" ml={4} onClick={() => { deleteChat(user.username); setMessages([]); }}>
+            X
+          </Button>
         </Flex>
       </Flex>}
     </>

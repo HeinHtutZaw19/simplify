@@ -5,13 +5,17 @@ import dotenv from 'dotenv';
 import path from "path";
 import cors from "cors";
 import bcrypt from 'bcryptjs';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
 import { connectDB } from "./config/db.js";
+import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
 import Product from './models/product.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
+import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 
 const app = express();
 dotenv.config();
@@ -36,6 +40,8 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
+app.use(cookieParser());
+
 app.use(session({
     secret: 'VE9zUUDY8FWggzDg', //random string
     resave: false,
@@ -53,6 +59,9 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/api/signup', async (req, res) => {
     try {
@@ -145,10 +154,9 @@ app.post('/api/signup', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
+            // return created user
+            res.json(savedUser);
         })
-
-        // return created user
-        res.json(savedUser);
     }
     catch (error) {
         console.error('Signup error:', error.message);
@@ -186,16 +194,45 @@ app.post('/api/login', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
+            // return created user
+            res.json(foundUser);
         })
-
-        // return created user
-        res.json(foundUser);
     }
     catch (error) {
         console.error('Login error:', error.message);
         res.statusMessage = "Login error: " + error.message;
         res.sendStatus(400);
     }
+});
+
+app.get('/api/login/google', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+}));
+
+app.get('/api/login/google/callback', (req, res, next) => {
+    passport.authenticate('google', async (err, user, info) => {
+        if (err) {
+            console.error('Google login error:', err);
+            return res.redirect('http://localhost:5173/login');
+        }
+
+        if (!user) {
+            console.warn('Google login failed: email not found');
+            return res.redirect('http://localhost:5173/login');
+        }
+
+        req.session.user = user;
+
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.redirect('http://localhost:5173/login');
+            }
+            res.redirect('http://localhost:5173');
+        });
+
+    })(req, res, next);
 });
 
 app.get('/api/checklogin', (req, res) => {
@@ -254,6 +291,33 @@ app.post('/api/chat', async (req, res) => {
     }
 })
 
+app.delete('/api/chat', async (req, res) => {
+    try {
+        console.log("DELETE /api/chat");
+        const { username } = req.body;
+        if (!username) {
+            return res.status(400).json({ error: 'Missing username in request body' });
+        }
+
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        await Chat.deleteMany({ _id: { $in: user.chat } });
+
+        // 3) Clear the user's chat array
+        user.chat = [];
+        await user.save();
+
+        console.log(`Deleted all chats for user: ${username}`);
+        return res.status(200).json({ message: 'Chat history cleared' });
+    } catch (err) {
+        console.error('Error in DELETE /api/chat:', err);
+        return res.sendStatus(500);
+    }
+});
+
 app.get(`/api/user/:username/routine`, async (req, res) => {
     try {
         const username = req.params.username;
@@ -265,6 +329,20 @@ app.get(`/api/user/:username/routine`, async (req, res) => {
         res.sendStatus(500);
     }
 })
+
+app.post("/api/selfie", async (req, res) => {
+    try {
+        const publicUrl = req.body.image;
+        if (!publicUrl) {
+            return res.status(400).json({ message: "No image provided" });
+        }
+        const analysis = await evaluateSelfie(publicUrl);
+        return res.status(200).json({ message: analysis });
+    } catch (err) {
+        console.error("Error in /api/selfie:", err);
+        return res.status(500).json({ message: "Error processing image" });
+    }
+});
 
 app.listen(PORT, () => {
     connectDB();
