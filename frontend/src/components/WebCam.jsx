@@ -49,7 +49,17 @@ const WebCam = ({ handleSubmitClick, image, setImage }) => {
                     </>
                 ) : (
                     <>
-                        <Webcam audio={false} ref={webcamRef} screenshotFormat='image/jpeg' videoConstraints={videoConstraints} />
+                        <Webcam
+                            style={{
+                                borderRadius: 12,
+                                border: "2px solid grey",
+                                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                filter: "contrast(1.05) brightness(1.02)"
+                            }}
+                            audio={false}
+                            ref={webcamRef}
+                            screenshotFormat='image/jpeg'
+                            videoConstraints={videoConstraints} />
                         <Button onClick={handlePhoto}>Take Photo</Button>
                     </>
                 )
