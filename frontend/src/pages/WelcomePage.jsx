@@ -33,7 +33,7 @@ const WelcomePage = () => {
     };
 
     const onSignupClick = async () => {
-        console.log('google clicked');
+        console.log('signup clicked');
         navigate('/survey')
     };
 

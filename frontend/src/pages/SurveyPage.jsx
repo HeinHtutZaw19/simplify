@@ -2,7 +2,7 @@ import { Progress, Button, Flex, Heading, Box } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { checkLogin, uploadImage } from '../API/API';
+import { checkLogin, uploadImage, getRecommendedRoutine } from '../API/API';
 import Question from '../components/Question'
 import Colors from '../utils/Colors.jsx';
 import WebCam from '../components/WebCam.jsx';
@@ -49,9 +49,9 @@ const SurveyPage = () => {
         fetchLoginData();
     }, []);
 
-    useEffect(() => {
-        console.log('survey responses:', responses);
-    }, [responses]);
+    // useEffect(() => {
+    //     console.log('survey responses:', responses);
+    // }, [responses]);
 
     const handleSelectAnswer = (answer) => {
         const currentKey = questions[currentStep].question;
@@ -87,9 +87,8 @@ const SurveyPage = () => {
 
         // save photo
         const formData = new FormData();
-
         if (photoFile) {
-            console.log('submission photo(file):', photoFile);
+            console.log('submission photo(file)');
             formData.append('image', photoFile);
         }
         else if (image) {
@@ -101,12 +100,32 @@ const SurveyPage = () => {
         }
 
         const result = await uploadImage(formData);
-        if (result.imageUrl) {
-            console.log('Uploaded to:', result.imageUrl);
-            navigate('/signup', { state: { surveyData: responses } });
-        } else {
-            console.error(result.error);
+        if (!result.imageUrl) {
+            console.error('Image upload error(Survey page):', result.error);
+            return;
         }
+        console.log('Uploaded to:', result.imageUrl);
+
+        const surveyData = {
+            oiliness: responses["How dry/oily does your skin feel?"],
+            sensitivity: responses["How sensitive is your skin?"],
+            ageGroupIndex: responses["What is your age group?"],
+            waterIntakeIndex: responses["How many cups of water do you usually drink in a day?"],
+            imageUrl: result.imageUrl
+        };
+        console.log('survey data before being sent to AI:', surveyData);
+
+        const recommendation = await getRecommendedRoutine(surveyData);
+        if (!recommendation) {
+            console.log('Survey routine recommendation error');
+            return;
+        }
+        console.log('AI generated routine:', recommendation);
+
+        const arrayMatch = recommendation.routine.match(/```javascript\s*([\s\S]*?)\s*```/);
+        const routine = arrayMatch ? arrayMatch[1] : null;
+
+        navigate('/signup', { state: { recommendation: recommendation, routine: routine, imageUrl: result.imageUrl } });
     }
 
     const handleCloseClick = async () => {

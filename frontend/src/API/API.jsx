@@ -228,4 +228,26 @@ export const uploadImage = async (formData) => {
     }
 };
 
+export const getRecommendedRoutine = async (surveyData) => {
+    const query = new URLSearchParams(surveyData).toString();
+    const url = `${apiUrl}/api/recommendation?${query}`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get recommendation error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get recommendation error:', error.message);
+    }
+};
+
 
