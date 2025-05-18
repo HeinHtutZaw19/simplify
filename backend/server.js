@@ -34,6 +34,8 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+const isProd = process.env.NODE_ENV === 'production';
+
 app.use(session({
     secret: 'VE9zUUDY8FWggzDg', //random string
     resave: false,
@@ -45,8 +47,8 @@ app.use(session({
     }),
     cookie: {
         httpOnly: true,
-        secure: false,
-        sameSite: 'none',
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
