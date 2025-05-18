@@ -1,4 +1,3 @@
-const apiUrl = 'http://localhost:4000'
 
 const header = {
     headers: {
@@ -7,7 +6,7 @@ const header = {
 }
 
 export const signupUser = async (user) => {
-    const url = `${apiUrl}/api/signup`
+    const url = `/api/signup`
     const params = {
         ...header,
         method: 'POST',
@@ -37,7 +36,7 @@ export const signupUser = async (user) => {
 }
 
 export const loginUser = async (user) => {
-    const url = `${apiUrl}/api/login`
+    const url = `/api/login`
     const params = {
         ...header,
         method: 'POST',
@@ -67,7 +66,7 @@ export const loginUser = async (user) => {
 }
 
 export const checkLogin = async () => {
-    const url = `${apiUrl}/api/checklogin`;
+    const url = `/api/checklogin`;
     const params = {
         ...header,
         method: 'GET',
@@ -84,7 +83,7 @@ export const checkLogin = async () => {
 }
 
 export const logoutUser = async () => {
-    const url = `${apiUrl}/api/logout`;
+    const url = `/api/logout`;
     const params = {
         ...header,
         method: 'GET',
@@ -104,7 +103,7 @@ export const logoutUser = async () => {
 }
 
 export const getChatList = async (username) => {
-    const url = `${apiUrl}/api/user/${username}/chat`;
+    const url = `/api/user/${username}/chat`;
     const params = {
         ...header,
         method: 'GET',
@@ -126,7 +125,7 @@ export const getChatList = async (username) => {
 
 export const chat = async (username, userQuery, convHistory) => {
     try {
-        const response = await fetch(`${apiUrl}/api/chat`, {
+        const response = await fetch(`/api/chat`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain, */*',
@@ -147,7 +146,7 @@ export const chat = async (username, userQuery, convHistory) => {
 export const deleteChat = async (username) => {
     try {
         console.log("deleteChat")
-        const res = await fetch(`${apiUrl}/api/chat`, {
+        const res = await fetch(`/api/chat`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -161,7 +160,7 @@ export const deleteChat = async (username) => {
 };
 
 export const getUserRoutine = async (username) => {
-    const url = `${apiUrl}/api/user/${username}/routine`;
+    const url = `/api/user/${username}/routine`;
     const params = {
         ...header,
         method: 'GET',
@@ -192,7 +191,7 @@ export const uploadSelfie = async (payload) => {
     } else {
         throw new Error('Invalid payload for uploadSelfie');
     }
-    const res = await fetch(`${apiUrl}/api/selfie`, {
+    const res = await fetch(`/api/selfie`, {
         method: 'POST',
         credentials: 'include',
         headers,

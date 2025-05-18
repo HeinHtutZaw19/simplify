@@ -15,30 +15,22 @@ import Product from './models/product.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
-import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
+import { evaluateSelfie } from './utils/vision.js';
 
 const app = express();
 dotenv.config();
+
 const PORT = process.env.PORT || 4000;
-console.log(PORT)
+var FRONTEND_PORT = 5173;
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: `http://localhost:${FRONTEND_PORT}`,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
 
 app.use(express.json());
-
-const __dirname = path.resolve();
-console.log(process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/dist')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
-    })
-}
 
 app.use(cookieParser());
 
@@ -53,8 +45,8 @@ app.use(session({
     }),
     cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        secure: false,
+        sameSite: 'none',
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -214,12 +206,12 @@ app.get('/api/login/google/callback', (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
         if (err) {
             console.error('Google login error:', err);
-            return res.redirect('http://localhost:5173/login');
+            return res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
         }
 
         if (!user) {
             console.warn('Google login failed: email not found');
-            return res.redirect('http://localhost:5173/login');
+            return res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
         }
 
         req.session.user = user;
@@ -227,9 +219,9 @@ app.get('/api/login/google/callback', (req, res, next) => {
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-                return res.redirect('http://localhost:5173/login');
+                return res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
             }
-            res.redirect('http://localhost:5173');
+            res.redirect(`http://localhost:${FRONTEND_PORT}`);
         });
 
     })(req, res, next);
@@ -343,6 +335,15 @@ app.post("/api/selfie", async (req, res) => {
         return res.status(500).json({ message: "Error processing image" });
     }
 });
+
+const __dirname = path.resolve();
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+    })
+}
 
 app.listen(PORT, () => {
     connectDB();
