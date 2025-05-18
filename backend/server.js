@@ -11,23 +11,23 @@ import { connectDB } from "./config/db.js";
 import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
-import Product from './models/product.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
-import { evaluateSelfie } from './utils/vision.js';
+import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 
 const app = express();
 dotenv.config();
-
 const PORT = process.env.PORT || 4000;
-var FRONTEND_PORT = 5173;
-const isProd = process.env.NODE_ENV === 'production';
+console.log(process.env.CLIENT_URL, process.env.NODE_ENV)
+const CLIENT_URL = process.env.NODE_ENV == 'production' ? 'https://simplify-e3px.onrender.com' : 'http://localhost:5173';
+console.log(PORT, CLIENT_URL)
 
-console.log(isProd)
+const __dirname = path.resolve();
+app.set('trust proxy', 1);
 
 app.use(cors({
-    origin: `http://localhost:${FRONTEND_PORT}`,
+    origin: CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
@@ -36,7 +36,6 @@ app.use(cors({
 app.use(express.json());
 
 app.use(cookieParser());
-
 
 app.use(session({
     secret: 'VE9zUUDY8FWggzDg', //random string
@@ -49,8 +48,8 @@ app.use(session({
     }),
     cookie: {
         httpOnly: true,
-        secure: false,
-        sameSite: 'none',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -93,56 +92,17 @@ app.post('/api/signup', async (req, res) => {
         const salted = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salted);
 
-        // mock data for initial products (change to actual recommended products from survey later)
-        const mockProduct1 = new Product({
-            name: 'product 1',
-            price: 10,
-            imageUrl: 'https://pngimg.com/d/number1_PNG14888.png',
-            instruction: 'instruction 1'
-        })
-        const savedProduct1 = await mockProduct1.save();
-        const mockProduct2 = new Product({
-            name: 'product 2',
-            price: 10,
-            imageUrl: 'https://i.pinimg.com/736x/85/f5/be/85f5bedff0758abea714994d3c398559.jpg',
-            instruction: 'instruction 2'
-        })
-        const savedProduct2 = await mockProduct2.save();
-        const mockProduct3 = new Product({
-            name: 'product 3',
-            price: 10,
-            imageUrl: 'https://i.pinimg.com/600x315/c0/a0/07/c0a0077f1c0cae02626f8f8281f0df35.jpg',
-            instruction: 'instruction 3'
-        })
-        const savedProduct3 = await mockProduct3.save();
-        const mockProduct4 = new Product({
-            name: 'product 4',
-            price: 10,
-            imageUrl: 'https://t3.ftcdn.net/jpg/01/37/43/16/360_F_137431664_H1WqRW3AmzOpZsYqboJ9fGUZ1P6YnS2u.jpg',
-            instruction: 'instruction 4'
-        })
-        const savedProduct4 = await mockProduct4.save();
-
-        const mockRoutine = [
-            savedProduct1._id,
-            savedProduct2._id,
-            savedProduct3._id,
-            savedProduct4._id
-        ]
-
         // create user in db
         const newUser = new User({
             username: username,
             email: email,
             password: hashed,
-            pfp: 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg',
-            routine: mockRoutine,
         })
-        const savedUser = await newUser.save();
-        console.log('User created:', savedUser);
+        await newUser.save();
+        console.log('User created:', username);
 
         // make new session
-        req.session.user = savedUser;
+        req.session.user = newUser;
         req.session.save(err => {
             if (err) {
                 console.log('Session(signup) error:', err);
@@ -150,8 +110,9 @@ app.post('/api/signup', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
+
             // return created user
-            res.json(savedUser);
+            res.json(newUser);
         })
     }
     catch (error) {
@@ -210,12 +171,12 @@ app.get('/api/login/google/callback', (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
         if (err) {
             console.error('Google login error:', err);
-            return res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
+            return res.redirect('http://localhost:5173/login');
         }
 
         if (!user) {
             console.warn('Google login failed: email not found');
-            return res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
+            return res.redirect('http://localhost:5173/login');
         }
 
         req.session.user = user;
@@ -223,9 +184,9 @@ app.get('/api/login/google/callback', (req, res, next) => {
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-                return res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
+                return res.redirect('http://localhost:5173/login');
             }
-            res.redirect(`http://localhost:${FRONTEND_PORT}`);
+            res.redirect('http://localhost:5173');
         });
 
     })(req, res, next);
@@ -314,17 +275,6 @@ app.delete('/api/chat', async (req, res) => {
     }
 });
 
-app.get(`/api/user/:username/routine`, async (req, res) => {
-    try {
-        const username = req.params.username;
-        const user = await User.findOne({ username: username });
-        const foundProducts = await Product.find({ _id: { $in: user.routine } }).sort({ createdAt: 1 });
-        res.status(200).send(foundProducts);
-    } catch (error) {
-        console.log(error)
-        res.sendStatus(500);
-    }
-})
 
 app.post("/api/selfie", async (req, res) => {
     try {
@@ -340,7 +290,7 @@ app.post("/api/selfie", async (req, res) => {
     }
 });
 
-const __dirname = path.resolve();
+
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
@@ -349,7 +299,9 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
+
 app.listen(PORT, () => {
     connectDB();
     console.log(`Server started on http://localhost:${PORT}`);
 })
+

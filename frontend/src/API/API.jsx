@@ -1,3 +1,4 @@
+const apiUrl = 'https://simplify-e3px.onrender.com'
 
 const header = {
     headers: {
@@ -6,7 +7,7 @@ const header = {
 }
 
 export const signupUser = async (user) => {
-    const url = `/api/signup`
+    const url = `${apiUrl}/api/signup`
     const params = {
         ...header,
         method: 'POST',
@@ -36,7 +37,7 @@ export const signupUser = async (user) => {
 }
 
 export const loginUser = async (user) => {
-    const url = `/api/login`
+    const url = `${apiUrl}/api/login`
     const params = {
         ...header,
         method: 'POST',
@@ -66,7 +67,7 @@ export const loginUser = async (user) => {
 }
 
 export const checkLogin = async () => {
-    const url = `/api/checklogin`;
+    const url = `${apiUrl}/api/checklogin`;
     const params = {
         ...header,
         method: 'GET',
@@ -83,7 +84,7 @@ export const checkLogin = async () => {
 }
 
 export const logoutUser = async () => {
-    const url = `/api/logout`;
+    const url = `${apiUrl}/api/logout`;
     const params = {
         ...header,
         method: 'GET',
@@ -103,7 +104,7 @@ export const logoutUser = async () => {
 }
 
 export const getChatList = async (username) => {
-    const url = `/api/user/${username}/chat`;
+    const url = `${apiUrl}/api/user/${username}/chat`;
     const params = {
         ...header,
         method: 'GET',
@@ -125,7 +126,7 @@ export const getChatList = async (username) => {
 
 export const chat = async (username, userQuery, convHistory) => {
     try {
-        const response = await fetch(`/api/chat`, {
+        const response = await fetch(`${apiUrl}/api/chat`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain, */*',
@@ -142,11 +143,10 @@ export const chat = async (username, userQuery, convHistory) => {
         return `Err: Simpli cannot give back an answer. ${err}`
     }
 }
-
 export const deleteChat = async (username) => {
     try {
         console.log("deleteChat")
-        const res = await fetch(`/api/chat`, {
+        const res = await fetch(`${apiUrl}/api/chat`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -159,8 +159,34 @@ export const deleteChat = async (username) => {
     }
 };
 
+export const uploadSelfie = async (payload) => {
+    let headers = {};
+    let body;
+    if (payload instanceof FormData) {
+        body = payload;
+    } else if (payload && typeof payload === 'object' && 'image' in payload) {
+        headers['Content-Type'] = 'application/json';
+        body = JSON.stringify(payload);
+    } else {
+        throw new Error('Invalid payload for uploadSelfie');
+    }
+    const res = await fetch(`${apiUrl}/api/selfie`, {
+        method: 'POST',
+        credentials: 'include',
+        headers,
+        body,
+    });
+    if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || `Upload failed: ${res.status}`);
+    }
+    return res.json();
+};
+
+
+
 export const getUserRoutine = async (username) => {
-    const url = `/api/user/${username}/routine`;
+    const url = `${apiUrl}/api/user/${username}/routine`;
     const params = {
         ...header,
         method: 'GET',
@@ -179,29 +205,3 @@ export const getUserRoutine = async (username) => {
         console.error('Get routine error:', error.message);
     }
 }
-
-export const uploadSelfie = async (payload) => {
-    let headers = {};
-    let body;
-    if (payload instanceof FormData) {
-        body = payload;
-    } else if (payload && typeof payload === 'object' && 'image' in payload) {
-        headers['Content-Type'] = 'application/json';
-        body = JSON.stringify(payload);
-    } else {
-        throw new Error('Invalid payload for uploadSelfie');
-    }
-    const res = await fetch(`/api/selfie`, {
-        method: 'POST',
-        credentials: 'include',
-        headers,
-        body,
-    });
-    if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || `Upload failed: ${res.status}`);
-    }
-    return res.json();
-};
-
-
