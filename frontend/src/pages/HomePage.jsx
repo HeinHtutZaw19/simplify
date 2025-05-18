@@ -40,7 +40,9 @@ const HomePage = () => {
     const setProductList = async (username) => {
       const productList = await getUserRoutine(username);
       console.log('product list:', productList);
-      setRoutine(productList);
+      if (productList) {
+        setRoutine(productList);
+      }
     }
     if (user) {
       setProductList(user.username);
@@ -52,10 +54,8 @@ const HomePage = () => {
   }
 
   const [checked, setChecked] = useState([]);
-  var allChecked = true;
-  if (routine) {
-    allChecked = checked.length === routine.length;
-  }
+  const allChecked = checked.length === routine.length;
+
   const handleCheck = (values) => {
     setChecked(values);
   }
