@@ -19,7 +19,7 @@ import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const CLIENT_URL = process.env.NODE_ENV == 'production' ? process.env.CLIENT_URL : 'http://localhost:5173';
 console.log(PORT, CLIENT_URL)
 
 app.set('trust proxy', 1);
