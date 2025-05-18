@@ -1,7 +1,7 @@
 import { signupUser } from '../API/API'
 import { Input, Button, Flex, Heading, Box, Text } from '@chakra-ui/react'
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { checkLogin } from '../API/API'
 import { CloseIcon } from '@chakra-ui/icons';
 import Colors from '../utils/Colors.jsx';
@@ -10,8 +10,10 @@ import Colors from '../utils/Colors.jsx';
 const SignupPage = () => {
     const colors = Colors();
     const navigate = useNavigate();
+    const location = useLocation();
     const usernameInputRef = useRef(null);
     const [loaded, setLoaded] = useState(false);
+    const surveyData = location.state?.surveyData;
 
     useEffect(() => {
         const fetchLoginData = async () => {
@@ -27,6 +29,11 @@ const SignupPage = () => {
             }
         }
         fetchLoginData();
+        console.log(surveyData)
+        if (!surveyData) {
+            console.log('no survey data, navigating to /survey');
+            navigate('/survey');
+        }
     }, []);
 
     const [signupInfo, setSignupInfo] = useState({

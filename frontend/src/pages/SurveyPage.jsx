@@ -7,11 +7,13 @@ import Question from '../components/Question'
 import Colors from '../utils/Colors.jsx';
 import WebCam from '../components/WebCam.jsx';
 
-
 const SurveyPage = () => {
     const colors = Colors();
     const navigate = useNavigate();
     const [loaded, setLoaded] = useState(false);
+    const [currentStep, setCurrentStep] = useState(0);
+    const [responses, setResponses] = useState({});
+    const [isLast, setIsLast] = useState(false);
 
     useEffect(() => {
         const fetchLoginData = async () => {
@@ -43,12 +45,7 @@ const SurveyPage = () => {
             question: "How many cups of water do you usually drink in a day?",
             answers: ["Less than 1 cup", "1-3 cups", "4-6 cups", "7-9 cups", "10 or more cups"]
         }
-
     ];
-
-    const [currentStep, setCurrentStep] = useState(0);
-    const [responses, setResponses] = useState({});
-    const [isLast, setIsLast] = useState(false);
 
     const handleSelectAnswer = (answer) => {
         const currentKey = questions[currentStep].question;
@@ -63,7 +60,7 @@ const SurveyPage = () => {
             }, 200);
             console.log(responses);
         }
-        else if (currentStep == questions.length - 1){
+        else if (currentStep == questions.length - 1) {
             setTimeout(() => {
                 setCurrentStep(currentStep + 1);
             }, 200);
@@ -72,17 +69,16 @@ const SurveyPage = () => {
         }
         else {
             console.log("Survey complete:", responses);
-            navigate('/signup');
+            // navigate('/signup');
         }
     };
 
     const handleSubmit = () => {
         console.log("Survey complete:", responses);
-        navigate('/signup');
+        navigate('/signup', { state: { surveyData: responses } });
     }
 
     const handleCloseClick = async () => {
-        console.log('logout clicked');
         navigate('/welcome');
     }
 
@@ -104,28 +100,28 @@ const SurveyPage = () => {
                 </Box>
 
                 {!isLast ? (
-                <>
-                <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
-                    <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor={colors.MAIN3} />
-                </Box>
-                <Flex flex="1" direction="column" alignItems="center" pt={50}>
-                    <Question
-                        question={questions[currentStep].question}
-                        answers={questions[currentStep].answers}
-                        selected={responses[questions[currentStep].question] || ''}
-                        onSelect={handleSelectAnswer}
-                    />
-                </Flex>
-                </>
+                    <>
+                        <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
+                            <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor={colors.MAIN3} />
+                        </Box>
+                        <Flex flex="1" direction="column" alignItems="center" pt={50}>
+                            <Question
+                                question={questions[currentStep].question}
+                                answers={questions[currentStep].answers}
+                                selected={responses[questions[currentStep].question] || ''}
+                                onSelect={handleSelectAnswer}
+                            />
+                        </Flex>
+                    </>
                 ) : (
                     <>
                         <Box w="84vw" alignContent='center' >
-                            <WebCam handleSubmitClick={handleSubmit}/>
+                            <WebCam handleSubmitClick={handleSubmit} />
                         </Box>
                     </>
                 )}
             </Box>
-            )}
+        )}
         </>
     )
 }
