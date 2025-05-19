@@ -57,7 +57,7 @@ Only recommend products from the list:
 ${products.map(p => `• ${p.name} — ${p.description} — Price: ${p.price} — Image: ${p.product_image}`).join("\n")}
 
 Respond with:
-- A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process
+- A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process, for a total of 4 unique products
 - Multiple paragraphs with bullets and fun tone
 - A 1-sentence summary under 50 words
 - A javascript array of the four chosen products in this exact format: {name, description, price, imageUrl}
