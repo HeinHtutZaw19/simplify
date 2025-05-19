@@ -11,6 +11,7 @@ import { connectDB } from "./config/db.js";
 import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
+import Product from './models/product.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
@@ -74,7 +75,6 @@ const upload = multer({ storage });
 app.post('/api/signup', async (req, res) => {
     try {
         const { username, email, password, routine } = req.body;
-        console.log('routine:', routine[1])
 
         // validate email format
         // <string>@<string>.<string>
