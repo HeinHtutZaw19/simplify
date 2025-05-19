@@ -57,11 +57,13 @@ Only recommend products from the list:
 ${products.map(p => `• ${p.name} — ${p.description} — Price: ${p.price} — Image: ${p.product_image}`).join("\n")}
 
 Respond with:
-- A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process, for a total of 4 unique products
-- Multiple paragraphs with bullets and fun tone
-- A 1-sentence summary under 50 words
+- (HTML format) A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process, for a total of 4 unique products
+- (HTML format) Multiple paragraphs with bullets and fun tone
+- (HTML format) A 1-sentence summary under 50 words
 - A javascript array of the four chosen products in this exact format: {name, instruction, price, imageUrl}
 If nothing fits, say: "I'm sorry, I couldn't find a suitable routine. Please reach out to contact@simplify.com 💖."
+Do not wrap the HTML inside any formatting, only return the raw strings.
+However, you must wrap the javascript array in a code block.
 `;
 }
 export async function recommendRoutine({

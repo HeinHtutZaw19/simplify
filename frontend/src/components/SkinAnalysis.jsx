@@ -17,9 +17,7 @@ const SkinAnalysis = ({ feedback, luminosity, clarity, vibrancy, overall }) => {
                 <Image src={imageUrl} alt="skin analysis" boxSize="30%"></Image>
                 <Metrics luminosity={luminosity} clarity={clarity} vibrancy={vibrancy} overall={overall} />
             </Flex>
-            <Text p={4}>
-                {summary}
-            </Text>
+            <Text p={4} dangerouslySetInnerHTML={{__html: summary}} />
             {/* <Text p={4}>
                 Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
                 <br /><br />
