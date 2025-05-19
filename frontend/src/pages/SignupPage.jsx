@@ -13,7 +13,7 @@ const SignupPage = () => {
     const location = useLocation();
     const usernameInputRef = useRef(null);
     const [loaded, setLoaded] = useState(false);
-    const recommendation = location.state?.recommendation;
+    const feedbackText = location.state?.feedbackText;
     const rawRoutine = location.state?.routine;
     const routine = eval(`(${rawRoutine})`); // array of 4 products {name, description(=>supposed to be instruction), price, imageUrl}
     const imageUrl = location.state?.imageUrl;
@@ -32,8 +32,8 @@ const SignupPage = () => {
             }
         }
         fetchLoginData();
-        console.log('summary:', recommendation, 'routine:', routine, ', image:', imageUrl);
-        if (!recommendation || !routine || !imageUrl) {
+        console.log('summary:', feedbackText, 'routine:', routine, ', image:', imageUrl);
+        if (!feedbackText || !routine || !imageUrl) {
             console.log('no survey data, navigating to /survey');
             navigate('/survey');
         }
@@ -114,7 +114,7 @@ const SignupPage = () => {
             'password': signupInfo.password,
             'routine': routine,
             'feedback': {
-                'feedback': recommendation.routine,
+                'feedback': feedbackText,
                 'imageUrl': imageUrl,
             }
         });

@@ -12,9 +12,9 @@ const SkinAnalysis = ({ feedback, luminosity, clarity, vibrancy, overall }) => {
     const imageUrl = feedback.imageUrl;
     return (
         <Box color={colors.TEXT1}>
-            <Heading id="home-analysis-heading">Combination Skin Type</Heading>
+            {/* <Heading id="home-analysis-heading">Combination Skin Type</Heading> */}
             <Flex id='home-analysis-visuals'>
-                <Image src={skinanalysis} alt="skin analysis" boxSize="30%"></Image>
+                <Image src={imageUrl} alt="skin analysis" boxSize="30%"></Image>
                 <Metrics luminosity={luminosity} clarity={clarity} vibrancy={vibrancy} overall={overall} />
             </Flex>
             <Text p={4}>
@@ -45,9 +45,9 @@ const SkinAnalysis = ({ feedback, luminosity, clarity, vibrancy, overall }) => {
                 </ListItem>
             </List> */}
 
-            <Text p={4}>
+            {/* <Text p={4}>
                 🕒Start today, and you'll see visible improvements in just a few weeks! Keep up the routine, and your skin will thank you.
-            </Text>
+            </Text> */}
         </Box>
     )
 }

@@ -124,8 +124,9 @@ const SurveyPage = () => {
 
         const arrayMatch = recommendation.routine.match(/```javascript\s*([\s\S]*?)\s*```/);
         const routine = arrayMatch ? arrayMatch[1] : null;
+        const feedback = recommendation.routine.split("```")[0].trim();
 
-        navigate('/signup', { state: { recommendation: recommendation, routine: routine, imageUrl: result.imageUrl } });
+        navigate('/signup', { state: { feedbackText: feedback, routine: routine, imageUrl: result.imageUrl } });
     }
 
     const handleCloseClick = async () => {
