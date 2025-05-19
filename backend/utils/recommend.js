@@ -16,19 +16,19 @@ const supabase = createClient(
 
 const AgeGroup = {
     UNDER_18: 'Under 18',
-    AGE_18_24: '18-24',
-    AGE_25_34: '25-34',
-    AGE_35_44: '35-44',
-    AGE_45_PLUS: '45+',
+    AGE_18_24: '18 - 24',
+    AGE_25_34: '25 - 34',
+    AGE_35_44: '35 - 44',
+    AGE_45_PLUS: '45 or older',
 };
 const AgeGroupKeys = Object.keys(AgeGroup);
 
 const WaterIntakeGroup = {
-    LOW: '<1 cup',
+    LOW: 'Less than 1 cup',
     MODERATE: '1-3 cups',
     AVERAGE: '4-6 cups',
     GOOD: '7-9 cups',
-    EXCELLENT: '10+ cups',
+    EXCELLENT: '10 or more cups',
 };
 const WaterIntakeKeys = Object.keys(WaterIntakeGroup);
 
@@ -54,12 +54,13 @@ User Profile:
 - Water Intake: ${waterIntake}
 
 Only recommend products from the list:
-${products.map(p => `• ${p.name} — ${p.description}`).join("\n")}
+${products.map(p => `• ${p.name} — ${p.description} — Price: ${p.price} — Image: ${p.product_image}`).join("\n")}
 
 Respond with:
-- A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate → Protect
+- A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process, for a total of 4 unique products
 - Multiple paragraphs with bullets and fun tone
 - A 1-sentence summary under 50 words
+- A javascript array of the four chosen products in this exact format: {name, description, price, imageUrl}
 If nothing fits, say: "I'm sorry, I couldn't find a suitable routine. Please reach out to contact@simplify.com 💖."
 `;
 }
@@ -90,17 +91,17 @@ export async function recommendRoutine({
     return response.choices[0].message.content;
 }
 
-(async () => {
-    try {
-        const routine = await recommendRoutine({
-            oiliness: 'Combination',
-            sensitivity: 'Low',
-            ageGroupIndex: 2,
-            waterIntakeIndex: 2,
-            image_url: 'https://cdn.shopify.com/s/files/1/0105/8429/3412/files/4_98aeafba-9579-481f-938d-15329c17632a_480x480.png?v=1617889634',
-        });
-        console.log('Recommended Routine:\n', routine);
-    } catch (err) {
-        console.error('Error:', err);
-    }
-})();
+// (async () => {
+//     try {
+//         const routine = await recommendRoutine({
+//             oiliness: 'Combination',
+//             sensitivity: 'Low',
+//             ageGroupIndex: 2,
+//             waterIntakeIndex: 2,
+//             image_url: 'https://cdn.shopify.com/s/files/1/0105/8429/3412/files/4_98aeafba-9579-481f-938d-15329c17632a_480x480.png?v=1617889634',
+//         });
+//         console.log('Recommended Routine:\n', routine);
+//     } catch (err) {
+//         console.error('Error:', err);
+//     }
+// })();

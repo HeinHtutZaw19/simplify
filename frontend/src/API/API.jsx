@@ -187,7 +187,50 @@ export const uploadSelfie = async (payload) => {
     return res.json();
 };
 
+export const uploadImage = async (formData) => {
+    const url = `${apiUrl}/api/upload`;
+    const params = {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Image upload error:', res.status);
+            const errText = await res.text();
+            throw new Error(errText || 'Upload failed');
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Image upload error:', error.message);
+        return { error: error.message };
+    }
+};
 
+export const getRecommendedRoutine = async (surveyData) => {
+    const query = new URLSearchParams(surveyData).toString();
+    const url = `${apiUrl}/api/recommendation?${query}`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get recommendation error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get recommendation error:', error.message);
+    }
+};
 
 export const getUserRoutine = async (username) => {
     const url = `${apiUrl}/api/user/${username}/routine`;

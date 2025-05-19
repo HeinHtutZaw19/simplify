@@ -11,10 +11,15 @@ import { connectDB } from "./config/db.js";
 import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
+import Product from './models/product.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
 import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from './config/cloudinaryConfig.js';
+import { recommendRoutine } from './utils/recommend.js';
 
 const app = express();
 dotenv.config();
@@ -58,9 +63,18 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'simplify',
+        allowed_formats: ['jpg', 'jpeg', 'png'],
+    },
+});
+const upload = multer({ storage });
+
 app.post('/api/signup', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, routine } = req.body;
 
         // validate email format
         // <string>@<string>.<string>
@@ -92,11 +106,49 @@ app.post('/api/signup', async (req, res) => {
         const salted = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salted);
 
+        const product0 = new Product({
+            name: routine[0].name,
+            price: routine[0].price,
+            imageUrl: routine[0].imageUrl,
+            instruction: routine[0].description
+        });
+        const product1 = new Product({
+            name: routine[1].name,
+            price: routine[1].price,
+            imageUrl: routine[1].imageUrl,
+            instruction: routine[1].description
+        });
+        const product2 = new Product({
+            name: routine[2].name,
+            price: routine[2].price,
+            imageUrl: routine[2].imageUrl,
+            instruction: routine[2].description
+        });
+        const product3 = new Product({
+            name: routine[3].name,
+            price: routine[3].price,
+            imageUrl: routine[3].imageUrl,
+            instruction: routine[3].description
+        });
+        const savedProduct0 = await product0.save();
+        const savedProduct1 = await product1.save();
+        const savedProduct2 = await product2.save();
+        const savedProduct3 = await product3.save();
+
+        const routineIDs = [
+            savedProduct0._id,
+            savedProduct1._id,
+            savedProduct2._id,
+            savedProduct3._id
+        ]
+
         // create user in db
         const newUser = new User({
             username: username,
             email: email,
             password: hashed,
+            pfp: 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg',
+            routine: routineIDs,
         })
         await newUser.save();
         console.log('User created:', username);
@@ -275,6 +327,17 @@ app.delete('/api/chat', async (req, res) => {
     }
 });
 
+app.get(`/api/user/:username/routine`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        const foundProducts = await Product.find({ _id: { $in: user.routine } }).sort({ createdAt: 1 });
+        res.status(200).send(foundProducts);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
 
 app.post("/api/selfie", async (req, res) => {
     try {
@@ -290,6 +353,43 @@ app.post("/api/selfie", async (req, res) => {
     }
 });
 
+app.post('/api/upload', upload.single('image'), (req, res) => {
+    if (!req.file || !req.file.path) {
+        return res.status(400).json({ message: 'Upload failed' });
+    }
+
+    res.status(200).json({ imageUrl: req.file.path });
+});
+
+app.get('/api/recommendation', async (req, res) => {
+    try {
+        const {
+            oiliness,
+            sensitivity,
+            ageGroupIndex,
+            waterIntakeIndex,
+            imageUrl
+        } = req.query;
+
+        if (!oiliness || !sensitivity || ageGroupIndex === undefined || waterIntakeIndex === undefined || !imageUrl) {
+            res.statusMessage = "Missing required query parameters";
+            return res.sendStatus(400);
+        }
+
+        const routine = await recommendRoutine({
+            oiliness,
+            sensitivity,
+            ageGroupIndex: parseInt(ageGroupIndex),
+            waterIntakeIndex: parseInt(waterIntakeIndex),
+            image_url: imageUrl
+        });
+        res.status(200).json({ routine });
+    } catch (error) {
+        console.error('Recommendation error:', error.message);
+        res.statusMessage = "Recommendation error: " + error.message;
+        res.sendStatus(400);
+    }
+});
 
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {
@@ -298,7 +398,6 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
     })
 }
-
 
 app.listen(PORT, () => {
     connectDB();
