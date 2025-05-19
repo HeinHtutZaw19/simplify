@@ -6,6 +6,8 @@ import { CloseIcon } from '@chakra-ui/icons';
 import { loginUser, checkLogin } from '../API/API';
 import Colors from '../utils/Colors.jsx';
 
+const PORT = import.meta.env.PORT || 4000;
+
 const LoginPage = () => {
     const colors = Colors();
     const navigate = useNavigate();
@@ -96,7 +98,7 @@ const LoginPage = () => {
 
     const onGoogleClick = async () => {
         console.log('google clicked')
-        window.location.href = "http://localhost:4000/api/login/google";
+        window.location.href = `http://localhost:${PORT}/api/login/google`;
     }
 
     const handleCloseClick = async () => {
@@ -106,67 +108,67 @@ const LoginPage = () => {
 
     return (
         <> {loaded &&
-        <Box w='100%' p={20} >
-            <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
-                <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
-            </Box>
-            <Flex flex="1" direction="column" alignItems="center" pt={50}>
-                <Heading mb={5}> Login </Heading>
-                <Input placeholder='Email'
-                    name='email'
-                    value={loginInfo.email}
-                    onChange={handleChange}
-                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
-                    w="30vw"
-                    mt={3}
-                    rounded={10}
-                    backgroundColor={colors.MAIN2}
-                    isInvalid={(loginInfo.email.match(emailRegex) || !loginInfo.email ? false : true)}
-                    ref={emailInputRef}
-                />
-                {loginInfo.emailError &&
-                    <Text
+            <Box w='100%' p={20} >
+                <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
+                    <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
+                </Box>
+                <Flex flex="1" direction="column" alignItems="center" pt={50}>
+                    <Heading mb={5}> Login </Heading>
+                    <Input placeholder='Email'
+                        name='email'
+                        value={loginInfo.email}
+                        onChange={handleChange}
+                        onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                         w="30vw"
-                        mt={1}
-                        textAlign="left"
-                        px={2}
-                        fontSize="sm"
-                        color="red.500"
-                        fontWeight="bold"
-                    >
-                        {loginInfo.emailError}
-                    </Text>
-                }
-                <Input
-                    type='password'
-                    placeholder='Password'
-                    name='password'
-                    value={loginInfo.password}
-                    onChange={handleChange}
-                    onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
-                    w="30vw"
-                    mt={3}
-                    rounded={10}
-                    backgroundColor={colors.MAIN2}
-                />
-                {loginInfo.passwordError &&
-                    <Text
+                        mt={3}
+                        rounded={10}
+                        backgroundColor={colors.MAIN2}
+                        isInvalid={(loginInfo.email.match(emailRegex) || !loginInfo.email ? false : true)}
+                        ref={emailInputRef}
+                    />
+                    {loginInfo.emailError &&
+                        <Text
+                            w="30vw"
+                            mt={1}
+                            textAlign="left"
+                            px={2}
+                            fontSize="sm"
+                            color="red.500"
+                            fontWeight="bold"
+                        >
+                            {loginInfo.emailError}
+                        </Text>
+                    }
+                    <Input
+                        type='password'
+                        placeholder='Password'
+                        name='password'
+                        value={loginInfo.password}
+                        onChange={handleChange}
+                        onKeyDown={e => { if (e.key === 'Enter') onLoginClick(); }}
                         w="30vw"
-                        mt={1}
-                        textAlign="left"
-                        px={2}
-                        fontSize="sm"
-                        color="red.500"
-                        fontWeight="bold"
-                    >
-                        {loginInfo.passwordError}
-                    </Text>
-                }
-                <Button onClick={onLoginClick} w="30vw" mt={3}  bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={10}>Log in</Button>
-                <Divider w="30vw" m={6} borderColor="gray.800" />
-                <Button onClick={onGoogleClick} width="100%" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
-            </Flex>
-        </Box>}
+                        mt={3}
+                        rounded={10}
+                        backgroundColor={colors.MAIN2}
+                    />
+                    {loginInfo.passwordError &&
+                        <Text
+                            w="30vw"
+                            mt={1}
+                            textAlign="left"
+                            px={2}
+                            fontSize="sm"
+                            color="red.500"
+                            fontWeight="bold"
+                        >
+                            {loginInfo.passwordError}
+                        </Text>
+                    }
+                    <Button onClick={onLoginClick} w="30vw" mt={3} bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={10}>Log in</Button>
+                    <Divider w="30vw" m={6} borderColor="gray.800" />
+                    <Button onClick={onGoogleClick} width="100%" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} w="30vw" rounded={10} leftIcon={<FaGoogle />}>Google</Button>
+                </Flex>
+            </Box>}
         </>
 
     )

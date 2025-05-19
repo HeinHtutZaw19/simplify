@@ -11,7 +11,6 @@ import { connectDB } from "./config/db.js";
 import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
-import Product from './models/product.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
@@ -24,25 +23,21 @@ import { recommendRoutine } from './utils/recommend.js';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
-console.log(PORT)
+console.log(process.env.CLIENT_URL, process.env.NODE_ENV)
+const CLIENT_URL = process.env.NODE_ENV == 'production' ? 'https://simplify-e3px.onrender.com' : 'http://localhost:5173';
+console.log(PORT, CLIENT_URL)
+
+const __dirname = path.resolve();
+app.set('trust proxy', 1);
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
 
 app.use(express.json());
-
-const __dirname = path.resolve();
-console.log(process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/dist')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
-    })
-}
 
 app.use(cookieParser());
 
@@ -155,11 +150,11 @@ app.post('/api/signup', async (req, res) => {
             pfp: 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg',
             routine: routineIDs,
         })
-        const savedUser = await newUser.save();
-        console.log('User created:', savedUser);
+        await newUser.save();
+        console.log('User created:', username);
 
         // make new session
-        req.session.user = savedUser;
+        req.session.user = newUser;
         req.session.save(err => {
             if (err) {
                 console.log('Session(signup) error:', err);
@@ -167,8 +162,9 @@ app.post('/api/signup', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
+
             // return created user
-            res.json(savedUser);
+            res.json(newUser);
         })
     }
     catch (error) {
@@ -331,17 +327,6 @@ app.delete('/api/chat', async (req, res) => {
     }
 });
 
-app.get(`/api/user/:username/routine`, async (req, res) => {
-    try {
-        const username = req.params.username;
-        const user = await User.findOne({ username: username });
-        const foundProducts = await Product.find({ _id: { $in: user.routine } }).sort({ createdAt: 1 });
-        res.status(200).send(foundProducts);
-    } catch (error) {
-        console.log(error)
-        res.sendStatus(500);
-    }
-})
 
 app.post("/api/selfie", async (req, res) => {
     try {
@@ -395,8 +380,16 @@ app.get('/api/recommendation', async (req, res) => {
     }
 });
 
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+    })
+}
 
 app.listen(PORT, () => {
     connectDB();
     console.log(`Server started on http://localhost:${PORT}`);
 })
+
