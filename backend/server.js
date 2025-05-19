@@ -12,7 +12,7 @@ import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
 import Product from './models/product.model.js';
-import FeedBack from './models/feedback.model.js';
+import Feedback from './models/feedback.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
@@ -145,7 +145,7 @@ app.post('/api/signup', async (req, res) => {
         ]
 
         // save feedback (summary + 1st time image url)
-        const newFeedback = new FeedBack(feedback);
+        const newFeedback = new Feedback(feedback);
         const savedFeedback = await newFeedback.save();
 
         // create user in db
@@ -340,6 +340,18 @@ app.get(`/api/user/:username/routine`, async (req, res) => {
         const user = await User.findOne({ username: username });
         const foundProducts = await Product.find({ _id: { $in: user.routine } }).sort({ createdAt: 1 });
         res.status(200).send(foundProducts);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
+
+app.get(`/api/user/:username/feedback`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        const feedback = await Feedback.findOne({ _id: user.feedback });
+        res.status(200).send(feedback);
     } catch (error) {
         console.log(error)
         res.sendStatus(500);

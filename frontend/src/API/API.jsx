@@ -252,3 +252,24 @@ export const getUserRoutine = async (username) => {
         console.error('Get routine error:', error.message);
     }
 }
+
+export const getUserFeedback = async (username) => {
+    const url = `${apiUrl}/api/user/${username}/feedback`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get feedback error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get feedback error:', error.message);
+    }
+}
