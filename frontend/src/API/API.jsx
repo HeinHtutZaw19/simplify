@@ -232,8 +232,6 @@ export const getRecommendedRoutine = async (surveyData) => {
     }
 };
 
-
-
 export const getUserRoutine = async (username) => {
     const url = `${apiUrl}/api/user/${username}/routine`;
     const params = {
