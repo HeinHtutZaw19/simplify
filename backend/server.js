@@ -112,25 +112,25 @@ app.post('/api/signup', async (req, res) => {
             name: routine[0].name,
             price: routine[0].price,
             imageUrl: routine[0].imageUrl,
-            instruction: routine[0].description
+            instruction: routine[0].instruction
         });
         const product1 = new Product({
             name: routine[1].name,
             price: routine[1].price,
             imageUrl: routine[1].imageUrl,
-            instruction: routine[1].description
+            instruction: routine[1].instruction
         });
         const product2 = new Product({
             name: routine[2].name,
             price: routine[2].price,
             imageUrl: routine[2].imageUrl,
-            instruction: routine[2].description
+            instruction: routine[2].instruction
         });
         const product3 = new Product({
             name: routine[3].name,
             price: routine[3].price,
             imageUrl: routine[3].imageUrl,
-            instruction: routine[3].description
+            instruction: routine[3].instruction
         });
         const savedProduct0 = await product0.save();
         const savedProduct1 = await product1.save();

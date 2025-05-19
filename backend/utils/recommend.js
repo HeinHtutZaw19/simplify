@@ -60,7 +60,7 @@ Respond with:
 - A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process, for a total of 4 unique products
 - Multiple paragraphs with bullets and fun tone
 - A 1-sentence summary under 50 words
-- A javascript array of the four chosen products in this exact format: {name, description, price, imageUrl}
+- A javascript array of the four chosen products in this exact format: {name, instruction, price, imageUrl}
 If nothing fits, say: "I'm sorry, I couldn't find a suitable routine. Please reach out to contact@simplify.com 💖."
 `;
 }

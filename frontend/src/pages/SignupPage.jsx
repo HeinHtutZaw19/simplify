@@ -15,7 +15,7 @@ const SignupPage = () => {
     const [loaded, setLoaded] = useState(false);
     const feedbackText = location.state?.feedbackText;
     const rawRoutine = location.state?.routine;
-    const routine = eval(`(${rawRoutine})`); // array of 4 products {name, description(=>supposed to be instruction), price, imageUrl}
+    const routine = eval(`(${rawRoutine})`); // array of 4 products {name, instruction, price, imageUrl}
     const imageUrl = location.state?.imageUrl;
 
     useEffect(() => {
