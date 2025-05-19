@@ -9,7 +9,7 @@ const videoConstraints = {
     facingMode: "user"
 };
 
-const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile }) => {
+const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, disableSubmit }) => {
     const colors = Colors();
     const webcamRef = useRef(null);
     const fileRef = useRef(null);
@@ -69,7 +69,19 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile })
             )}
 
             <Flex direction="row" mt="5px" mb="40px" align="center" width={300}>
-                <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} onClick={handleSubmitClick}>
+                <Button
+                    width="120px"
+                    ml="90px"
+                    mr="35px"
+                    height="35px"
+                    lineHeight="90px"
+                    bg={colors.BRIGHT3}
+                    color={colors.MAIN1}
+                    _hover={{ bg: colors.BRIGHT5 }}
+                    onClick={handleSubmitClick}
+                    isDisabled={disableSubmit}
+                    isLoading={disableSubmit}
+                >
                     Submit
                 </Button>
                 <Input type='file' ref={fileRef} accept='image/png, image/jpeg' onChange={handleFileChange} display='none' />

@@ -1,4 +1,4 @@
-import { Progress, Button, Flex, Heading, Box } from '@chakra-ui/react'
+import { Progress, Button, Flex, Heading, Box, Spinner } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
@@ -16,6 +16,7 @@ const SurveyPage = () => {
     const [image, setImage] = useState(null);
     const [photoFile, setPhotoFile] = useState(null);
     const [isLast, setIsLast] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
     const questions = [
         {
@@ -84,49 +85,57 @@ const SurveyPage = () => {
         }
 
         console.log('survey submit clicked');
+        setSubmitted(true);
 
-        // save photo
-        const formData = new FormData();
-        if (photoFile) {
-            console.log('submission photo(file)');
-            formData.append('image', photoFile);
+        try {
+            // save photo
+            const formData = new FormData();
+            if (photoFile) {
+                console.log('submission photo(file)');
+                formData.append('image', photoFile);
+            }
+            else if (image) {
+                console.log('submission photo(webcam)');
+                const res = await fetch(image);
+                const blob = await res.blob();
+                const file = new File([blob], 'survey_webcam_photo.png', { type: blob.type });
+                formData.append('image', file);
+            }
+
+            const result = await uploadImage(formData);
+            if (!result.imageUrl) {
+                console.error('Image upload error(Survey page):', result.error);
+                return;
+            }
+            console.log('Uploaded to:', result.imageUrl);
+
+            const surveyData = {
+                oiliness: responses["How dry/oily does your skin feel?"],
+                sensitivity: responses["How sensitive is your skin?"],
+                ageGroupIndex: responses["What is your age group?"],
+                waterIntakeIndex: responses["How many cups of water do you usually drink in a day?"],
+                imageUrl: result.imageUrl
+            };
+            console.log('survey data before being sent to AI:', surveyData);
+
+            const recommendation = await getRecommendedRoutine(surveyData);
+            if (!recommendation) {
+                console.log('Survey routine recommendation error');
+                return;
+            }
+            console.log('AI generated routine:', recommendation);
+
+            const arrayMatch = recommendation.routine.match(/```javascript\s*([\s\S]*?)\s*```/);
+            const routine = arrayMatch ? arrayMatch[1] : null;
+            const feedback = recommendation.routine.split("```")[0].trim();
+
+            navigate('/signup', { state: { feedbackText: feedback, routine: routine, imageUrl: result.imageUrl } });
         }
-        else if (image) {
-            console.log('submission photo(webcam)');
-            const res = await fetch(image);
-            const blob = await res.blob();
-            const file = new File([blob], 'survey_webcam_photo.png', { type: blob.type });
-            formData.append('image', file);
+        catch (error) {
+            console.error('Survey submit error:', error);
+            setSubmitted(false);
         }
 
-        const result = await uploadImage(formData);
-        if (!result.imageUrl) {
-            console.error('Image upload error(Survey page):', result.error);
-            return;
-        }
-        console.log('Uploaded to:', result.imageUrl);
-
-        const surveyData = {
-            oiliness: responses["How dry/oily does your skin feel?"],
-            sensitivity: responses["How sensitive is your skin?"],
-            ageGroupIndex: responses["What is your age group?"],
-            waterIntakeIndex: responses["How many cups of water do you usually drink in a day?"],
-            imageUrl: result.imageUrl
-        };
-        console.log('survey data before being sent to AI:', surveyData);
-
-        const recommendation = await getRecommendedRoutine(surveyData);
-        if (!recommendation) {
-            console.log('Survey routine recommendation error');
-            return;
-        }
-        console.log('AI generated routine:', recommendation);
-
-        const arrayMatch = recommendation.routine.match(/```javascript\s*([\s\S]*?)\s*```/);
-        const routine = arrayMatch ? arrayMatch[1] : null;
-        const feedback = recommendation.routine.split("```")[0].trim();
-
-        navigate('/signup', { state: { feedbackText: feedback, routine: routine, imageUrl: result.imageUrl } });
     }
 
     const handleCloseClick = async () => {
@@ -143,6 +152,23 @@ const SurveyPage = () => {
     return (
         <> {loaded && (
             <Box w='100%' px={20} pt={10}>
+                {submitted && (
+                    <Box
+                        position="fixed"
+                        top={0}
+                        left={0}
+                        width="100vw"
+                        height="100vh"
+                        bg="rgba(0,0,0,0.5)"
+                        zIndex={1000}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Spinner size="xl" color="white" thickness="4px" />
+                    </Box>
+                )}
+
                 <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
                     {currentStep == 0 ?
                         <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
@@ -166,7 +192,14 @@ const SurveyPage = () => {
                 ) : (
                     <>
                         <Box w="84vw" alignContent='center' >
-                            <WebCam handleSubmitClick={handleSubmit} image={image} setImage={setImage} photoFile={photoFile} setPhotoFile={setPhotoFile} />
+                            <WebCam
+                                handleSubmitClick={handleSubmit}
+                                image={image}
+                                setImage={setImage}
+                                photoFile={photoFile}
+                                setPhotoFile={setPhotoFile}
+                                disableSubmit={submitted}
+                            />
                         </Box>
                     </>
                 )}
