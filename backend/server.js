@@ -12,6 +12,7 @@ import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
 import Product from './models/product.model.js';
+import FeedBack from './models/feedback.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
@@ -74,7 +75,7 @@ const upload = multer({ storage });
 
 app.post('/api/signup', async (req, res) => {
     try {
-        const { username, email, password, routine } = req.body;
+        const { username, email, password, routine, feedback } = req.body;
 
         // validate email format
         // <string>@<string>.<string>
@@ -106,6 +107,7 @@ app.post('/api/signup', async (req, res) => {
         const salted = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salted);
 
+        // save products
         const product0 = new Product({
             name: routine[0].name,
             price: routine[0].price,
@@ -142,6 +144,10 @@ app.post('/api/signup', async (req, res) => {
             savedProduct3._id
         ]
 
+        // save feedback (summary + 1st time image url)
+        const newFeedback = new FeedBack(feedback);
+        const savedFeedback = await newFeedback.save();
+
         // create user in db
         const newUser = new User({
             username: username,
@@ -149,6 +155,7 @@ app.post('/api/signup', async (req, res) => {
             password: hashed,
             pfp: 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg',
             routine: routineIDs,
+            feedback: savedFeedback._id,
         })
         await newUser.save();
         console.log('User created:', username);

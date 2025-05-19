@@ -112,7 +112,11 @@ const SignupPage = () => {
             'username': signupInfo.username,
             'email': signupInfo.email,
             'password': signupInfo.password,
-            'routine': routine
+            'routine': routine,
+            'feedback': {
+                'feedback': recommendation.routine,
+                'imageUrl': imageUrl,
+            }
         });
         if ('usernameTaken' in res) {
             setSignupInfo((state) => ({

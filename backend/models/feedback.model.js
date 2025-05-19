@@ -13,7 +13,7 @@ const feedbackSchema = new mongoose.Schema({
     vibrancy: {
         type: Number
     },
-    skinUrl: {
+    imageUrl: {
         type: String
     }
 })
