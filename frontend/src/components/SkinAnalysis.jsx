@@ -4,6 +4,7 @@ import { CheckIcon } from '@chakra-ui/icons';
 import Metrics from './Metrics.jsx'
 import skinanalysis from '../assets/skinanalysis.png';
 import Colors from '../utils/Colors.jsx';
+import ReactMarkdown from 'react-markdown';
 
 
 const SkinAnalysis = ({ feedback, luminosity, clarity, vibrancy, overall }) => {
@@ -17,7 +18,10 @@ const SkinAnalysis = ({ feedback, luminosity, clarity, vibrancy, overall }) => {
                 <Image src={imageUrl} alt="skin analysis" boxSize="30%"></Image>
                 <Metrics luminosity={luminosity} clarity={clarity} vibrancy={vibrancy} overall={overall} />
             </Flex>
-            <Text p={4} dangerouslySetInnerHTML={{__html: summary}} />
+            <ReactMarkdown>
+                {summary}
+            </ReactMarkdown>
+            {/* <Text p={4} dangerouslySetInnerHTML={{__html: summary}} /> */}
             {/* <Text p={4}>
                 Skin Analysis Result: Likely Combination to Oily Skin, showing visible redness, uneven texture, and signs of acne or sun damage, including hyperpigmentation and irritation.
                 <br /><br />
