@@ -291,7 +291,6 @@ export const updateUserPFP = async (username, imageUrl) => {
             throw new Error(errText || 'PFP update failed');
         }
         const parsed = await res.json();
-        console.log('api:', parsed)
         return parsed;
     }
     catch (error) {

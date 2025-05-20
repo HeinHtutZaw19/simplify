@@ -424,7 +424,6 @@ app.put(`/api/user/:username/pfp`, async (req, res) => {
             { pfp: imageUrl },
             { new: true }
         );
-        console.log('server:', updatedUser)
 
         req.session.user = updatedUser;
         req.session.save(err => {
