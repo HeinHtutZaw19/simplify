@@ -57,7 +57,7 @@ Only recommend products from the list:
 ${products.map(p => `• ${p.name} — ${p.description} — Price: ${p.price} — Image: ${p.product_image}`).join("\n")}
 
 Respond with:
-- (HTML) A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process, for a total of 4 unique products
+- (HTML) A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process. You MUST recommend a total of 4 unique products.
 - (HTML) Multiple paragraphs with bullets and fun tone
 - (HTML) A 1-sentence summary under 50 words
 - A javascript array of the four chosen products in this exact format: {name, instruction, price, imageUrl}
@@ -87,7 +87,7 @@ export async function recommendRoutine({
     const response = await openai.chat.completions.create({
         model: image_url ? "gpt-4.1-mini" : 'gpt-4',
         messages,
-        max_tokens: 700,
+        max_tokens: 1000,
     });
 
     return response.choices[0].message.content;

@@ -147,6 +147,7 @@ export const chat = async (username, userQuery, convHistory) => {
         return `Err: Simpli cannot give back an answer. ${err}`
     }
 }
+
 export const deleteChat = async (username) => {
     try {
         console.log("deleteChat")
@@ -273,3 +274,29 @@ export const getUserFeedback = async (username) => {
         console.error('Get feedback error:', error.message);
     }
 }
+
+export const updateUserPFP = async (username, imageUrl) => {
+    const url = `${apiUrl}/api/user/${username}/pfp`;
+    const params = {
+        ...header,
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify({ imageUrl }),
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('User pfp update error:', res.status);
+            const errText = await res.text();
+            throw new Error(errText || 'PFP update failed');
+        }
+        const parsed = await res.json();
+        console.log('api:', parsed)
+        return parsed;
+    }
+    catch (error) {
+        console.error('User pfp udpate error:', error.message);
+        return { error: error.message };
+    }
+};
+

@@ -4,7 +4,7 @@ import { Box, Avatar, Heading, Text, VStack, Flex, Image } from '@chakra-ui/reac
 import { FaFire } from 'react-icons/fa';
 import Calendar from '../components/Calendar';
 import Colors from '../utils/Colors';
-import { checkLogin } from '../API/API';
+import { checkLogin, updateUserPFP } from '../API/API';
 
 const ProfilePage = () => {
   const colors = Colors();
@@ -26,6 +26,13 @@ const ProfilePage = () => {
     fetchLoginData();
   }, []);
 
+  const handleChangePFP = async () => {
+    console.log('pfp clicked');
+    const updatedUser = await updateUserPFP(user.username, 'https://i.ytimg.com/vi/rvX8cS-v2XM/maxresdefault.jpg');
+    console.log('profile page:', updatedUser)
+    setUser(updatedUser);
+  }
+
   return (
     // Full Page Flex
     <> {loaded &&
@@ -40,7 +47,7 @@ const ProfilePage = () => {
               borderRadius='full'
               boxSize="15vw"
               ml={{ base: 0, sm: 3 }}
-              onClick={() => handleChangeTab("Profile")}
+              onClick={handleChangePFP}
               cursor="pointer"
               shadow="md"
             />

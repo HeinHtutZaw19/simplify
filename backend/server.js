@@ -410,6 +410,40 @@ app.get('/api/recommendation', async (req, res) => {
     }
 });
 
+app.put(`/api/user/:username/pfp`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const { imageUrl } = req.body;
+
+        if (!req.session.user) {
+            throw new Error("No session user");
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { username: username },
+            { pfp: imageUrl },
+            { new: true }
+        );
+        console.log('server:', updatedUser)
+
+        req.session.user = updatedUser;
+        req.session.save(err => {
+            if (err) {
+                console.log('Session(pfp update) error:', err);
+                res.statusMessage = "Session(pfp update) error: " + err;
+                res.sendStatus(400);
+                return;
+            }
+
+            // return created user
+            res.status(200).send(updatedUser);
+        })
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
+
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
