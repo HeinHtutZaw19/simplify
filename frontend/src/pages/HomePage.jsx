@@ -134,6 +134,7 @@ const HomePage = () => {
               as="button"
               bg={colors.BRIGHT3}
               _hover={{ bg: colors.BRIGHT5 }}
+              onClick={!finish ? routineFinish : null}
             >
               <Text textAlign="center" color={colors.MAIN1}>Routine Finished!</Text>
             </Box>
