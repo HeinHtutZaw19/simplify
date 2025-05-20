@@ -4,12 +4,14 @@ import { TriangleDownIcon } from '@chakra-ui/icons';
 
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { checkLogin, getUserRoutine, getUserFeedback } from '../API/API'
+import { checkLogin, fetchHomeLeaderboard, fetchUserDays, fetchUserStreak, getUserRoutine, updateUserStreak, getUserFeedback } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
 import Calendar from '../components/Calendar';
 import Product from '../components/Product';
 import Colors from '../utils/Colors';
+import UserCard from "../components/UserCard.jsx"
+
 
 // const productItems = ['Toner', 'Moisturizer', 'Serum', 'Sunscreen'];
 
@@ -21,6 +23,11 @@ const HomePage = () => {
   const [user, setUser] = useState(null);
   const [routine, setRoutine] = useState([]);
   const [feedback, setFeedback] = useState(null); // feedback object contains the summary and imageUrl
+  const [streak, setStreak] = useState(null);
+  const [days, setDays] = useState([]);
+  const [finish, setFinish] = useState(false);
+  const [homeboard, setHomeboard] = useState([]);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -31,6 +38,12 @@ const HomePage = () => {
       else {
         setUser(user);
         setLoaded(true);
+        const today = new Date();
+        const routineDate = new Date(user.routineDate);
+        if (today.getDate() === routineDate.getDate()){
+          setFinish(true);
+        }
+        setUsername(user.username);
       }
     }
     fetchLoginData();
@@ -50,10 +63,39 @@ const HomePage = () => {
         setFeedback(feedbackObj);
       }
     }
+    const getStreakDays = async(username) => {
+      const userStreak = await fetchUserStreak(username);
+      const userDays = await fetchUserDays(username);
+      console.log("Fetched User Streak:", userStreak);
+      setStreak(userStreak);
+      setDays(userDays);
+    }
+    const getHomeboard = async(username) => {
+      const theHomeboard = await fetchHomeLeaderboard(username);
+      console.log("Fetched Home Leaderboard:", theHomeboard);
+      setHomeboard(theHomeboard);
+    }
     if (user) {
       setPageStates(user.username);
+      getStreakDays(user.username);
+      getHomeboard(user.username);
     }
   }, [user])
+
+  const routineFinish = async () =>{
+    const newStreak = await updateUserStreak();
+    if (newStreak){
+      setStreak(newStreak.streak);
+      setDays(newStreak.days);
+      setFinish(true);
+
+      console.log("Streak Updated:", newStreak.streak);
+      console.log("Days updated: ", newStreak.days);
+    }
+    else {
+      console.error("Error updating streak");
+    }
+  }
 
   const onSkinAnalysisClick = () => {
     skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -116,25 +158,21 @@ const HomePage = () => {
         </Flex>
 
         {/* Right Side Stack */}
-        <VStack id="home-side" pos="sticky">
-          <Calendar />
+        <VStack id="home-side" sx={{ '&::-webkit-scrollbar': { display: 'none' } }} >
+          <Calendar streak = {streak} days = {days}/>
           <Heading id="home-side-leaderboard-heading" color={colors.SECONDARY3} size="lg">Leaderboard</Heading>
-          <Box p={4} bg={colors.SECONDARY5} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row'>
-            <Avatar />
-            <Box pl={4} alignContent='center'>
-              <Heading size="sm">Martha Anderson</Heading>
-              <Text fontSize="sm">80$</Text>
-            </Box>
-          </Box>
-          <Box p={4} bg={colors.SECONDARY5} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row'>
-            <Avatar />
-            <Box pl={4} alignContent='center'>
-              <Heading size="sm">Julia Clover</Heading>
-              <Text fontSize="sm">50$</Text>
-            </Box>
-          </Box>
+          {homeboard.map((user) => (
+            <><Box key={user._id} p={4} bg={user.username === username ? colors.BRIGHT4 : colors.BRIGHT2} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row' >
+              <Avatar size='sm'/>
+              <Box pl={4} alignContent='center' display='flex' flexDirection={{ base: 'column', lg: 'row' }} flex={2} justifyContent='space-between'> 
+                  <Text size="sm" fontWeight='medium'>{user.username}</Text>
+                  <Heading fontSize="sm">{user.point}</Heading>
+              </Box>
+            </Box></>
+            //<UserCard key={index} user={user} name={user.username}/>
+          ))}
+      </VStack>
 
-        </VStack>
 
       </Flex >}
     </>

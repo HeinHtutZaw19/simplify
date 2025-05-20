@@ -22,6 +22,11 @@ import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import cloudinary from './config/cloudinaryConfig.js';
 import { recommendRoutine } from './utils/recommend.js';
 
+// Leaderboard
+import leaderboard from './utils/leaderboard.js';
+//Streak
+import streak from './utils/streak.js';
+
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -371,6 +376,12 @@ app.post("/api/selfie", async (req, res) => {
         return res.status(500).json({ message: "Error processing image" });
     }
 });
+
+
+// Leaderboard
+app.use(leaderboard);
+// Streak
+app.use(streak);
 
 app.post('/api/upload', upload.single('image'), (req, res) => {
     if (!req.file || !req.file.path) {
