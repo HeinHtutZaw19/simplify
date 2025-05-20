@@ -7,7 +7,7 @@ const FireIcon = (props) => (
   <Image src={fireIcon} boxSize="24px" objectFit='contain' {...props} />
 );
 
-const Calendar = () => {
+const Calendar = ({streak, days}) => {
 
   const colors = Colors();
   const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
@@ -34,7 +34,7 @@ const Calendar = () => {
     <VStack id="home-calendar" borderRadius="xl" bg={colors.MAIN3}>
       <Flex id="home-calendar-streak">
         <FireIcon boxSize="5vw" />
-        <Text fontWeight="bold" fontSize="1.7vw" color={colors.TEXT4}>x1</Text>
+        <Text fontWeight="bold" fontSize="1.7vw" color={colors.TEXT4}>x{streak}</Text>
       </Flex>
       <Text fontWeight="semibold" fontSize="1.6vw" color={colors.TEXT4}>{monthNames[currentMonth]} {currentYear}</Text>
       <Divider borderColor={colors.TEXT4} borderWidth="1px" m={2} />
@@ -44,8 +44,8 @@ const Calendar = () => {
         ))}
 
         {calendarDays.map((day, i) => (
-          <Box className="home-calendar-day" key={i} bg={streakDays.includes(day) ? '#FFCE51' : day ? colors.MAIN2 : 'transparent'}>
-            {streakDays.includes(day + 1) && streakDays.includes(day) ? <FireIcon /> : streakDays.includes(day - 1) && streakDays.includes(day) ? <FireIcon /> : ""}
+          <Box className="home-calendar-day" key={i} bg={days.includes(day) ? '#FFCE51' : day ? colors.MAIN2 : 'transparent'}>
+            {days.includes(day + 1) && days.includes(day) ? <FireIcon /> : days.includes(day - 1) && days.includes(day) ? <FireIcon /> : ""}
           </Box>
         ))}
       </Grid>

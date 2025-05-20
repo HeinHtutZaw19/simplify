@@ -232,6 +232,30 @@ export const getRecommendedRoutine = async (surveyData) => {
     }
 };
 
+
+
+export const fetchLeaderboard = async () => {
+    const url = `${apiUrl}/api/leaderboard`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error fetching leaderboard:', res.status);
+            return [];
+         }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch leaderboard error:', e.message);
+    }
+}
+            
+
 export const getUserRoutine = async (username) => {
     const url = `${apiUrl}/api/user/${username}/routine`;
     const params = {
@@ -244,7 +268,7 @@ export const getUserRoutine = async (username) => {
         if (!res.ok) {
             console.log('Get routine error:', res.status);
             return;
-        }
+         }
         const parsed = await res.json();
         return parsed;
     }
@@ -252,3 +276,112 @@ export const getUserRoutine = async (username) => {
         console.error('Get routine error:', error.message);
     }
 }
+
+
+export const fetchHomeLeaderboard = async (username) => {
+    const url = `${apiUrl}/api/${username}/homeleaderboard`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error fetching home leaderboard:', res.status);
+            return [];
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch home leaderboard error:', e.message);
+    }
+}
+
+export const fetchUserStreak = async (username) => {
+    const url = `${apiUrl}/api/${username}/streak`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error fetching user streak:', res.status);
+            return null;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch User Streak error:', e.message);
+    }
+}
+
+export const fetchUserPoint = async (username) => {
+    const url = `${apiUrl}/api/${username}/point`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error fetching user point:', res.status);
+            return null;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch User Point error:', e.message);
+    }
+}
+
+
+export const updateUserStreak = async () => {
+    const url = `${apiUrl}/api/updatestreak`;
+    const params = {
+        ...header,
+        method: 'POST',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error updating user streak:', res.status);
+            return null;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch User Streak error:', e.message);
+    }
+}
+
+
+export const fetchUserDays = async (username) => {
+    const url = `${apiUrl}/api/${username}/days`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error fetching user days:', res.status);
+            return null;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch User Days error:', e.message);
+    }
+}
+

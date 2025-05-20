@@ -18,8 +18,8 @@ const LeaderboardPodium = ({ first, second, third }) => {
             >
                 <Avatar
                     size="lg"
-                    name={second.name}
-                    src={second.image}
+                    name={second.username}
+                    src={second.pfp}
                     border="4px solid pink"
                     position="absolute"
                     top="-50px"
@@ -37,13 +37,13 @@ const LeaderboardPodium = ({ first, second, third }) => {
                     px={2}
                     fontSize={{ base: "xs", md: "sm" }}
                 >
-                    2
+                    2nd
                 </Badge>
                 <Text mt={8} fontWeight="medium" fontSize={{ base: "sm", md: "md" }} color="white">
-                    {second.name}
+                    {second.username}
                 </Text>
                 <Text fontWeight="bold" fontSize={{ base: "xs", md: "sm" }} color="pink.400">
-                    {second.points}
+                    {second.point}
                 </Text>
             </Box>
 
@@ -61,8 +61,8 @@ const LeaderboardPodium = ({ first, second, third }) => {
             >
                 <Avatar
                     size="lg"
-                    name={first.name}
-                    src={first.image}
+                    name={first.username}
+                    src={first.pfp}
                     border="4px solid green"
                     position="absolute"
                     top="-50px"
@@ -89,13 +89,13 @@ const LeaderboardPodium = ({ first, second, third }) => {
                     px={2}
                     fontSize={{ base: "xs", md: "sm" }}
                 >
-                    1
+                    1st
                 </Badge>
                 <Text mt={10} fontWeight="medium" fontSize={{ base: "xs", md: "sm" }} color="white">
-                    {first.name}
+                    {first.username}
                 </Text>
                 <Text fontWeight="bold" fontSize={{ base: "xs", md: "sm" }} color="green.300">
-                    {first.points}
+                    {first.point}
                 </Text>
             </Box>
 
@@ -113,8 +113,8 @@ const LeaderboardPodium = ({ first, second, third }) => {
             >
                 <Avatar
                     size="lg"
-                    name={third.name}
-                    src={third.image}
+                    name={third.username}
+                    src={third.pfp}
                     border="4px solid orange"
                     position="absolute"
                     top="-50px"
@@ -132,13 +132,13 @@ const LeaderboardPodium = ({ first, second, third }) => {
                     px={2}
                     fontSize={{ base: "xs", md: "sm" }}
                 >
-                    3
+                    3rd
                 </Badge>
                 <Text mt={8} fontWeight="medium" fontSize={{ base: "xs", md: "sm" }} color="white">
-                    {third.name}
+                    {third.username}
                 </Text>
                 <Text fontWeight="bold" fontSize={{ base: "xs", md: "sm" }} color="orange.400">
-                    {third.points}
+                    {third.point}
                 </Text>
             </Box>
         </Flex>

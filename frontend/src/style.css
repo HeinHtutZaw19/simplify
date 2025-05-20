@@ -77,6 +77,7 @@
     width: 25vw;
     padding: 15px;
     gap: 10px;
+    overflow: auto;
 }
 
 #home-calendar {

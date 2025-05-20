@@ -4,13 +4,15 @@ import { Box, Avatar, Heading, Text, VStack, Flex, Image } from '@chakra-ui/reac
 import { FaFire } from 'react-icons/fa';
 import Calendar from '../components/Calendar';
 import Colors from '../utils/Colors';
-import { checkLogin } from '../API/API';
+import { checkLogin, fetchUserDays, fetchUserStreak } from '../API/API';
 
 const ProfilePage = () => {
   const colors = Colors();
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
+  const [streak, setStreak] = useState(0);
+  const [days, setDays] = useState([]);
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -25,6 +27,20 @@ const ProfilePage = () => {
     }
     fetchLoginData();
   }, []);
+
+
+  useEffect(() => {
+    const getStreakDays = async(username) => {
+      const userStreak = await fetchUserStreak(username);
+      const userDays = await fetchUserDays(username);
+      console.log("Fetched User Streak:", userStreak);
+      setStreak(userStreak);
+      setDays(userDays);
+    }
+    if (user && user.username) {
+      getStreakDays(user.username);
+    }
+  }, [user])
 
   return (
     // Full Page Flex
@@ -54,7 +70,7 @@ const ProfilePage = () => {
           <Box p='1vw' bg={colors.BRIGHT2} borderRadius="xl" w="20vw" color={colors.MAIN1} display='flex' flexDirection='row'>
             <Flex px={4} justifyContent='space-between' alignItems='center' gap='1vw' flexDirection='row' w="100%">
               <Heading fontSize={{ sm: 'md', lg: '2xl' }}>Streaks</Heading>
-              <Heading fontSize={{ sm: 'md', lg: '2xl' }}>{user.streak}</Heading>
+              <Heading fontSize={{ sm: 'md', lg: '2xl' }}>{streak}</Heading>
             </Flex>
           </Box>
 
@@ -62,7 +78,7 @@ const ProfilePage = () => {
 
         {/* Right Side Stack */}
         <Box pt='12vw' w='30vw' px='1vw' >
-          <Calendar />
+          <Calendar streak={streak} days = {days}/>
         </Box>
 
       </Flex >}

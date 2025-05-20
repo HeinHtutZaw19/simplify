@@ -46,6 +46,19 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    days: {
+        type: [Number], 
+        default: []
+    },
+    routineDate: {
+        type: Date,
+        default: null
+    },
+    point: {
+        type: Number,
+        default: 0
+    },
+
 }, {
     timestamps: true
 });
