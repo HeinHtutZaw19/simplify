@@ -1,4 +1,8 @@
-const apiUrl = 'http://localhost:4000'
+const isProd = import.meta.env.MODE === 'production';
+const apiUrl = !isProd ? 'http://localhost:4000' : 'https://simplify-e3px.onrender.com';
+console.log('API URL is', apiUrl, 'mode:', import.meta.env.NODE_ENV);
+
+console.log(apiUrl, process.env.NODE_ENV)
 
 const header = {
     headers: {
@@ -143,7 +147,6 @@ export const chat = async (username, userQuery, convHistory) => {
         return `Err: Simpli cannot give back an answer. ${err}`
     }
 }
-
 export const deleteChat = async (username) => {
     try {
         console.log("deleteChat")
@@ -159,27 +162,6 @@ export const deleteChat = async (username) => {
         console.error("Failed to delete chat:", err);
     }
 };
-
-export const getUserRoutine = async (username) => {
-    const url = `${apiUrl}/api/user/${username}/routine`;
-    const params = {
-        ...header,
-        method: 'GET',
-        credentials: 'include'
-    };
-    try {
-        const res = await fetch(url, params);
-        if (!res.ok) {
-            console.log('Get routine error:', res.status);
-            return;
-        }
-        const parsed = await res.json();
-        return parsed;
-    }
-    catch (error) {
-        console.error('Get routine error:', error.message);
-    }
-}
 
 export const uploadSelfie = async (payload) => {
     let headers = {};
@@ -205,6 +187,50 @@ export const uploadSelfie = async (payload) => {
     return res.json();
 };
 
+export const uploadImage = async (formData) => {
+    const url = `${apiUrl}/api/upload`;
+    const params = {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Image upload error:', res.status);
+            const errText = await res.text();
+            throw new Error(errText || 'Upload failed');
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Image upload error:', error.message);
+        return { error: error.message };
+    }
+};
+
+export const getRecommendedRoutine = async (surveyData) => {
+    const query = new URLSearchParams(surveyData).toString();
+    const url = `${apiUrl}/api/recommendation?${query}`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get recommendation error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get recommendation error:', error.message);
+    }
+};
 
 
 
@@ -220,7 +246,7 @@ export const fetchLeaderboard = async () => {
         if (!res.ok){
             console.error('Error fetching leaderboard:', res.status);
             return [];
-        }
+         }
         const parsed = await res.json();
         return parsed;
     }
@@ -228,6 +254,29 @@ export const fetchLeaderboard = async () => {
         console.error('Fetch leaderboard error:', e.message);
     }
 }
+            
+
+export const getUserRoutine = async (username) => {
+    const url = `${apiUrl}/api/user/${username}/routine`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get routine error:', res.status);
+            return;
+         }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get routine error:', error.message);
+    }
+}
+
 
 export const fetchHomeLeaderboard = async (username) => {
     const url = `${apiUrl}/api/${username}/homeleaderboard`;
@@ -335,3 +384,4 @@ export const fetchUserDays = async (username) => {
         console.error('Fetch User Days error:', e.message);
     }
 }
+

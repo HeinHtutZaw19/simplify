@@ -16,6 +16,10 @@ import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
 import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from './config/cloudinaryConfig.js';
+import { recommendRoutine } from './utils/recommend.js';
 
 // Leaderboard
 import leaderboard from './utils/leaderboard.js';
@@ -25,25 +29,21 @@ import streak from './utils/streak.js';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
-console.log(PORT)
+console.log(process.env.CLIENT_URL, process.env.NODE_ENV)
+const CLIENT_URL = process.env.NODE_ENV == 'production' ? 'https://simplify-e3px.onrender.com' : 'http://localhost:5173';
+console.log(PORT, CLIENT_URL)
+
+const __dirname = path.resolve();
+app.set('trust proxy', 1);
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
 
 app.use(express.json());
-
-const __dirname = path.resolve();
-console.log(process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/dist')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
-    })
-}
 
 app.use(cookieParser());
 
@@ -68,9 +68,18 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'simplify',
+        allowed_formats: ['jpg', 'jpeg', 'png'],
+    },
+});
+const upload = multer({ storage });
+
 app.post('/api/signup', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, routine } = req.body;
 
         // validate email format
         // <string>@<string>.<string>
@@ -102,41 +111,40 @@ app.post('/api/signup', async (req, res) => {
         const salted = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salted);
 
-        // mock data for initial products (change to actual recommended products from survey later)
-        const mockProduct1 = new Product({
-            name: 'product 1',
-            price: 10,
-            imageUrl: 'https://pngimg.com/d/number1_PNG14888.png',
-            instruction: 'instruction 1'
-        })
-        const savedProduct1 = await mockProduct1.save();
-        const mockProduct2 = new Product({
-            name: 'product 2',
-            price: 10,
-            imageUrl: 'https://i.pinimg.com/736x/85/f5/be/85f5bedff0758abea714994d3c398559.jpg',
-            instruction: 'instruction 2'
-        })
-        const savedProduct2 = await mockProduct2.save();
-        const mockProduct3 = new Product({
-            name: 'product 3',
-            price: 10,
-            imageUrl: 'https://i.pinimg.com/600x315/c0/a0/07/c0a0077f1c0cae02626f8f8281f0df35.jpg',
-            instruction: 'instruction 3'
-        })
-        const savedProduct3 = await mockProduct3.save();
-        const mockProduct4 = new Product({
-            name: 'product 4',
-            price: 10,
-            imageUrl: 'https://t3.ftcdn.net/jpg/01/37/43/16/360_F_137431664_H1WqRW3AmzOpZsYqboJ9fGUZ1P6YnS2u.jpg',
-            instruction: 'instruction 4'
-        })
-        const savedProduct4 = await mockProduct4.save();
+        const product0 = new Product({
+            name: routine[0].name,
+            price: routine[0].price,
+            imageUrl: routine[0].imageUrl,
+            instruction: routine[0].description
+        });
+        const product1 = new Product({
+            name: routine[1].name,
+            price: routine[1].price,
+            imageUrl: routine[1].imageUrl,
+            instruction: routine[1].description
+        });
+        const product2 = new Product({
+            name: routine[2].name,
+            price: routine[2].price,
+            imageUrl: routine[2].imageUrl,
+            instruction: routine[2].description
+        });
+        const product3 = new Product({
+            name: routine[3].name,
+            price: routine[3].price,
+            imageUrl: routine[3].imageUrl,
+            instruction: routine[3].description
+        });
+        const savedProduct0 = await product0.save();
+        const savedProduct1 = await product1.save();
+        const savedProduct2 = await product2.save();
+        const savedProduct3 = await product3.save();
 
-        const mockRoutine = [
+        const routineIDs = [
+            savedProduct0._id,
             savedProduct1._id,
             savedProduct2._id,
-            savedProduct3._id,
-            savedProduct4._id
+            savedProduct3._id
         ]
 
         // create user in db
@@ -145,13 +153,13 @@ app.post('/api/signup', async (req, res) => {
             email: email,
             password: hashed,
             pfp: 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg',
-            routine: mockRoutine,
+            routine: routineIDs,
         })
-        const savedUser = await newUser.save();
-        console.log('User created:', savedUser);
+        await newUser.save();
+        console.log('User created:', username);
 
         // make new session
-        req.session.user = savedUser;
+        req.session.user = newUser;
         req.session.save(err => {
             if (err) {
                 console.log('Session(signup) error:', err);
@@ -159,8 +167,9 @@ app.post('/api/signup', async (req, res) => {
                 res.sendStatus(400);
                 return;
             }
+
             // return created user
-            res.json(savedUser);
+            res.json(newUser);
         })
     }
     catch (error) {
@@ -355,7 +364,54 @@ app.use(leaderboard);
 // Streak
 app.use(streak);
 
+app.post('/api/upload', upload.single('image'), (req, res) => {
+    if (!req.file || !req.file.path) {
+        return res.status(400).json({ message: 'Upload failed' });
+    }
+
+    res.status(200).json({ imageUrl: req.file.path });
+});
+
+app.get('/api/recommendation', async (req, res) => {
+    try {
+        const {
+            oiliness,
+            sensitivity,
+            ageGroupIndex,
+            waterIntakeIndex,
+            imageUrl
+        } = req.query;
+
+        if (!oiliness || !sensitivity || ageGroupIndex === undefined || waterIntakeIndex === undefined || !imageUrl) {
+            res.statusMessage = "Missing required query parameters";
+            return res.sendStatus(400);
+        }
+
+        const routine = await recommendRoutine({
+            oiliness,
+            sensitivity,
+            ageGroupIndex: parseInt(ageGroupIndex),
+            waterIntakeIndex: parseInt(waterIntakeIndex),
+            image_url: imageUrl
+        });
+        res.status(200).json({ routine });
+    } catch (error) {
+        console.error('Recommendation error:', error.message);
+        res.statusMessage = "Recommendation error: " + error.message;
+        res.sendStatus(400);
+    }
+});
+
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+    })
+}
+
 app.listen(PORT, () => {
     connectDB();
     console.log(`Server started on http://localhost:${PORT}`);
 })
+
