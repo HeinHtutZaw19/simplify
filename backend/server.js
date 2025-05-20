@@ -230,12 +230,12 @@ app.get('/api/login/google/callback', (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
         if (err) {
             console.error('Google login error:', err);
-            return res.redirect('http://localhost:5173/login');
+            return res.redirect(CLIENT_URL + '/login');
         }
 
         if (!user) {
             console.warn('Google login failed: email not found');
-            return res.redirect('http://localhost:5173/login');
+            return res.redirect(CLIENT_URL + '/login');
         }
 
         req.session.user = user;
@@ -243,9 +243,9 @@ app.get('/api/login/google/callback', (req, res, next) => {
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-                return res.redirect('http://localhost:5173/login');
+            return res.redirect(CLIENT_URL + '/login');
             }
-            res.redirect('http://localhost:5173');
+            res.redirect(CLIENT_URL);
         });
 
     })(req, res, next);
