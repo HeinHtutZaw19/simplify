@@ -20,7 +20,7 @@ passport.deserializeUser(async (email, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:4000/api/login/google/callback',
+    callbackURL: process.env.NODE_ENV == 'production' ? 'https://simplify-e3px.onrender.com/api/login/google/callback' : 'http://localhost:4000/api/login/google/callback',
 },
 async (accessToken, refreshToken, profile, done) => {
     try {

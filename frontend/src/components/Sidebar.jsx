@@ -8,7 +8,7 @@ import { MdOutlineHelp } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import NavItem from './NavItem'
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { logoutUser, checkLogin } from '../API/API'
 import logo from '../assets/logo.png';
 import Colors from '../utils/Colors.jsx';
@@ -25,7 +25,6 @@ const Sidebar = () => {
         active: "Routine"
     })
     const navigate = useNavigate();
-    const currentPage = useLocation();
 
     useEffect(() => {
         const fetchLoginData = async () => {
@@ -62,7 +61,6 @@ const Sidebar = () => {
         }
     }
 
-
     return (
         <> {user &&
             <Box
@@ -75,23 +73,22 @@ const Sidebar = () => {
                     h="100vh"
                     w={{ base: "345px", md: "225px", sm: "75px" }}
                     flexDir="column"
-                    justifyContent="space-between">
+                    justifyContent="space-between"
+                >
                     <Flex
                         p="5%"
                         flexDir="column"
                         w="100%"
                         alignItems={{ md: "flex-start", sm: "center" }}
                         mb={4}
-
-                        pl={{ base: 0, md: 7 }}
+                        pl={{ base: 0, md: 3 }}
                     >
-
                         <Flex mt={4} direction="row" align={{ base: "center", md: "flex-start" }} alignItems="center">
                             <Image
                                 src={user.pfp}
                                 alt='Profile picture'
                                 borderRadius='full'
-                                boxSize={{ md: '48px', sm: '32px' }}
+                                boxSize={{ md: '40px', sm: '32px' }}
                                 ml={{ base: 0, sm: 3 }}
                                 onClick={() => handleChangeTab("Profile")}
                                 cursor="pointer"

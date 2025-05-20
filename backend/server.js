@@ -12,6 +12,7 @@ import './config/passport.js';
 import User from './models/user.model.js';
 import Chat from './models/chat.model.js';
 import Product from './models/product.model.js';
+import Feedback from './models/feedback.model.js';
 import querySimpli from './utils/chat.js';
 import { RiSquareFill } from 'react-icons/ri';
 import formatConvHistory from './utils/formatConvHistory.js';
@@ -79,7 +80,7 @@ const upload = multer({ storage });
 
 app.post('/api/signup', async (req, res) => {
     try {
-        const { username, email, password, routine } = req.body;
+        const { username, email, password, routine, feedback } = req.body;
 
         // validate email format
         // <string>@<string>.<string>
@@ -111,29 +112,30 @@ app.post('/api/signup', async (req, res) => {
         const salted = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salted);
 
+        // save products
         const product0 = new Product({
             name: routine[0].name,
             price: routine[0].price,
             imageUrl: routine[0].imageUrl,
-            instruction: routine[0].description
+            instruction: routine[0].instruction
         });
         const product1 = new Product({
             name: routine[1].name,
             price: routine[1].price,
             imageUrl: routine[1].imageUrl,
-            instruction: routine[1].description
+            instruction: routine[1].instruction
         });
         const product2 = new Product({
             name: routine[2].name,
             price: routine[2].price,
             imageUrl: routine[2].imageUrl,
-            instruction: routine[2].description
+            instruction: routine[2].instruction
         });
         const product3 = new Product({
             name: routine[3].name,
             price: routine[3].price,
             imageUrl: routine[3].imageUrl,
-            instruction: routine[3].description
+            instruction: routine[3].instruction
         });
         const savedProduct0 = await product0.save();
         const savedProduct1 = await product1.save();
@@ -147,6 +149,10 @@ app.post('/api/signup', async (req, res) => {
             savedProduct3._id
         ]
 
+        // save feedback (summary + 1st time image url)
+        const newFeedback = new Feedback(feedback);
+        const savedFeedback = await newFeedback.save();
+
         // create user in db
         const newUser = new User({
             username: username,
@@ -154,6 +160,7 @@ app.post('/api/signup', async (req, res) => {
             password: hashed,
             pfp: 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg',
             routine: routineIDs,
+            feedback: savedFeedback._id,
         })
         await newUser.save();
         console.log('User created:', username);
@@ -228,12 +235,12 @@ app.get('/api/login/google/callback', (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
         if (err) {
             console.error('Google login error:', err);
-            return res.redirect('http://localhost:5173/login');
+            return res.redirect(CLIENT_URL + '/login');
         }
 
         if (!user) {
             console.warn('Google login failed: email not found');
-            return res.redirect('http://localhost:5173/login');
+            return res.redirect(CLIENT_URL + '/login');
         }
 
         req.session.user = user;
@@ -241,9 +248,9 @@ app.get('/api/login/google/callback', (req, res, next) => {
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-                return res.redirect('http://localhost:5173/login');
+            return res.redirect(CLIENT_URL + '/login');
             }
-            res.redirect('http://localhost:5173');
+            res.redirect(CLIENT_URL);
         });
 
     })(req, res, next);
@@ -344,6 +351,18 @@ app.get(`/api/user/:username/routine`, async (req, res) => {
     }
 })
 
+app.get(`/api/user/:username/feedback`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        const feedback = await Feedback.findOne({ _id: user.feedback });
+        res.status(200).send(feedback);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
+
 app.post("/api/selfie", async (req, res) => {
     try {
         const publicUrl = req.body.image;
@@ -401,6 +420,39 @@ app.get('/api/recommendation', async (req, res) => {
         res.sendStatus(400);
     }
 });
+
+app.put(`/api/user/:username/pfp`, async (req, res) => {
+    try {
+        const username = req.params.username;
+        const { imageUrl } = req.body;
+
+        if (!req.session.user) {
+            throw new Error("No session user");
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { username: username },
+            { pfp: imageUrl },
+            { new: true }
+        );
+
+        req.session.user = updatedUser;
+        req.session.save(err => {
+            if (err) {
+                console.log('Session(pfp update) error:', err);
+                res.statusMessage = "Session(pfp update) error: " + err;
+                res.sendStatus(400);
+                return;
+            }
+
+            // return created user
+            res.status(200).send(updatedUser);
+        })
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+})
 
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {

@@ -13,9 +13,9 @@ const SignupPage = () => {
     const location = useLocation();
     const usernameInputRef = useRef(null);
     const [loaded, setLoaded] = useState(false);
-    const recommendation = location.state?.recommendation;
+    const feedbackText = location.state?.feedbackText;
     const rawRoutine = location.state?.routine;
-    const routine = eval(`(${rawRoutine})`); // array of 4 products {name, description(=>supposed to be instruction), price, imageUrl}
+    const routine = eval(`(${rawRoutine})`); // array of 4 products {name, instruction, price, imageUrl}
     const imageUrl = location.state?.imageUrl;
 
     useEffect(() => {
@@ -32,8 +32,8 @@ const SignupPage = () => {
             }
         }
         fetchLoginData();
-        console.log('summary:', recommendation, 'routine:', routine, ', image:', imageUrl);
-        if (!recommendation || !routine || !imageUrl) {
+        console.log('summary:', feedbackText, 'routine:', routine, ', image:', imageUrl);
+        if (!feedbackText || !routine || !imageUrl) {
             console.log('no survey data, navigating to /survey');
             navigate('/survey');
         }
@@ -112,7 +112,11 @@ const SignupPage = () => {
             'username': signupInfo.username,
             'email': signupInfo.email,
             'password': signupInfo.password,
-            'routine': routine
+            'routine': routine,
+            'feedback': {
+                'feedback': feedbackText,
+                'imageUrl': imageUrl,
+            }
         });
         if ('usernameTaken' in res) {
             setSignupInfo((state) => ({

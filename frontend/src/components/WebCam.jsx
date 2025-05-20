@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { Button, Flex, Image, Input, Text, useToast } from "@chakra-ui/react";
 import { FiUpload } from "react-icons/fi";
@@ -9,10 +9,14 @@ const videoConstraints = {
     facingMode: "user"
 };
 
-const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile }) => {
+const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, disableSubmit }) => {
     const colors = Colors();
     const webcamRef = useRef(null);
     const fileRef = useRef(null);
+
+    useEffect(() => {
+        console.log(image)
+    }, [image])
 
     const handlePhoto = () => {
         const imageSrc = webcamRef.current.getScreenshot();
@@ -26,9 +30,14 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile })
         setImage(null);
     };
 
-    const handleClickFile = () => fileRef.current.click();
+    const handleClickFile = () => {
+        setPhotoFile(null);
+        setImage(null);
+        fileRef.current.click();
+    }
 
     const handleFileChange = (e) => {
+        console.log('in handlefilechange')
         const file = e.target.files[0];
         setPhotoFile(file);
         setImage(null);
@@ -54,6 +63,7 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile })
                     <>
                         <Webcam
                             style={{
+                                width: '70%',
                                 borderRadius: 12,
                                 border: "2px solid grey",
                                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -69,7 +79,19 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile })
             )}
 
             <Flex direction="row" mt="5px" mb="40px" align="center" width={300}>
-                <Button width="120px" ml="90px" mr="35px" height="35px" lineHeight="90px" bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} onClick={handleSubmitClick}>
+                <Button
+                    width="120px"
+                    ml="90px"
+                    mr="35px"
+                    height="35px"
+                    lineHeight="90px"
+                    bg={colors.BRIGHT3}
+                    color={colors.MAIN1}
+                    _hover={{ bg: colors.BRIGHT5 }}
+                    onClick={handleSubmitClick}
+                    isDisabled={disableSubmit}
+                    isLoading={disableSubmit}
+                >
                     Submit
                 </Button>
                 <Input type='file' ref={fileRef} accept='image/png, image/jpeg' onChange={handleFileChange} display='none' />

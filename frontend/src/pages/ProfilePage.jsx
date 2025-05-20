@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Avatar, Heading, Text, VStack, Flex, Image } from '@chakra-ui/react';
 import { FaFire } from 'react-icons/fa';
 import Calendar from '../components/Calendar';
 import Colors from '../utils/Colors';
-import { checkLogin, fetchUserDays, fetchUserStreak } from '../API/API';
+import { checkLogin, uploadImage, updateUserPFP, fetchUserDays, fetchUserStreak } from '../API/API';
 
 const ProfilePage = () => {
   const colors = Colors();
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState({});
+  const fileRef = useRef(null);
   const [streak, setStreak] = useState(0);
   const [days, setDays] = useState([]);
 
@@ -27,8 +28,7 @@ const ProfilePage = () => {
     }
     fetchLoginData();
   }, []);
-
-
+  
   useEffect(() => {
     const getStreakDays = async(username) => {
       const userStreak = await fetchUserStreak(username);
@@ -41,6 +41,36 @@ const ProfilePage = () => {
       getStreakDays(user.username);
     }
   }, [user])
+
+  const handleImageClick = async () => {
+    console.log('pfp clicked');
+
+    // choose image file
+    fileRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    console.log('file:', file)
+
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Please select a PNG, JPG, or JPEG image.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    // upload to cloudinary
+    const uploaded = await uploadImage(formData);
+    console.log('uploaded pfp url:', uploaded.imageUrl)
+    
+    const updatedUser = await updateUserPFP(user.username, uploaded.imageUrl);
+    console.log('profile page:', updatedUser)
+    setUser(updatedUser);
+  };
 
   return (
     // Full Page Flex
@@ -56,9 +86,16 @@ const ProfilePage = () => {
               borderRadius='full'
               boxSize="15vw"
               ml={{ base: 0, sm: 3 }}
-              onClick={() => handleChangeTab("Profile")}
+              onClick={handleImageClick}
               cursor="pointer"
               shadow="md"
+            />
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              style={{ display: 'none' }}
+              ref={fileRef}
+              onChange={handleFileChange}
             />
             {/* <Text>Profile Picture</Text> */}
           </Flex>

@@ -147,6 +147,7 @@ export const chat = async (username, userQuery, convHistory) => {
         return `Err: Simpli cannot give back an answer. ${err}`
     }
 }
+
 export const deleteChat = async (username) => {
     try {
         console.log("deleteChat")
@@ -232,8 +233,6 @@ export const getRecommendedRoutine = async (surveyData) => {
     }
 };
 
-
-
 export const fetchLeaderboard = async () => {
     const url = `${apiUrl}/api/leaderboard`;
     const params = {
@@ -254,7 +253,6 @@ export const fetchLeaderboard = async () => {
         console.error('Fetch leaderboard error:', e.message);
     }
 }
-            
 
 export const getUserRoutine = async (username) => {
     const url = `${apiUrl}/api/user/${username}/routine`;
@@ -277,6 +275,26 @@ export const getUserRoutine = async (username) => {
     }
 }
 
+export const getUserFeedback = async (username) => {
+    const url = `${apiUrl}/api/user/${username}/feedback`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('Get feedback error:', res.status);
+            return;
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('Get feedback error:', error.message);
+    }
+}
 
 export const fetchHomeLeaderboard = async (username) => {
     const url = `${apiUrl}/api/${username}/homeleaderboard`;
@@ -320,6 +338,30 @@ export const fetchUserStreak = async (username) => {
     }
 }
 
+export const updateUserPFP = async (username, imageUrl) => {
+    const url = `${apiUrl}/api/user/${username}/pfp`;
+    const params = {
+        ...header,
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify({ imageUrl }),
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok) {
+            console.log('User pfp update error:', res.status);
+            const errText = await res.text();
+            throw new Error(errText || 'PFP update failed');
+        }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (error) {
+        console.error('User pfp udpate error:', error.message);
+        return { error: error.message };
+    }
+};
+
 export const fetchUserPoint = async (username) => {
     const url = `${apiUrl}/api/${username}/point`;
     const params = {
@@ -340,7 +382,6 @@ export const fetchUserPoint = async (username) => {
         console.error('Fetch User Point error:', e.message);
     }
 }
-
 
 export const updateUserStreak = async () => {
     const url = `${apiUrl}/api/updatestreak`;
@@ -363,7 +404,6 @@ export const updateUserStreak = async () => {
     }
 }
 
-
 export const fetchUserDays = async (username) => {
     const url = `${apiUrl}/api/${username}/days`;
     const params = {
@@ -384,4 +424,3 @@ export const fetchUserDays = async (username) => {
         console.error('Fetch User Days error:', e.message);
     }
 }
-

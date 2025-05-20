@@ -57,11 +57,13 @@ Only recommend products from the list:
 ${products.map(p => `• ${p.name} — ${p.description} — Price: ${p.price} — Image: ${p.product_image}`).join("\n")}
 
 Respond with:
-- A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process, for a total of 4 unique products
+- A concise routine grouped as Cleanse → Exfoliate → Treat → Hydrate, with only one product for each process. You MUST recommend a total of 4 unique products.
 - Multiple paragraphs with bullets and fun tone
 - A 1-sentence summary under 50 words
-- A javascript array of the four chosen products in this exact format: {name, description, price, imageUrl}
+- A javascript array of the four chosen products in this exact format: {name, instruction, price, imageUrl}
 If nothing fits, say: "I'm sorry, I couldn't find a suitable routine. Please reach out to contact@simplify.com 💖."
+For the first 3 sections, write it in markdown. Do not wrap the texts in any block.
+However, you MUST wrap the valid javascript array inside a code block.
 `;
 }
 export async function recommendRoutine({
@@ -85,7 +87,7 @@ export async function recommendRoutine({
     const response = await openai.chat.completions.create({
         model: image_url ? "gpt-4.1-mini" : 'gpt-4',
         messages,
-        max_tokens: 700,
+        max_tokens: 1000,
     });
 
     return response.choices[0].message.content;

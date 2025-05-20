@@ -17,6 +17,7 @@ const ChatPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false); // for loading text bubbles
   const bottomRef = useRef();
+  const inputRef = useRef();
 
   //make dummy messages
   const dummyMessages = [
@@ -30,7 +31,13 @@ const ChatPage = () => {
       chatBox.scrollTop = chatBox.scrollHeight;
       // bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, loading, loaded]);
+  }, [messages, loading]);
+
+  useEffect(() => {
+    if (loaded) {
+      inputRef.current?.focus();
+    }
+  }, [loaded]);
 
   useEffect(() => {
     // load user's chat list
@@ -110,6 +117,7 @@ const ChatPage = () => {
             fontSize={{ base: "xs", md: "sm" }}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyPress}
+            ref={inputRef}
           />
           <Button bg="bg.subtle" variant="outline" borderColor={colors.SECONDARY1} onClick={handleSend}>
             <TbSend />

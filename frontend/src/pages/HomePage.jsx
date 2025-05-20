@@ -4,7 +4,7 @@ import { TriangleDownIcon } from '@chakra-ui/icons';
 
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { checkLogin, fetchHomeLeaderboard, fetchUserDays, fetchUserStreak, getUserRoutine, updateUserStreak } from '../API/API'
+import { checkLogin, fetchHomeLeaderboard, fetchUserDays, fetchUserStreak, getUserRoutine, updateUserStreak, getUserFeedback } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
 import Calendar from '../components/Calendar';
@@ -22,12 +22,12 @@ const HomePage = () => {
   const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState(null);
   const [routine, setRoutine] = useState([]);
+  const [feedback, setFeedback] = useState(null); // feedback object contains the summary and imageUrl
   const [streak, setStreak] = useState(null);
   const [days, setDays] = useState([]);
   const [finish, setFinish] = useState(false);
   const [homeboard, setHomeboard] = useState([]);
   const [username, setUsername] = useState("");
-
 
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -51,11 +51,16 @@ const HomePage = () => {
 
   useEffect(() => {
     // load user's product list
-    const setProductList = async (username) => {
+    const setPageStates = async (username) => {
       const productList = await getUserRoutine(username);
-      console.log('product list:', productList);
+      const feedbackObj = await getUserFeedback(username);
+      // console.log('product list:', productList);
+      // console.log('feedback:', feedbackObj);
       if (productList) {
         setRoutine(productList);
+      }
+      if (feedbackObj) {
+        setFeedback(feedbackObj);
       }
     }
     const getStreakDays = async(username) => {
@@ -71,7 +76,7 @@ const HomePage = () => {
       setHomeboard(theHomeboard);
     }
     if (user) {
-      setProductList(user.username);
+      setPageStates(user.username);
       getStreakDays(user.username);
       getHomeboard(user.username);
     }
@@ -142,10 +147,11 @@ const HomePage = () => {
             bg={colors.BRIGHT3}>
             <Text textAlign="center" color={colors.MAIN1}>Skin Analysis <TriangleDownIcon color={colors.MAIN1} /></Text>
           </Box>
-
-          <Box ref={skinAnalysisRef} w="100%">
-            <SkinAnalysis luminosity={35} clarity={20} vibrancy={25} overall={30} />
-          </Box>
+          {feedback &&
+            <Box ref={skinAnalysisRef} w="100%">
+              <SkinAnalysis feedback={feedback} luminosity={35} clarity={20} vibrancy={25} overall={30} />
+            </Box>
+          }
 
           <div style={{ fontSize: '11px' }}>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
 

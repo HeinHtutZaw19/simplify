@@ -13,10 +13,10 @@ const feedbackSchema = new mongoose.Schema({
     vibrancy: {
         type: Number
     },
-    skinUrl: {
+    imageUrl: {
         type: String
     }
 })
 
-const FeedBack = mongoose.model("FeedBack", feedbackSchema);
-export default FeedBack;
+const Feedback = mongoose.model("FeedBack", feedbackSchema);
+export default Feedback;
