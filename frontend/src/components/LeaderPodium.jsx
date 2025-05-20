@@ -43,7 +43,7 @@ const LeaderboardPodium = ({ first, second, third }) => {
                     {second.username}
                 </Text>
                 <Text fontWeight="bold" fontSize={{ base: "xs", md: "sm" }} color="pink.400">
-                    {second.streak}
+                    {second.point}
                 </Text>
             </Box>
 
@@ -95,7 +95,7 @@ const LeaderboardPodium = ({ first, second, third }) => {
                     {first.username}
                 </Text>
                 <Text fontWeight="bold" fontSize={{ base: "xs", md: "sm" }} color="green.300">
-                    {first.streak}
+                    {first.point}
                 </Text>
             </Box>
 
@@ -138,7 +138,7 @@ const LeaderboardPodium = ({ first, second, third }) => {
                     {third.username}
                 </Text>
                 <Text fontWeight="bold" fontSize={{ base: "xs", md: "sm" }} color="orange.400">
-                    {third.streak}
+                    {third.point}
                 </Text>
             </Box>
         </Flex>

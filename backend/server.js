@@ -19,6 +19,8 @@ import { uploadToSupabase, evaluateSelfie } from './utils/vision.js';
 
 // Leaderboard
 import leaderboard from './utils/leaderboard.js';
+//Streak
+import streak from './utils/streak.js';
 
 const app = express();
 dotenv.config();
@@ -350,6 +352,8 @@ app.post("/api/selfie", async (req, res) => {
 
 // Leaderboard
 app.use(leaderboard);
+// Streak
+app.use(streak);
 
 app.listen(PORT, () => {
     connectDB();

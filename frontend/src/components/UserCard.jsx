@@ -55,7 +55,7 @@ const UserCard = ({ user, name }) => {
                 fontSize={{ base: "2xs", md: "xs" }}
                 color={colors.TEXT1}
             >
-                {user.streak}
+                {user.point}
             </Text>
 
             {/* Trend Icon */}
