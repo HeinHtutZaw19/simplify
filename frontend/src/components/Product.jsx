@@ -26,9 +26,9 @@ const Product = ({ product, isChecked }) => {
     const colors = Colors();
     return (
         <Tooltip label={product.instruction} hasArrow placement="top" >
-            <Box className="home-routine-box" bg={colors.BRIGHT4} key={product._id} borderRadius="lg" opacity={isChecked ? 0.45 : 1} transition="transform 0.2s ease-in-out"
+            <Box className="home-routine-box" bg={colors.BRIGHT4} key={product._id} borderRadius="lg" opacity={isChecked ? 0.45 : 1} transition="transform 0.1s ease-in-out"
                 _hover={{
-                    transform: 'scale(1.1)',
+                    transform: 'scale(1.04)',
                 }}>
                 <Checkbox className="home-routine-checkbox" value={product.name} size="lg">
                     <Text color="white">{product.name}</Text>
