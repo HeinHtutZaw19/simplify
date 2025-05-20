@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { Button, Flex, Image, Input, Text, useToast } from "@chakra-ui/react";
 import { FiUpload } from "react-icons/fi";
@@ -14,6 +14,10 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
     const webcamRef = useRef(null);
     const fileRef = useRef(null);
 
+    useEffect(() => {
+        console.log(image)
+    }, [image])
+
     const handlePhoto = () => {
         const imageSrc = webcamRef.current.getScreenshot();
         // console.log(imageSrc)
@@ -26,9 +30,14 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
         setImage(null);
     };
 
-    const handleClickFile = () => fileRef.current.click();
+    const handleClickFile = () => {
+        setPhotoFile(null);
+        setImage(null);
+        fileRef.current.click();
+    }
 
     const handleFileChange = (e) => {
+        console.log('in handlefilechange')
         const file = e.target.files[0];
         setPhotoFile(file);
         setImage(null);
@@ -54,6 +63,7 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
                     <>
                         <Webcam
                             style={{
+                                width: '70%',
                                 borderRadius: 12,
                                 border: "2px solid grey",
                                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
