@@ -60,6 +60,13 @@ const Colors = () => {
         BRIGHT4: '#0E6BC4',
         BRIGHT5: '#084F93',
 
+        //Chat Color
+        CHATTEXT: '#F3F9FE',
+        SIMPLIBG: '#0E6BC4',
+        USERBG: '#084F93',
+
+        NAVITEM: "#084F93"
+
     } :
     {
         // Main Palette (Dark backgrounds for layout)
@@ -88,6 +95,13 @@ const Colors = () => {
         BRIGHT3: '#2168B3',
         BRIGHT4: '#15599E',
         BRIGHT5: '#0C417A',
+
+        CHATTEXT: '#F3F9FE',
+        SIMPLIBG: '#0E6BC4',
+        USERBG: '#5397D9',
+
+        NAVITEM: "#2C78C4"
+
     }
 }
 // {

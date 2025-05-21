@@ -6,7 +6,7 @@ const leaderboard = express.Router();
 
 const getLeaderBoard = async () => {
     try{
-        const leaderboard = await User.find({})
+        const leaderboard = await User.find({ email: {$ne: 'admin@admin.com'}})
             .select('username streak point')
             .sort({point: -1})
             .exec();
@@ -21,7 +21,7 @@ const getLeaderBoard = async () => {
 
 const getHomeLeaderBoard = async (username) => {
     try{
-        const leaderboard = await User.find({})
+        const leaderboard = await User.find({ email: {$ne: 'admin@admin.com'}})
             .select('username streak point')
             .sort({point: -1})
             .exec();

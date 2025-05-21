@@ -24,8 +24,8 @@ const Message = ({ index, text, isUser, user }) => {
                 />
             )}
             <Box
-                bg={isUser ? colors.MAIN3 : colors.BRIGHT4}
-                color={isUser ? colors.TEXT1 : colors.MAIN1}
+                bg={isUser ? colors.USERBG : colors.SIMPLIBG}
+                color= {colors.CHATTEXT}
                 px={8}
                 py={2}
                 borderRadius="md"
@@ -33,7 +33,7 @@ const Message = ({ index, text, isUser, user }) => {
                 wordBreak="break-word"
 
             >
-                <Box fontSize={{ base: "xs", md: "sm" }}>
+                <Box fontSize={{ base: "xs", md: "sm" } }>
                     <ReactMarkdown>{text}</ReactMarkdown>
                 </Box>
             </Box>

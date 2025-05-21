@@ -95,7 +95,7 @@ const Sidebar = () => {
                                 shadow="md"
                             />
 
-                            <Heading as="h3" size="sm" color={colors.BRIGHT4} p={3} display={{ md: "flex", sm: "none" }}
+                            <Heading as="h3" size="sm" color={colors.NAVITEM} p={3} display={{ md: "flex", sm: "none" }}
                                 onClick={() => handleChangeTab("Profile")}
                                 cursor="pointer"
                             >
@@ -122,7 +122,9 @@ const Sidebar = () => {
                             <NavItem icon={IoChatbubbleEllipsesOutline} title={"Chat"} active={tab.active == "chat"} handler={() => handleChangeTab("chat")} />
                             <NavItem icon={MdLeaderboard} title={"Leaderboard"} active={tab.active == "leaderboard"} handler={() => handleChangeTab("leaderboard")} />
                             <NavItem icon={colorMode === 'light' ? MoonIcon : SunIcon} title={colorMode === 'light' ? "Dark Mode" : 'Light Mode'} active={false} handler={toggleColorMode} />
-                            <NavItem title={"Admin Page"} active={tab.active == "admin"} handler={() => handleChangeTab("admin")} />
+                            {user.email === 'admin@admin.com' && (
+                                <NavItem title={"Admin Page"} active={tab.active == "admin"} handler={() => handleChangeTab("admin")} />
+                            )}
                         </Flex>
 
                     </Flex>

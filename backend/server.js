@@ -26,6 +26,8 @@ import { recommendRoutine } from './utils/recommend.js';
 import leaderboard from './utils/leaderboard.js';
 //Streak
 import streak from './utils/streak.js';
+// Admin
+import admin from './utils/admin.js';
 
 const app = express();
 dotenv.config();
@@ -382,6 +384,8 @@ app.post("/api/selfie", async (req, res) => {
 app.use(leaderboard);
 // Streak
 app.use(streak);
+// Admin
+app.use(admin);
 
 app.post('/api/upload', upload.single('image'), (req, res) => {
     if (!req.file || !req.file.path) {

@@ -424,3 +424,47 @@ export const fetchUserDays = async (username) => {
         console.error('Fetch User Days error:', e.message);
     }
 }
+
+
+export const fetchUsers = async () => {
+    const url = `${apiUrl}/api/adminlist`;
+    const params = {
+        ...header,
+        method: 'GET',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error fetching all users:', res.status);
+            return [];
+         }
+        const parsed = await res.json();
+        return parsed;
+    }
+    catch (e) {
+        console.error('Fetch all users error:', e.message);
+    }
+}
+
+
+export const deleteUser = async (email) => {
+    const url = `${apiUrl}/api/deleteuser/${email}`;
+    const params = {
+        ...header,
+        method: 'DELETE',
+        credentials: 'include'
+    };
+    try {
+        const res = await fetch(url, params);
+        if (!res.ok){
+            console.error('Error deleting user:', res.status);
+            return null;
+        }
+        console.log('Delete User Success: ', res.status);
+        return {message: res.message};
+    }
+    catch (e) {
+        console.error('Fetch User Days error:', e.message);
+    }
+}

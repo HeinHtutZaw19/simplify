@@ -151,7 +151,7 @@ const SurveyPage = () => {
 
     return (
         <> {loaded && (
-            <Box w='100%' px={20} pt={10}>
+            <Box w='100%' px={20} pt={10} overflow='auto' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
                 {submitted && (
                     <Box
                         position="fixed"

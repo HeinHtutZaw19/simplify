@@ -28,8 +28,8 @@ const NavItem = ({ icon, title, active, handler }) => {
                 >
                     <MenuButton w="100%">
                         <Flex>
-                            <Icon ml={3} as={icon} fontSize="xl" color={active ? colors.BRIGHT5 : colors.SECONDARY1} />
-                            <Text ml={5} display={{ lg: "flex", md: "flex", sm: "none" }} color={active ? colors.BRIGHT5 : colors.TEXT4} fontWeight={active ? "bold" : "normal"}>{title} </Text>
+                            <Icon ml={3} as={icon} fontSize="xl" color={active ? colors.NAVITEM : colors.SECONDARY1} />
+                            <Text ml={5} display={{ lg: "flex", md: "flex", sm: "none" }} color={active ? colors.NAVITEM : colors.TEXT4} fontWeight={active ? "bold" : "normal"}>{title} </Text>
                         </Flex>
                     </MenuButton>
                 </Link>
