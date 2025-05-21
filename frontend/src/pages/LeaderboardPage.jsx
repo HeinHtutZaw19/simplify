@@ -1,4 +1,4 @@
-import { Image, Tabs, TabList, Tab, VStack, Flex, Text } from "@chakra-ui/react"
+import { Image, Tabs, TabList, Tab, VStack, Flex, Text, Heading } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { checkLogin } from "../API/API.jsx"
@@ -76,7 +76,7 @@ const LeaderboardPage = () => {
     <Flex direction="column" width="full" alignItems={"center"}>
       {/* VStack */}
       <VStack align="center" spacing={2} m={5} flex={1}>
-        <Tabs
+        {/* <Tabs
           mt={2}
           index={primaryTab === "cumulative" ? 0 : 1}
           onChange={(i) => setPrimaryTab(i === 0 ? "cumulative" : "monthly")}
@@ -100,7 +100,7 @@ const LeaderboardPage = () => {
               Monthly
             </Tab>
           </TabList>
-        </Tabs>
+        </Tabs> */}
 
         {/* <Tabs
           index={secondaryTab === "regional" ? 0 : 1}
@@ -126,6 +126,8 @@ const LeaderboardPage = () => {
             </Tab>
           </TabList>
         </Tabs> */}
+
+        <Heading fontFamily='Feather Bold'>Leaderboard</Heading>
         
       </VStack>
       <Flex w="full" direction={{ lg: "row", md: "row", sm: "column" }} justifyContent="center" alignItems={"center"} bg={colors.BRIGHT5} height="full">

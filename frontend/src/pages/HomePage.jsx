@@ -47,7 +47,13 @@ const HomePage = () => {
       }
     }
     fetchLoginData();
-  }, []);
+  }, [navigate]);
+
+  const getHomeboard = async(username) => {
+      const theHomeboard = await fetchHomeLeaderboard(username);
+      console.log("Fetched Home Leaderboard:", theHomeboard);
+      setHomeboard(theHomeboard);
+  }
 
   useEffect(() => {
     // load user's product list
@@ -70,11 +76,7 @@ const HomePage = () => {
       setStreak(userStreak);
       setDays(userDays);
     }
-    const getHomeboard = async(username) => {
-      const theHomeboard = await fetchHomeLeaderboard(username);
-      console.log("Fetched Home Leaderboard:", theHomeboard);
-      setHomeboard(theHomeboard);
-    }
+    
     if (user) {
       setPageStates(user.username);
       getStreakDays(user.username);
@@ -88,6 +90,8 @@ const HomePage = () => {
       setStreak(newStreak.streak);
       setDays(newStreak.days);
       setFinish(true);
+
+      getHomeboard(user.username);
 
       console.log("Streak Updated:", newStreak.streak);
       console.log("Days updated: ", newStreak.days);
@@ -120,9 +124,9 @@ const HomePage = () => {
           </Box>
 
           <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
-            <CheckboxGroup colorScheme="yellow" value={checked} onChange={handleCheck}>
+            <CheckboxGroup colorScheme="yellow" value={checked} onChange={handleCheck} >
               {routine.map((product) => (
-                <Product key={product._id} product={product} isChecked={checked.includes(product.name)} />
+                <Product key={product._id} product={product} isChecked={finish || checked.includes(product.name)}  />
               ))}
             </CheckboxGroup>
           </Grid>
@@ -135,10 +139,12 @@ const HomePage = () => {
               bg={colors.BRIGHT3}
               _hover={{ bg: colors.BRIGHT5 }}
               onClick={!finish ? routineFinish : null}
+              isDisabled={finish}
             >
-              <Text textAlign="center" color={colors.MAIN1}>Routine Finished!</Text>
+              <Text textAlign="center" color={colors.MAIN1}>{finish ? "Already Finished Today!" : "Routine Finished!"}</Text>
             </Box>
           )}
+
 
           <Box
             id="home-skinanalysis-button"

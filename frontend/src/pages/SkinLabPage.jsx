@@ -179,6 +179,7 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
               fontSize={{ sm: "2xl", md: "3xl", lg: "4xl" }}
               fontWeight="bold"
               textAlign="center"
+              fontFamily = 'Feather Bold'
               pt={10}
               pb={5}
               textShadow="2px 2px 4px rgba(0, 0, 0, 0.2)"
