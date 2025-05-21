@@ -1,5 +1,29 @@
 # CSE 416 Portfolio Project : SIMPLIFY - AI Skin-Care Assistant
 
+## How To Run
+1. Run ```git clone https://github.com/HeinHtutZaw19/simplify.git```
+2. Create a .env file in project root folder and in the frontend folder, then make sure to have these parameters:
+> PORT = 4000
+> 
+> API_URL=http://localhost:4000
+
+- If you wish to test our application, email us at dowon.kim@stonybrook.edu for the rest of the private keys, as we are unable to share these with the public.
+
+3. npm install
+4. cd frontend
+5. npm install
+6. cd ..
+7. npm run dev
+8. cd frontend
+9. npm run dev
+10. Access http://localhost:5173
+
+## Bug Reporting
+If you think you found a bug, please do not hesitate to let us know. Go to [our GitHub Issues](https://github.com/HeinHtutZaw19/simplify/issues) and create a new issue. Describe the bug in detail, post a screenshot if available, and write the steps to reproduce the bug. We greatly appreciate your feedback and support in improving Simplify.
+
+## API Documentation
+Here is the link to our backend API documentation: [Simplify - API Design](https://docs.google.com/spreadsheets/d/1WgHoEch9M3oLsOmloMC5mWVgK45bxqQGAQsFRffQJIk/edit?gid=0#gid=0)
+
 ## 🧴 Problem Statement
 
 Skin care is essential for anyone looking to enhance their lifestyle. While following a basic routine may seem simple, modern beauty products are highly specialized for different skin types. Using the wrong products can be ineffective or even harmful. However, individuals who are unaware of what to do—or are too busy—struggle to build a proper skincare routine that suits their needs.
