@@ -10,7 +10,10 @@ streak.get('/api/:username/streak', async (req, res) => {
         const user = await User.findOne({ username: username });
         const currentDate = new Date();
         const currDay = currentDate.getDate();
-        if (user.days.includes(currDay-1)){
+        
+        const ifConsecutive = user.days.includes(currDay-1);
+        const ifToday = user.days.includes(currDay-1);
+        if (!ifConsecutive && ifToday ){
             user.streak = 0;
         }
         const streak = user.streak;
