@@ -101,6 +101,7 @@ const ChatPage = () => {
                 key={idx}
                 text={message.text}
                 isUser={message.sender === "You"}
+                user={user}
               />
             ))}
             {loading && <LoadingBubble isUser={false} />}

@@ -4,7 +4,7 @@ import Simpli from "../assets/Simpli.jpg";
 import ReactMarkdown from 'react-markdown';
 import Colors from "../utils/Colors";
 
-const Message = ({ index, text, isUser }) => {
+const Message = ({ index, text, isUser, user }) => {
 
     const colors = Colors();
 
@@ -37,7 +37,7 @@ const Message = ({ index, text, isUser }) => {
                     <ReactMarkdown>{text}</ReactMarkdown>
                 </Box>
             </Box>
-            {isUser && <Avatar size="sm" />}
+            {isUser && <Avatar size="sm" src={user.pfp} />}
         </HStack>
     );
 };
