@@ -9,14 +9,11 @@
 
 - If you wish to test our application, email us at dowon.kim@stonybrook.edu for the rest of the private keys, as we are unable to share these with the public.
 
-3. npm install
-4. cd frontend
-5. npm install
-6. cd ..
-7. npm run dev
-8. cd frontend
-9. npm run dev
-10. Access http://localhost:5173
+3. npm run build
+4. npm run dev
+5. cd frontend
+6. npm run dev
+7. Access http://localhost:5173
 
 ## Bug Reporting
 If you think you found a bug, please do not hesitate to let us know. Go to [our GitHub Issues](https://github.com/HeinHtutZaw19/simplify/issues) and create a new issue. Describe the bug in detail, post a screenshot if available, and write the steps to reproduce the bug. We greatly appreciate your feedback and support in improving Simplify.
