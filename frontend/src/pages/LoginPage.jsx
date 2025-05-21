@@ -7,6 +7,9 @@ import { loginUser, checkLogin } from '../API/API';
 import Colors from '../utils/Colors.jsx';
 
 const PORT = import.meta.env.PORT || 4000;
+const API_BASE_URL = import.meta.env.MODE === 'production'
+    ? 'https://simplify-e3px.onrender.com/api/login/google'
+    : `http://localhost:${PORT}/api/login/google`;
 
 const LoginPage = () => {
     const colors = Colors();
@@ -98,7 +101,7 @@ const LoginPage = () => {
 
     const onGoogleClick = async () => {
         console.log('google clicked')
-        window.location.href = `http://localhost:${PORT}/api/login/google`;
+        window.location.href = API_BASE_URL;
     }
 
     const handleCloseClick = async () => {
