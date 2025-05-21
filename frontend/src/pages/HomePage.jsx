@@ -43,6 +43,9 @@ const HomePage = () => {
         if (today.getDate() === routineDate.getDate()){
           setFinish(true);
         }
+        if (user.days.includes(today)){
+          setFinish(true);
+        }
         setUsername(user.username);
       }
     }
@@ -72,9 +75,13 @@ const HomePage = () => {
     const getStreakDays = async(username) => {
       const userStreak = await fetchUserStreak(username);
       const userDays = await fetchUserDays(username);
+      const today = new Date();
       console.log("Fetched User Streak:", userStreak);
       setStreak(userStreak);
       setDays(userDays);
+      if (userDays.includes(today)){
+          setFinish(true);
+        }
     }
     
     if (user) {
@@ -90,7 +97,6 @@ const HomePage = () => {
       setStreak(newStreak.streak);
       setDays(newStreak.days);
       setFinish(true);
-
       getHomeboard(user.username);
 
       console.log("Streak Updated:", newStreak.streak);
@@ -111,6 +117,8 @@ const HomePage = () => {
   const handleCheck = (values) => {
     setChecked(values);
   }
+
+  
 
   return (
     // Full Page Flex
