@@ -82,7 +82,7 @@ const HomePage = () => {
       getStreakDays(user.username);
       getHomeboard(user.username);
     }
-  }, [user])
+  }, [user, navigate])
 
   const routineFinish = async () =>{
     const newStreak = await updateUserStreak();
