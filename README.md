@@ -15,6 +15,9 @@
 6. npm run dev
 7. Access http://localhost:5173
 
+## Deployment
+We have also deployed our application to Render. Click [here](https://simplify-e3px.onrender.com) to access it.
+
 ## Bug Reporting
 If you think you found a bug, please do not hesitate to let us know. Go to [our GitHub Issues](https://github.com/HeinHtutZaw19/simplify/issues) and create a new issue. Describe the bug in detail, post a screenshot if available, and write the steps to reproduce the bug. We greatly appreciate your feedback and support in improving Simplify.
 
