@@ -72,6 +72,7 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
                             audio={false}
                             ref={webcamRef}
                             screenshotFormat='image/jpeg'
+                            mirrored={true}
                             videoConstraints={videoConstraints} />
                         <Button onClick={handlePhoto}>Take Photo</Button>
                     </>
