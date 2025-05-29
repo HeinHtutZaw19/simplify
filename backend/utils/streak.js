@@ -10,10 +10,10 @@ streak.get('/api/:username/streak', async (req, res) => {
         const user = await User.findOne({ username: username });
         const currentDate = new Date();
         const currDay = currentDate.getDate();
-        
-        const ifConsecutive = user.days.includes(currDay-1);
-        const ifToday = user.days.includes(currDay-1);
-        if (!ifConsecutive && ifToday ){
+
+        const ifConsecutive = user.days.includes(currDay - 1);
+        const ifToday = user.days.includes(currDay - 1);
+        if (!ifConsecutive && ifToday) {
             user.streak = 0;
         }
         const streak = user.streak;
@@ -42,12 +42,12 @@ streak.get('/api/:username/point', async (req, res) => {
 })
 
 streak.post('/api/updatestreak', async (req, res) => {
-    try{
+    try {
         let user = null;
         if (req.session.user) {
             user = req.session.user;
         }
-        const CurrUser = await User.findOne({username: user.username});
+        const CurrUser = await User.findOne({ username: user.username });
 
         //Get updated date
         const currentDate = new Date();
@@ -55,32 +55,43 @@ streak.post('/api/updatestreak', async (req, res) => {
         const currDay = currentDate.getDate();
 
         //Update user streak
-        if (CurrUser.days.length === 0){
-            if(CurrUser.streak > 0){
+        if (CurrUser.days.length === 0) {
+            if (CurrUser.streak > 0) {
                 CurrUser.streak += 1;
             }
-            else{
+            else {
                 CurrUser.streak = 1;
             }
         }
-        else if(CurrUser.days.includes(currDay-1)){
+        else if (CurrUser.days.includes(currDay - 1)) {
             CurrUser.streak += 1;
         }
-        else{
+        else {
             CurrUser.streak = 1;
         }
 
-        CurrUser.point += 10*CurrUser.streak;
+        CurrUser.point += 10 * CurrUser.streak;
         CurrUser.routineDate = currentDate;
         CurrUser.days.push(currDay);
 
         await CurrUser.save();
 
-        res.status(200).json({ streak: CurrUser.streak,
+        req.session.user = CurrUser;
+        req.session.save(err => {
+            if (err) {
+                console.log('Session(streak update) error:', err);
+                res.statusMessage = "Session(streak update) error: " + err;
+                res.sendStatus(400);
+                return;
+            }
+
+            res.status(200).json({
+                streak: CurrUser.streak,
                 routineDate: CurrUser.routineDate,
                 days: CurrUser.days,
                 point: CurrUser.point,
-        });
+            });
+        })
     }
     catch (e) {
         console.error("Error updating User Streak:", e.message);
