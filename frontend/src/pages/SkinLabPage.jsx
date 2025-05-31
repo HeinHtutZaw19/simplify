@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { checkLogin } from '../API/API';
 import { Flex, Box, Image, Button, Text, SimpleGrid, Spinner, useToast } from '@chakra-ui/react'
 import { FiUpload } from "react-icons/fi";
 import { FaRedo } from "react-icons/fa";
@@ -13,7 +11,6 @@ import WebCam from '../components/WebCam';
 import { createClient } from '@supabase/supabase-js';
 import { uploadSelfie } from '../API/API.jsx';
 
-
 const boxes = [
   { x: 50, y: 35, color: 'green.500' },   // Green
   { x: 65, y: 50, color: 'blue.500' },   // Blue
@@ -22,7 +19,6 @@ const boxes = [
 ];
 const SkinLabPage = () => {
   const colors = Colors();
-  const navigate = useNavigate();
 
   const markdown = `
 
@@ -41,23 +37,9 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
 `;
 
   const toast = useToast();
-  const [loaded, setLoaded] = useState(false);
   const [aiDescription, setAIDescription] = useState({ luminosity: 30, clarity: 20, vibrancy: 40, overall: 35, description: markdown })
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // for loading text bubbles
-
-  useEffect(() => {
-    const fetchLoginData = async () => {
-      const user = await checkLogin();
-      if (!user) {
-        navigate('/welcome');
-      }
-      else {
-        setLoaded(true);
-      }
-    }
-    fetchLoginData();
-  });
 
   function stripMarkdown(text) {
     // Remove **bold**, *italic*, _underline_, etc.
@@ -79,7 +61,6 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
 
     return result;
   }
-
 
   const dataURLtoBlob = (dataURL) => {
     const parts = dataURL.split(';base64,');
@@ -167,103 +148,57 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
     }
   };
 
-
-
   return (
+    <Flex className="page" overflow="hidden" color="black" bg={colors.MAIN1}>
+      <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+        <Text
+          fontSize={{ sm: "2xl", md: "3xl", lg: "4xl" }}
+          fontWeight="bold"
+          textAlign="center"
+          fontFamily='Feather Bold'
+          pt={10}
+          pb={5}
+          textShadow="2px 2px 4px rgba(0, 0, 0, 0.2)"
+          color={colors.TEXT1}
+        >
+          Upload your selfie to analyze your skin with Simplify!
+        </Text>
 
-    <>
-      {loaded &&
-        <Flex className="page" overflow="hidden" color="black" bg={colors.MAIN1}>
-          <Flex className="flex-scroll" sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-            <Text
-              fontSize={{ sm: "2xl", md: "3xl", lg: "4xl" }}
-              fontWeight="bold"
-              textAlign="center"
-              fontFamily = 'Feather Bold'
-              pt={10}
-              pb={5}
-              textShadow="2px 2px 4px rgba(0, 0, 0, 0.2)"
-              color={colors.TEXT1}
+        {/* Webcam */}
+        <Flex py={10} width={{ sm: "100%", md: "100%", lg: "120%" }} >
+          <WebCam
+            handleSubmitClick={handleSubmitClick}
+            image={image}
+            setImage={setImage}
+          />
+
+          {/* Overlay only over the webcam area */}
+          {isLoading && (
+            <Box
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              bg="whiteAlpha.800"
+              backdropBlur="sm"
+              zIndex={10}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
             >
-              Upload your selfie to analyze your skin with Simplify!
-            </Text>
-            {/* <Flex width={{ sm: "60%", md: "50%", lg: "100%" }} pb={0}>
-             
-              <Flex className="skinlab-detail-flex" display={{ sm: 'none', md: 'none', lg: 'flex' }} alignItems="flex-start">
-                <PatchDetail color="green.500" description="The visible wrinkles indicate a reduction in collagen and elasticity, leading to rougher texture and an aged appearance of the skin." />
-                <PatchDetail color="blue.500" description="The sunburn mask pattern on the skin suggests prolonged UV exposure, causing redness, irritation, and potential long-term damage such as hyperpigmentation and premature aging." />
-              </Flex>
-             
-              <BoxOverlayImage boxes={boxes} img={testImage} />
-             
-              <Flex className="skinlab-detail-flex" display={{ sm: 'none', md: 'none', lg: 'flex' }} alignItems="flex-end">
-                <PatchDetail color="yellow.500" description="The presence of pimples indicates inflammation and clogged pores, often caused by excess oil, bacteria, or hormonal imbalances, which can lead to redness, swelling, and potential scarring if untreated." />
-                <PatchDetail color="red.500" description="Enlarged or visible pores suggest excess oil production and potential buildup of dirt or dead skin cells, which can contribute to acne and uneven skin texture." />
-              </Flex>
-            </Flex> */}
-            {/* 
-            <SimpleGrid
-              columns={2}
-              spacing={6}
-              p={10}
-              display={{ sm: 'grid', md: 'grid', lg: 'none' }}
-              alignItems="flex-start"
-            >
-              <PatchDetail
-                color="green.500"
-                description="The visible wrinkles indicate a reduction in collagen and elasticity, leading to rougher texture and an aged appearance of the skin."
-              />
-              <PatchDetail
-                color="blue.500"
-                description="The sunburn mask pattern on the skin suggests prolonged UV exposure, causing redness, irritation, and potential long-term damage such as hyperpigmentation and premature aging."
-              />
-              <PatchDetail
-                color="yellow.500"
-                description="The presence of pimples indicates inflammation and clogged pores, often caused by excess oil, bacteria, or hormonal imbalances, which can lead to redness, swelling, and potential scarring if untreated."
-              />
-              <PatchDetail
-                color="red.500"
-                description="Enlarged or visible pores suggest excess oil production and potential buildup of dirt or dead skin cells, which can contribute to acne and uneven skin texture."
-              />
-            </SimpleGrid> */}
+              <Spinner size="xl" />
+              <Text ml={3} fontSize="lg" fontWeight="medium">
+                Analyzing...
+              </Text>
+            </Box>
+          )}
+        </Flex>
 
-            {/* Webcam */}
-            <Flex py={10} width={{ sm: "100%", md: "100%", lg: "120%" }} >
-              <WebCam
-                handleSubmitClick={handleSubmitClick}
-                image={image}
-                setImage={setImage}
-              />
-
-              {/* Overlay only over the webcam area */}
-              {isLoading && (
-                <Box
-                  position="absolute"
-                  top={0}
-                  left={0}
-                  right={0}
-                  bottom={0}
-                  bg="whiteAlpha.800"
-                  backdropBlur="sm"
-                  zIndex={10}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Spinner size="xl" />
-                  <Text ml={3} fontSize="lg" fontWeight="medium">
-                    Analyzing...
-                  </Text>
-                </Box>
-              )}
-            </Flex>
-
-            {/* Skin Lab Analysis */}
-            <SkinLabAnalysis luminosity={aiDescription.luminosity} clarity={aiDescription.clarity} vibrancy={aiDescription.vibrancy} overall={aiDescription.overall} text={aiDescription.description} />
-          </Flex>
-        </Flex>}
-
-    </>
+        {/* Skin Lab Analysis */}
+        <SkinLabAnalysis luminosity={aiDescription.luminosity} clarity={aiDescription.clarity} vibrancy={aiDescription.vibrancy} overall={aiDescription.overall} text={aiDescription.description} />
+      </Flex>
+    </Flex>
   )
 }
 

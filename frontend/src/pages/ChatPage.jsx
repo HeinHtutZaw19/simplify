@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Box, Flex, Input, Button, HStack, Text, Spacer } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import { checkLogin, chat, getChatList, deleteChat } from "../API/API";
@@ -7,16 +7,15 @@ import Message from "../components/Message";
 import Colors from '../utils/Colors';
 import LoadingBubble from "../components/LoadingBubble";
 
-const ChatPage = () => {
-
+const ChatPage = ({ user }) => {
   const colors = Colors();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false); // for loading entire page
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false); // for loading text bubbles
-  const bottomRef = useRef();
+  // const bottomRef = useRef();
   const inputRef = useRef();
 
   //make dummy messages
@@ -45,23 +44,10 @@ const ChatPage = () => {
       const chatList = await getChatList(username);
       setMessages([...dummyMessages, ...chatList]);
     }
-    if (user) {
-      setChatHistory(user.username);
-    }
+    setChatHistory(user.username);
   }, [user]);
 
   useEffect(() => {
-    const fetchLoginData = async () => {
-      const user = await checkLogin();
-      if (!user) {
-        navigate('/welcome');
-      }
-      else {
-        setUser(user);
-        setLoaded(true);
-      }
-    }
-    fetchLoginData();
     setMessages(dummyMessages);
   }, []);
 
@@ -84,59 +70,57 @@ const ChatPage = () => {
   };
 
   return (
-    <> {loaded &&
-      <Flex direction="column" h="100%" w="100%" p={4} bg={colors.MAIN2}>
-        <Box
-          flex="1"
-          bg={colors.MAIN1}
-          borderRadius="md"
-          boxShadow="md"
-          overflowY="auto"
-          id="chat-box"
-          p={4}
-        >
-          <Flex direction="column" gap={4}>
-            {messages.map((message, idx) => (
-              <Message
-                key={idx}
-                text={message.text}
-                isUser={message.sender === "You"}
-                user={user}
-              />
-            ))}
-            {loading && <LoadingBubble isUser={false} />}
-            {/* <div ref={bottomRef} /> */}
-          </Flex>
-        </Box>
-
-        <HStack w="100%" mt={4}>
-          <Input
-            borderColor={colors.SECONDARY1}
-            flex="1"
-            placeholder="Ask Anything You Want About Skincare!"
-            value={input}
-            fontSize={{ base: "xs", md: "sm" }}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyPress}
-            ref={inputRef}
-          />
-          <Button bg="bg.subtle" variant="outline" borderColor={colors.SECONDARY1} onClick={handleSend}>
-            <TbSend />
-          </Button>
-        </HStack>
-
-        <Flex p={4} alignItems="center">
-          <Spacer />
-          <Text fontSize={{ base: "xs", md: "sm" }} color={colors.TEXT1}>
-            Simpli Chat can make mistakes. Please double-check your information!
-          </Text>
-          <Spacer />
-          <Button colorScheme="red" variant="outline" ml={4} onClick={() => { deleteChat(user.username); setMessages([]); }}>
-            X
-          </Button>
+    <Flex direction="column" h="100%" w="100%" p={4} bg={colors.MAIN2}>
+      <Box
+        flex="1"
+        bg={colors.MAIN1}
+        borderRadius="md"
+        boxShadow="md"
+        overflowY="auto"
+        id="chat-box"
+        p={4}
+      >
+        <Flex direction="column" gap={4}>
+          {messages.map((message, idx) => (
+            <Message
+              key={idx}
+              text={message.text}
+              isUser={message.sender === "You"}
+              user={user}
+            />
+          ))}
+          {loading && <LoadingBubble isUser={false} />}
+          {/* <div ref={bottomRef} /> */}
         </Flex>
-      </Flex>}
-    </>
+      </Box>
+
+      <HStack w="100%" mt={4}>
+        <Input
+          borderColor={colors.SECONDARY1}
+          flex="1"
+          placeholder="Ask Anything You Want About Skincare!"
+          value={input}
+          fontSize={{ base: "xs", md: "sm" }}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyPress}
+          ref={inputRef}
+        />
+        <Button bg="bg.subtle" variant="outline" borderColor={colors.SECONDARY1} onClick={handleSend}>
+          <TbSend />
+        </Button>
+      </HStack>
+
+      <Flex p={4} alignItems="center">
+        <Spacer />
+        <Text fontSize={{ base: "xs", md: "sm" }} color={colors.TEXT1}>
+          Simpli Chat can make mistakes. Please double-check your information!
+        </Text>
+        <Spacer />
+        <Button colorScheme="red" variant="outline" ml={4} onClick={() => { deleteChat(user.username); setMessages([]); }}>
+          X
+        </Button>
+      </Flex>
+    </Flex>
   );
 };
 
