@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Flex, Box, Image, Button, Text, SimpleGrid, Spinner, useToast } from '@chakra-ui/react'
-import { FiUpload } from "react-icons/fi";
-import { FaRedo } from "react-icons/fa";
+import React, { useState } from 'react'
+import { Flex, Box, Text, Spinner, useToast } from '@chakra-ui/react'
 import SkinLabAnalysis from '../components/SkinLabAnalysis';
-import PatchDetail from '../components/PatchDetail';
-import BoxOverlayImage from '../components/BoxOverlayImage';
-import testImage from '../assets/skinanalysis.png';
 import Colors from '../utils/Colors';
 import WebCam from '../components/WebCam';
 import { createClient } from '@supabase/supabase-js';
 import { uploadSelfie } from '../API/API.jsx';
 
-const boxes = [
-  { x: 50, y: 35, color: 'green.500' },   // Green
-  { x: 65, y: 50, color: 'blue.500' },   // Blue
-  { x: 50, y: 50, color: 'yellow.500' }, // Yellow
-  { x: 30, y: 50, color: 'red.500' },  // Red
-];
 const SkinLabPage = () => {
   const colors = Colors();
 
@@ -39,6 +28,7 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
   const toast = useToast();
   const [aiDescription, setAIDescription] = useState({ luminosity: 30, clarity: 20, vibrancy: 40, overall: 35, description: markdown })
   const [image, setImage] = useState(null);
+  const [photoFile, setPhotoFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // for loading text bubbles
 
   function stripMarkdown(text) {
@@ -80,7 +70,7 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   const handleSubmitClick = async () => {
-    if (!image) {
+    if (!photoFile && !image) {
       toast({
         title: "No image provided",
         status: "warning",
@@ -93,12 +83,20 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
     setIsLoading(true); // Start loading
 
     try {
-      const blob = dataURLtoBlob(image);
+      let fileToUpload;
+      // const blob = dataURLtoBlob(image);
       const fileName = `image-${Date.now()}.jpeg`;
+
+      if (photoFile) {
+        fileToUpload = photoFile;
+      } else {
+        const blob = dataURLtoBlob(image);
+        fileToUpload = new File([blob], fileName, { type: 'image/jpeg' });
+      }
 
       const { data: uploadResult, error: uploadError } = await supabase.storage
         .from('selfies')
-        .upload(fileName, blob, { contentType: 'image/jpeg' });
+        .upload(fileName, fileToUpload, { contentType: fileToUpload.type });
 
       if (uploadError) {
         throw new Error(uploadError.message);
@@ -170,6 +168,9 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
             handleSubmitClick={handleSubmitClick}
             image={image}
             setImage={setImage}
+            photoFile={photoFile}
+            setPhotoFile={setPhotoFile}
+            disableSubmit={isLoading}
           />
 
           {/* Overlay only over the webcam area */}

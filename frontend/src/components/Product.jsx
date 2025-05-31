@@ -10,7 +10,7 @@ const Product = ({ product, isChecked, onChange, isDisabled }) => {
                 className="home-routine-box"
                 bg={colors.BRIGHT4}
                 key={product._id}
-                borderRadius="lg"
+                borderRadius="xl"
                 opacity={isChecked ? 0.45 : 1}
                 transition="transform 0.1s ease-in-out"
                 _hover={{
@@ -31,7 +31,7 @@ const Product = ({ product, isChecked, onChange, isDisabled }) => {
                     className="home-routine-image"
                     src={product.imageUrl}
                     alt={product.name}
-                    borderRadius="lg"
+                    borderRadius="xl"
                 />
             </Box>
         </Tooltip>
