@@ -2,7 +2,6 @@ import { signupUser } from '../API/API'
 import { Input, Button, Flex, Heading, Box, Text } from '@chakra-ui/react'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from "react-router-dom"
-import { checkLogin } from '../API/API'
 import { CloseIcon } from '@chakra-ui/icons';
 import Colors from '../utils/Colors.jsx';
 
@@ -12,27 +11,17 @@ const SignupPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const usernameInputRef = useRef(null);
-    const [loaded, setLoaded] = useState(false);
     const feedbackText = location.state?.feedbackText;
     const rawRoutine = location.state?.routine;
     const routine = eval(`(${rawRoutine})`); // array of 4 products {name, instruction, price, imageUrl}
+    const scores = location.state?.scores;
     const imageUrl = location.state?.imageUrl;
 
     useEffect(() => {
-        const fetchLoginData = async () => {
-            const user = await checkLogin();
-            if (user) {
-                navigate('/');
-            }
-            else {
-                setLoaded(true);
-                setTimeout(() => {
-                    usernameInputRef.current?.focus();
-                }, 0);
-            }
-        }
-        fetchLoginData();
-        console.log('summary:', feedbackText, 'routine:', routine, ', image:', imageUrl);
+        setTimeout(() => {
+            usernameInputRef.current?.focus();
+        }, 0);
+        console.log('summary:', feedbackText, '/ routine:', routine, '/ image:', imageUrl, '/ scores:', scores);
         if (!feedbackText || !routine || !imageUrl) {
             console.log('no survey data, navigating to /survey');
             navigate('/survey');
@@ -116,6 +105,9 @@ const SignupPage = () => {
             'feedback': {
                 'feedback': feedbackText,
                 'imageUrl': imageUrl,
+                'luminosity': scores.luminosity,
+                'clarity': scores.clarity,
+                'vibrancy': scores.vibrancy,
             }
         });
         if ('usernameTaken' in res) {
@@ -143,98 +135,96 @@ const SignupPage = () => {
     }
 
     return (
-        <> {loaded &&
-            <Box w='100%' p={20}>
-                <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
-                    <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
-                </Box>
-                <Flex flex="1" direction="column" alignItems="center" pt={50}>
-                    <Heading mb={5}>
-                        Get Started!
-                    </Heading>
-                    <Input
-                        placeholder='Username'
-                        name='username'
-                        value={signupInfo.username}
-                        onChange={handleChange}
-                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
+        <Box w='100%' p={20}>
+            <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
+                <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
+            </Box>
+            <Flex flex="1" direction="column" alignItems="center" pt={50}>
+                <Heading mb={5}>
+                    Get Started!
+                </Heading>
+                <Input
+                    placeholder='Username'
+                    name='username'
+                    value={signupInfo.username}
+                    onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
+                    w="30vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor={colors.MAIN2}
+                    ref={usernameInputRef}
+                />
+                {signupInfo.usernameError &&
+                    <Text
                         w="30vw"
-                        mt={3}
-                        rounded={10}
-                        backgroundColor={colors.MAIN2}
-                        ref={usernameInputRef}
-                    />
-                    {signupInfo.usernameError &&
-                        <Text
-                            w="30vw"
-                            mt={1}
-                            textAlign="left"
-                            px={2}
-                            fontSize="sm"
-                            color="red.500"
-                            fontWeight="bold"
-                        >
-                            {signupInfo.usernameError}
-                        </Text>
-                    }
-                    <Input
-                        placeholder='Email'
-                        name='email'
-                        value={signupInfo.email}
-                        onChange={handleChange}
-                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
+                        mt={1}
+                        textAlign="left"
+                        px={2}
+                        fontSize="sm"
+                        color="red.500"
+                        fontWeight="bold"
+                    >
+                        {signupInfo.usernameError}
+                    </Text>
+                }
+                <Input
+                    placeholder='Email'
+                    name='email'
+                    value={signupInfo.email}
+                    onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
+                    w="30vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor={colors.MAIN2}
+                    isInvalid={((signupInfo.email.match(emailRegex) || !signupInfo.email) && !signupInfo.emailError ? false : 'true')}
+                />
+                {signupInfo.emailError &&
+                    <Text
                         w="30vw"
-                        mt={3}
-                        rounded={10}
-                        backgroundColor={colors.MAIN2}
-                        isInvalid={((signupInfo.email.match(emailRegex) || !signupInfo.email) && !signupInfo.emailError ? false : 'true')}
-                    />
-                    {signupInfo.emailError &&
-                        <Text
-                            w="30vw"
-                            mt={1}
-                            textAlign="left"
-                            px={2}
-                            fontSize="sm"
-                            color="red.500"
-                            fontWeight="bold"
-                        >
-                            {signupInfo.emailError}
-                        </Text>
-                    }
-                    <Input
-                        type='password'
-                        placeholder='Password'
-                        name='password'
-                        value={signupInfo.password}
-                        onChange={handleChange}
-                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
-                        w="30vw"
-                        mt={3}
-                        rounded={10}
-                        backgroundColor={colors.MAIN2}
-                        isInvalid={(passwordRequirements.test(signupInfo.password) || !signupInfo.password ? false : true)}
-                    />
-                    <Input
-                        type='password'
-                        placeholder='Confirm Password'
-                        name='passwordConfirm'
-                        value={signupInfo.passwordConfirm}
-                        onChange={handleChange}
-                        onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
-                        w="30vw"
-                        mt={3}
-                        rounded={10}
-                        backgroundColor={colors.MAIN2}
-                        isInvalid={(signupInfo.password == signupInfo.passwordConfirm || !signupInfo.passwordConfirm ? false : true)}
-                    />
-                    <span style={{ display: 'block', width: '30vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px', color: (passwordRequirements.test(signupInfo.password) || !signupInfo.password ? colors.TEXT1 : '#E53E3E') }}>
-                        Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
-                    </span>
-                    <Button onClick={onSignupClick} w="20vw" mt={8} bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={12}>Sign Up</Button>
-                </Flex>
-            </Box>}
-        </>
+                        mt={1}
+                        textAlign="left"
+                        px={2}
+                        fontSize="sm"
+                        color="red.500"
+                        fontWeight="bold"
+                    >
+                        {signupInfo.emailError}
+                    </Text>
+                }
+                <Input
+                    type='password'
+                    placeholder='Password'
+                    name='password'
+                    value={signupInfo.password}
+                    onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
+                    w="30vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor={colors.MAIN2}
+                    isInvalid={(passwordRequirements.test(signupInfo.password) || !signupInfo.password ? false : true)}
+                />
+                <Input
+                    type='password'
+                    placeholder='Confirm Password'
+                    name='passwordConfirm'
+                    value={signupInfo.passwordConfirm}
+                    onChange={handleChange}
+                    onKeyDown={e => { if (e.key === 'Enter') onSignupClick(); }}
+                    w="30vw"
+                    mt={3}
+                    rounded={10}
+                    backgroundColor={colors.MAIN2}
+                    isInvalid={(signupInfo.password == signupInfo.passwordConfirm || !signupInfo.passwordConfirm ? false : true)}
+                />
+                <span style={{ display: 'block', width: '30vw', fontSize: '13px', marginTop: '3px', padding: '0 10px 0 10px', color: (passwordRequirements.test(signupInfo.password) || !signupInfo.password ? colors.TEXT1 : '#E53E3E') }}>
+                    Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, numbers, and symbols.
+                </span>
+                <Button onClick={onSignupClick} w="20vw" mt={8} bg={colors.BRIGHT3} color={colors.MAIN1} _hover={{ bg: colors.BRIGHT5 }} rounded={12}>Sign Up</Button>
+            </Flex>
+        </Box>
 
     )
 }

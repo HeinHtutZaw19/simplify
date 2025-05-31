@@ -1,30 +1,26 @@
 import React, { useRef } from 'react'
-import { Grid, GridItem, Flex, Text, Box, VStack, Heading, Icon, Checkbox, CheckboxGroup, Image, Button, Avatar } from '@chakra-ui/react';
+import { Grid, Flex, Text, Box, VStack, Heading, CheckboxGroup, Avatar } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { checkLogin, fetchHomeLeaderboard, fetchUserDays, fetchUserStreak, getUserRoutine, updateUserStreak, getUserFeedback } from '../API/API'
+import { fetchHomeLeaderboard, fetchUserDays, fetchUserStreak, getUserRoutine, updateUserStreak, getUserFeedback } from '../API/API'
 
 import SkinAnalysis from '../components/SkinAnalysis';
 import Calendar from '../components/Calendar';
 import Product from '../components/Product';
 import Colors from '../utils/Colors';
-import UserCard from "../components/UserCard.jsx"
-
-// const productItems = ['Toner', 'Moisturizer', 'Serum', 'Sunscreen'];
 
 const HomePage = ({ user }) => {
   const colors = Colors();
   const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
   const [routine, setRoutine] = useState([]);
-  const [feedback, setFeedback] = useState(null); // feedback object contains the summary and imageUrl
+  const [feedback, setFeedback] = useState(null); // feedback object contains the summary, imageUrl, and scores
   const [streak, setStreak] = useState(null);
   const [days, setDays] = useState([]);
   const [finish, setFinish] = useState(false);
   const [homeboard, setHomeboard] = useState([]);
-  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const today = new Date();
@@ -35,7 +31,6 @@ const HomePage = ({ user }) => {
     if (user.days.includes(today)) {
       setFinish(true);
     }
-    setUsername(user.username);
   }, [navigate]);
 
   const getHomeboard = async (username) => {
@@ -156,12 +151,12 @@ const HomePage = ({ user }) => {
       <VStack id="home-side" sx={{ '&::-webkit-scrollbar': { display: 'none' } }} >
         <Calendar streak={streak} days={days} />
         <Heading id="home-side-leaderboard-heading" color={colors.SECONDARY3} size="lg">Leaderboard</Heading>
-        {homeboard.map((user) => (
-          <Box key={user._id} p={4} bg={user.username === username ? colors.BRIGHT4 : colors.BRIGHT2} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row' >
+        {homeboard.map((u) => (
+          <Box key={u._id} p={4} bg={u.username === user.username ? colors.BRIGHT4 : colors.BRIGHT2} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row' >
             <Avatar size='sm' />
             <Box pl={4} alignContent='center' display='flex' flexDirection={{ base: 'column', lg: 'row' }} flex={2} justifyContent='space-between'>
-              <Text size="sm" fontWeight='medium'>{user.username}</Text>
-              <Heading fontSize="sm">{user.point}</Heading>
+              <Text size="sm" fontWeight='medium'>{u.username}</Text>
+              <Heading fontSize="sm">{u.point}</Heading>
             </Box>
           </Box>
           //<UserCard key={index} user={user} name={user.username}/>

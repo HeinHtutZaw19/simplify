@@ -1,4 +1,4 @@
-import { Progress, Button, Flex, Heading, Box, Spinner } from '@chakra-ui/react'
+import { Progress, Button, Flex, Box, Spinner } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { CloseIcon, ArrowBackIcon } from '@chakra-ui/icons';
@@ -37,23 +37,6 @@ const SurveyPage = () => {
         }
     ];
 
-    useEffect(() => {
-        const fetchLoginData = async () => {
-            const user = await checkLogin();
-            if (user) {
-                navigate('/');
-            }
-            else {
-                setLoaded(true);
-            }
-        }
-        fetchLoginData();
-    }, []);
-
-    // useEffect(() => {
-    //     console.log('survey responses:', responses);
-    // }, [responses]);
-
     const handleSelectAnswer = (answer) => {
         const currentKey = questions[currentStep].question;
         setResponses((prev) => ({
@@ -74,7 +57,6 @@ const SurveyPage = () => {
         }
         else {
             console.log("Survey complete");
-            // navigate('/signup');
         }
     };
 
@@ -127,9 +109,26 @@ const SurveyPage = () => {
 
             const arrayMatch = recommendation.routine.match(/```javascript\s*([\s\S]*?)\s*```/);
             const routine = arrayMatch ? arrayMatch[1] : null;
+
+            const scoreMatch = recommendation.routine.match(/```json\s*([\s\S]*?)\s*```/);
+            let scores = null;
+            try {
+                const rawScoreText = scoreMatch ? scoreMatch[1].toLowerCase() : null;
+                scores = rawScoreText ? JSON.parse(rawScoreText) : null;
+            } catch (e) {
+                console.error('Error parsing skin analysis scores JSON:', e);
+            }
+
             const feedback = recommendation.routine.split("```")[0].trim();
 
-            navigate('/signup', { state: { feedbackText: feedback, routine: routine, imageUrl: result.imageUrl } });
+            navigate('/signup', {
+                state: {
+                    feedbackText: feedback,
+                    routine: routine,
+                    imageUrl: result.imageUrl,
+                    scores: scores // luminosity, clarity, vibrancy
+                }
+            });
         }
         catch (error) {
             console.error('Survey submit error:', error);
@@ -150,62 +149,59 @@ const SurveyPage = () => {
     const progressStatus = ((currentStep + 1) / questions.length) * 100;
 
     return (
-        <> {loaded && (
-            <Box w='100%' px={20} pt={10} overflow='auto' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-                {submitted && (
-                    <Box
-                        position="fixed"
-                        top={0}
-                        left={0}
-                        width="100vw"
-                        height="100vh"
-                        bg="rgba(0,0,0,0.5)"
-                        zIndex={1000}
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <Spinner size="xl" color="white" thickness="4px" />
-                    </Box>
-                )}
-
-                <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
-                    {currentStep == 0 ?
-                        <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
-                        : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
+        <Box w='100%' px={20} pt={10} overflow='auto' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+            {submitted && (
+                <Box
+                    position="fixed"
+                    top={0}
+                    left={0}
+                    width="100vw"
+                    height="100vh"
+                    bg="rgba(0,0,0,0.5)"
+                    zIndex={1000}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Spinner size="xl" color="white" thickness="4px" />
                 </Box>
+            )}
 
-                {!isLast ? (
-                    <>
-                        <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
-                            <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor={colors.MAIN3} />
-                        </Box>
-                        <Flex flex="1" direction="column" alignItems="center" pt={50}>
-                            <Question
-                                question={questions[currentStep].question}
-                                answers={questions[currentStep].answers}
-                                selected={responses[questions[currentStep].question] || ''}
-                                onSelect={handleSelectAnswer}
-                            />
-                        </Flex>
-                    </>
-                ) : (
-                    <>
-                        <Box w="84vw" alignContent='center' >
-                            <WebCam
-                                handleSubmitClick={handleSubmit}
-                                image={image}
-                                setImage={setImage}
-                                photoFile={photoFile}
-                                setPhotoFile={setPhotoFile}
-                                disableSubmit={submitted}
-                            />
-                        </Box>
-                    </>
-                )}
+            <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center'>
+                {currentStep == 0 ?
+                    <Button bgColor='transparent' onClick={handleCloseClick}><CloseIcon boxSize={5} /></Button>
+                    : <Button bgColor='transparent' onClick={handleBackClick}><ArrowBackIcon boxSize={5} /></Button>}
             </Box>
-        )}
-        </>
+
+            {!isLast ? (
+                <>
+                    <Box w="84vw" alignContent='center' borderRadius="30px" bgColor={colors.MAIN3}>
+                        <Progress value={progressStatus} size="lg" m={3} rounded={30} alignSelf='center' bgColor={colors.MAIN3} />
+                    </Box>
+                    <Flex flex="1" direction="column" alignItems="center" pt={50}>
+                        <Question
+                            question={questions[currentStep].question}
+                            answers={questions[currentStep].answers}
+                            selected={responses[questions[currentStep].question] || ''}
+                            onSelect={handleSelectAnswer}
+                        />
+                    </Flex>
+                </>
+            ) : (
+                <>
+                    <Box w="84vw" alignContent='center' >
+                        <WebCam
+                            handleSubmitClick={handleSubmit}
+                            image={image}
+                            setImage={setImage}
+                            photoFile={photoFile}
+                            setPhotoFile={setPhotoFile}
+                            disableSubmit={submitted}
+                        />
+                    </Box>
+                </>
+            )}
+        </Box>
     )
 }
 
