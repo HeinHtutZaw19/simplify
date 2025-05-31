@@ -1,42 +1,41 @@
-import React from 'react'
 import { Box, Checkbox, Image, Text, Tooltip } from '@chakra-ui/react'
-import toner from '../assets/toner.png';
-import serum from '../assets/serum.png';
-import moisturizer from '../assets/moisturizer.png';
-import sunscreen from '../assets/sunscreen.png';
 
 import Colors from '../utils/Colors';
 
-// const imageMap = {
-//     Toner: toner,
-//     Serum: serum,
-//     Moisturizer: moisturizer,
-//     Sunscreen: sunscreen,
-// };
-
-// const instructionMap = {
-//     Toner: "After cleansing, apply toner to balance your skin's pH and prepare it for better absorption of subsequent products. Use a cotton pad or your hands to gently pat the toner onto your face.",
-//     Serum: "Apply serum after toner to address specific skin concerns with concentrated active ingredients. Gently press a few drops into your skin, allowing it to absorb fully before proceeding.",
-//     Moisturizer: "Following serum application, use moisturizer to hydrate your skin and lock in moisture. Choose a formula suitable for your skin type and apply it evenly over your face and neck.",
-//     Sunscreen: "In the morning, finish your routine with a broad-spectrum sunscreen of SPF 30 or higher to protect against UV damage. Apply generously to all exposed areas and reapply every two hours when outdoors."
-// };
-
-
-const Product = ({ product, isChecked }) => {
+const Product = ({ product, isChecked, onChange, isDisabled }) => {
     const colors = Colors();
     return (
-        <Tooltip label={product.instruction} hasArrow placement="top" >
-            <Box className="home-routine-box" bg={colors.BRIGHT4} key={product._id} borderRadius="lg" opacity={isChecked ? 0.45 : 1} transition="transform 0.1s ease-in-out"
+        <Tooltip label={product.instruction} hasArrow placement="top">
+            <Box
+                className="home-routine-box"
+                bg={colors.BRIGHT4}
+                key={product._id}
+                borderRadius="lg"
+                opacity={isChecked ? 0.45 : 1}
+                transition="transform 0.1s ease-in-out"
                 _hover={{
                     transform: 'scale(1.04)',
-                }}>
-                <Checkbox className="home-routine-checkbox" value={product.name} size="lg">
+                }}
+            >
+                <Checkbox
+                    className="home-routine-checkbox"
+                    value={product.name}
+                    size="lg"
+                    isChecked={isChecked}
+                    onChange={onChange}
+                    isDisabled={isDisabled}
+                >
                     <Text color="white">{product.name}</Text>
                 </Checkbox>
-                <Image className="home-routine-image" src={product.imageUrl} alt={product.name}></Image>
+                <Image
+                    className="home-routine-image"
+                    src={product.imageUrl}
+                    alt={product.name}
+                    borderRadius="lg"
+                />
             </Box>
         </Tooltip>
-    )
-}
+    );
+};
 
 export default Product

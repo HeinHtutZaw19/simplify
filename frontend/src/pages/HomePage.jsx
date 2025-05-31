@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Grid, Flex, Text, Box, VStack, Heading, CheckboxGroup, Avatar } from '@chakra-ui/react';
+import { Grid, Flex, Text, Box, VStack, Heading, Button, Avatar } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 
 import { useEffect, useState } from 'react'
@@ -21,6 +21,8 @@ const HomePage = ({ user }) => {
   const [days, setDays] = useState([]);
   const [finish, setFinish] = useState(false);
   const [homeboard, setHomeboard] = useState([]);
+  const [checked, setChecked] = useState([]);
+  const allChecked = checked.length === routine.length || finish;
 
   useEffect(() => {
     const today = new Date();
@@ -90,9 +92,6 @@ const HomePage = ({ user }) => {
     skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  const [checked, setChecked] = useState([]);
-  const allChecked = checked.length === routine.length;
-
   const handleCheck = (values) => {
     setChecked(values);
   }
@@ -108,25 +107,39 @@ const HomePage = ({ user }) => {
         </Box>
 
         <Grid id="home-routine-grid" templateColumns="repeat(2, 1fr)">
-          <CheckboxGroup colorScheme="yellow" value={checked} onChange={handleCheck} >
-            {routine.map((product) => (
-              <Product key={product._id} product={product} isChecked={finish || checked.includes(product.name)} />
-            ))}
-          </CheckboxGroup>
+          {routine.map((product) => (
+            <Product
+              key={product._id}
+              product={product}
+              isChecked={finish || checked.includes(product.name)}
+              isDisabled={finish}
+              onChange={(e) => {
+                const name = product.name;
+                if (e.target.checked) {
+                  setChecked((prev) => [...prev, name]);
+                } else {
+                  setChecked((prev) => prev.filter((p) => p !== name));
+                }
+              }}
+            />
+          ))}
         </Grid>
 
         {allChecked && (
-          <Box
+          <Button
             id="home-skinanalysis-button"
             borderRadius="md"
-            as="button"
             bg={colors.BRIGHT3}
-            _hover={{ bg: colors.BRIGHT5 }}
-            onClick={!finish ? routineFinish : null}
-            disabled={finish}
+            _hover={{ bg: finish ? colors.BRIGHT3 : colors.BRIGHT5 }}
+            onClick={!finish ? routineFinish : undefined}
+            isDisabled={finish}
+            px={6}
+            py={3}
           >
-            <Text textAlign="center" color={colors.MAIN1}>{finish ? "Already Finished Today!" : "Routine Finished!"}</Text>
-          </Box>
+            <Text color={colors.MAIN1}>
+              {finish ? "Already Finished Today!" : "Routine Finished!"}
+            </Text>
+          </Button>
         )}
 
         <Box
