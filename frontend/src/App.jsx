@@ -63,7 +63,7 @@ function App() {
               {user && <Route path="/leaderboard" element={<LeaderboardPage user={user} />} />}
               {/* {user && <Route path="/settings" element={<SettingsPage />} />} */}
               {/* {user && <Route path="/help" element={<HelpPage />} />} */}
-              {user && <Route path="/profile" element={<ProfilePage user={user} />} />}
+              {user && <Route path="/profile" element={<ProfilePage user={user} setUser={setUser} />} />}
               {user && <Route path="/admin" element={<AdminPage />} />}
               <Route path="/welcome" element={<WelcomePage />} />
               <Route path="/login" element={<LoginPage />} />

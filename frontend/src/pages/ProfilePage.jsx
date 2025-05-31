@@ -4,7 +4,7 @@ import Calendar from '../components/Calendar';
 import Colors from '../utils/Colors';
 import { uploadImage, updateUserPFP, fetchUserDays, fetchUserStreak } from '../API/API';
 
-const ProfilePage = ({ user }) => {
+const ProfilePage = ({ user, setUser }) => {
   const colors = Colors();
   const fileRef = useRef(null);
   const [streak, setStreak] = useState(0);
