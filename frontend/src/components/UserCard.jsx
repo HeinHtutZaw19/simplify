@@ -1,6 +1,4 @@
-import React from 'react';
-import { Flex, Box, Text, Avatar } from '@chakra-ui/react';
-import { PiArrowFatUpFill, PiArrowFatDownFill } from "react-icons/pi";
+import { Flex, Text, Avatar } from '@chakra-ui/react';
 import Colors from '../utils/Colors';
 
 const UserCard = ({ user, name }) => {
@@ -8,46 +6,28 @@ const UserCard = ({ user, name }) => {
     return (
         <Flex
             key={user.id}
-            width={{ base: "100%", sm: "90%", md: "80%" }} // Adjust width based on screen size
+            width={{ base: "100%", sm: "90%", md: "80%" }}
             bg={user.username === name ? colors.BRIGHT2 : colors.MAIN1}
             borderRadius="md"
-            p={3} // Increase padding for better spacing
+            p={3}
             boxShadow="sm"
-            flexDirection={{ base: "column", sm: "row" }} // Stack items vertically on smaller screens
+            flexDirection={{ base: "column", sm: "row" }}
             justifyContent="space-between"
             alignItems="center"
-            gap={4} // Add spacing between items
+            gap={4}
         >
-            {/* Avatar */}
-            <Avatar name={user.username} size={{ base: "md", sm: "sm" }} />
+            <Avatar size="sm" src={user.pfp} shadow="md" />
 
-            {/* User Name */}
             <Text
                 flex={1}
                 px={{ base: 2, sm: 4, md: 6 }}
-                textAlign={{ base: "center", sm: "left" }} // Center text on smaller screens
+                textAlign={{ base: "center", sm: "left" }}
                 fontSize={{ base: "2xs", md: "xs" }}
                 color={colors.TEXT1}
             >
                 {user.username}
             </Text>
 
-            {/* User ID */}
-            {/* <Box
-                w={{ base: 40, sm: 30 }}
-                h={{ base: 40, sm: 30 }}
-                borderRadius="full"
-                border="1px solid"
-                borderColor={colors.TEXT4}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                fontSize={{ base: "2xs", sm: "xs" }}
-            >
-                {user.id}
-            </Box> */}
-
-            {/* Points */}
             <Text
                 fontWeight="bold"
                 px={{ base: 4, sm: 10 }}
@@ -57,13 +37,6 @@ const UserCard = ({ user, name }) => {
             >
                 {user.point}
             </Text>
-
-            {/* Trend Icon */}
-            {/* {user.trend === "up" ? (
-                <PiArrowFatUpFill color="green" size={20} />
-            ) : (
-                <PiArrowFatDownFill color="red" size={20} />
-            )} */}
         </Flex>
     );
 };

@@ -3,19 +3,16 @@ import { Flex, Text, Heading, Avatar, Box, Button, Icon, Image, useColorMode } f
 import { FiHome } from 'react-icons/fi'
 import { MdLeaderboard } from 'react-icons/md'
 import { FaCamera } from 'react-icons/fa'
-import { IoChatbubbleEllipsesOutline, IoSettings } from "react-icons/io5";
-import { MdOutlineHelp } from "react-icons/md";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import NavItem from './NavItem'
 import { useNavigate } from "react-router-dom"
-import { logoutUser, checkLogin } from '../API/API'
+import { logoutUser } from '../API/API'
 import logo from '../assets/logo.png';
 import Colors from '../utils/Colors.jsx';
 
 const Sidebar = ({ user }) => {
-    // const [user, setUser] = useState(null);
-
     //Color toggle
     const { colorMode, toggleColorMode } = useColorMode();
     const colors = Colors();
@@ -71,10 +68,10 @@ const Sidebar = ({ user }) => {
                     pl={{ base: 0, md: 3 }}
                 >
                     <Flex mt={4} direction="row" align={{ base: "center", md: "flex-start" }} alignItems="center">
-                        <Image
+                        <Avatar
+                            size="sm"
                             src={user.pfp}
                             alt='Profile picture'
-                            borderRadius='full'
                             boxSize={{ md: '40px', sm: '32px' }}
                             ml={{ base: 0, sm: 3 }}
                             onClick={() => handleChangeTab("Profile")}

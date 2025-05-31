@@ -1,4 +1,4 @@
-import { Image, Tabs, TabList, Tab, VStack, Flex, Text, Heading } from "@chakra-ui/react"
+import { Image, VStack, Flex, Heading } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import UserCard from "../components/UserCard.jsx"
@@ -9,13 +9,10 @@ import { fetchLeaderboard } from "../API/API.jsx"
 
 const LeaderboardPage = ({ user }) => {
   const colors = Colors();
-
   const navigate = useNavigate();
-  const [primaryTab, setPrimaryTab] = useState("cumulative")
   const [leaderboard, setLeaderboard] = useState([]);
   const [topboard, setTopboard] = useState([]);
   const [name, setName] = useState("");
-
 
   useEffect(() => {
     const getLeaderboard = async () => {
@@ -44,8 +41,8 @@ const LeaderboardPage = ({ user }) => {
             third={topboard[2] || { username: "", streak: 0 }} />
         </Flex>
         <VStack alignItems="center" height="500px" overflowY="auto" flex={{ base: 2, md: 1, lg: 1 }} p={5} sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-          {leaderboard.map((user, index) => (
-            <UserCard key={index} user={user} name={name} />
+          {leaderboard.map((u, index) => (
+            <UserCard key={index} user={u} name={name} />
           ))}
 
         </VStack>
@@ -54,21 +51,6 @@ const LeaderboardPage = ({ user }) => {
             second={topboard[1] || { username: "", points: 0 }}
             third={topboard[2] || { username: "", points: 0 }} />
           <Image src={mascot} alt="mascot.gif" boxSize="50%" mt={10} flex={1} ></Image>
-        </Flex>
-
-        <Flex flex={1} display={{ lg: "none", md: "none", sm: "flex" }} px={5} mb={5} justifyContent={" center"} alignItems="center">
-          <Image src={mascot} alt="mascot.gif" boxSize="100px"  ></Image>
-          <Text
-            fontSize={{ base: "xs", md: "sm" }}
-            ml={5}
-            textColor={colors.MAIN1}
-            textAlign="center"
-            fontWeight="bold"
-            mt={5}
-          >
-            Keep up the good work!
-          </Text>
-
         </Flex>
       </Flex >
     </Flex>

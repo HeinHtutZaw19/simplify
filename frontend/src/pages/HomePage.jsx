@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import { Grid, Flex, Text, Box, VStack, Heading, Button, Avatar } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
-
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { fetchHomeLeaderboard, fetchUserDays, fetchUserStreak, getUserRoutine, updateUserStreak, getUserFeedback } from '../API/API'
@@ -16,7 +15,7 @@ const HomePage = ({ user }) => {
   const skinAnalysisRef = useRef(null);
   const navigate = useNavigate();
   const [routine, setRoutine] = useState([]);
-  const [feedback, setFeedback] = useState(null); // feedback object contains the summary, imageUrl, and scores
+  const [feedback, setFeedback] = useState(null); // obj of summary, imageUrl, and scores
   const [streak, setStreak] = useState(null);
   const [days, setDays] = useState([]);
   const [finish, setFinish] = useState(false);
@@ -92,9 +91,9 @@ const HomePage = ({ user }) => {
     skinAnalysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  const handleCheck = (values) => {
-    setChecked(values);
-  }
+  // const handleCheck = (values) => {
+  //   setChecked(values);
+  // }
 
   return (
     // Full Page Flex
@@ -166,13 +165,12 @@ const HomePage = ({ user }) => {
         <Heading id="home-side-leaderboard-heading" color={colors.SECONDARY3} size="lg">Leaderboard</Heading>
         {homeboard.map((u) => (
           <Box key={u._id} p={4} bg={u.username === user.username ? colors.BRIGHT4 : colors.BRIGHT2} borderRadius="xl" w="100%" color={colors.MAIN1} display='flex' flexDirection='row' >
-            <Avatar size='sm' />
+            <Avatar size="sm" src={u.pfp} shadow="md" />
             <Box pl={4} alignContent='center' display='flex' flexDirection={{ base: 'column', lg: 'row' }} flex={2} justifyContent='space-between'>
               <Text size="sm" fontWeight='medium'>{u.username}</Text>
               <Heading fontSize="sm">{u.point}</Heading>
             </Box>
           </Box>
-          //<UserCard key={index} user={user} name={user.username}/>
         ))}
       </VStack>
     </Flex >
