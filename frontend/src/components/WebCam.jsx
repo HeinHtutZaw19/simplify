@@ -15,8 +15,12 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
     const fileRef = useRef(null);
 
     useEffect(() => {
-        console.log(image)
+        console.log('webcam image changed')
     }, [image])
+
+    useEffect(() => {
+        console.log('photoFile changed:', photoFile)
+    }, [photoFile])
 
     const handlePhoto = () => {
         const imageSrc = webcamRef.current.getScreenshot();
@@ -31,9 +35,13 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
     };
 
     const handleClickFile = () => {
+        console.log('in handleClickFile')
         setPhotoFile(null);
         setImage(null);
-        fileRef.current.click();
+        if (fileRef.current) {
+            fileRef.current.value = '';
+            fileRef.current.click();
+        }
     }
 
     const handleFileChange = (e) => {
@@ -72,6 +80,7 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
                             audio={false}
                             ref={webcamRef}
                             screenshotFormat='image/jpeg'
+                            mirrored={true}
                             videoConstraints={videoConstraints} />
                         <Button onClick={handlePhoto}>Take Photo</Button>
                     </>
@@ -84,7 +93,7 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
                     ml="90px"
                     mr="35px"
                     height="35px"
-                    lineHeight="90px"
+                    lineHeight="30px"
                     bg={colors.BRIGHT3}
                     color={colors.MAIN1}
                     _hover={{ bg: colors.BRIGHT5 }}

@@ -17,7 +17,7 @@ Make sure to include the following information:
 - Skin tone (light, medium, dark)
 - Skin condition (acne, wrinkles, redness, etc.)
 - Any product reommendations based on the image.
-Give percentage to each following skin condition (luminosity, clarity, vibracy, overall).
+Give percentage to each following skin condition (luminosity, clarity, vibracy, overall). Do not use bold or italics for all conditions.
 - Luminosity (glowing, dull, etc.)
 - Clarity (clear, blemished, etc.)
 - Vibracy (vibrant, pale, etc.)

@@ -21,6 +21,7 @@ const Message = ({ index, text, isUser, user }) => {
                     name="Simpli"
                     src={Simpli}
                     size="sm"
+                    shadow="md"
                 />
             )}
             <Box
@@ -37,7 +38,7 @@ const Message = ({ index, text, isUser, user }) => {
                     <ReactMarkdown>{text}</ReactMarkdown>
                 </Box>
             </Box>
-            {isUser && <Avatar size="sm" src={user.pfp} />}
+            {isUser && <Avatar size="sm" src={user.pfp} shadow="md" />}
         </HStack>
     );
 };
