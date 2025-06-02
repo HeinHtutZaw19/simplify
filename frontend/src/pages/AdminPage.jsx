@@ -13,13 +13,14 @@ const AdminPage = () => {
     const cancelRef = React.useRef()
 
     useEffect(() => {
-        const getUserlist = async () => {
-            const list = await fetchUsers();
-            console.log("Fetched All Users data:", list);
-            setUserlist(list);
-        };
         getUserlist();
     }, []);
+
+    const getUserlist = async () => {
+        const list = await fetchUsers();
+        console.log("Fetched All Users data:", list);
+        setUserlist(list);
+    };
 
     const deleteThisUser = async (user) => {
         const deletedUser = await deleteUser(user.email);

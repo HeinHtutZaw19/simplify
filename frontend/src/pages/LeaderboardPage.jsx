@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import UserCard from "../components/UserCard.jsx"
 import LeaderboardPodium from "../components/LeaderPodium.jsx"
 import mascot from "../assets/mascot.gif"
+import cubeGif from "../assets/cube_thing.gif"
 import Colors from '../utils/Colors';
 import { fetchLeaderboard } from "../API/API.jsx"
 
@@ -50,7 +51,7 @@ const LeaderboardPage = ({ user }) => {
           <LeaderboardPodium flex={1} first={topboard[0] || { username: "", points: 0 }}
             second={topboard[1] || { username: "", points: 0 }}
             third={topboard[2] || { username: "", points: 0 }} />
-          <Image src={mascot} alt="mascot.gif" boxSize="50%" mt={10} flex={1} ></Image>
+          <Image src={cubeGif} alt="cube gif" boxSize="50%" mt={10} flex={1} ></Image>
         </Flex>
       </Flex >
     </Flex>
