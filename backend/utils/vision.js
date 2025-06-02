@@ -18,10 +18,10 @@ Make sure to include the following information:
 - Skin condition (acne, wrinkles, redness, etc.)
 - Any product reommendations based on the image.
 Give percentage to each following skin condition (luminosity, clarity, vibracy, overall). Do not use bold or italics for all conditions.
-- Luminosity (glowing, dull, etc.)
-- Clarity (clear, blemished, etc.)
-- Vibracy (vibrant, pale, etc.)
-- Overall
+- Luminosity: [percentage]% (e.g., glowing, dull, etc.)  
+- Clarity: [percentage]% (e.g., clear, blemished, etc.)  
+- Vibrancy: [percentage]% (e.g., vibrant, pale, etc.)  
+- Overall: [percentage]% (summary of skin appearance)
 
 Use different heading for each section, bold words and italic words if necessary. Use one or two emoji for each section. After each section or subsection, make a line break.
 If the image is not clear, please say "The image is not clear enough to analyze the skin condition." and do not provide any further information.
