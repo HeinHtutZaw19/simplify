@@ -33,7 +33,7 @@ const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 console.log(process.env.CLIENT_URL, process.env.NODE_ENV)
-const CLIENT_URL = process.env.NODE_ENV == 'production' ? 'https://simplify-f1978ef8a491.herokuapp.com/' : 'http://localhost:5173';
+const CLIENT_URL = process.env.NODE_ENV == 'production' ? 'https://simplify-e3px.onrender.com' : 'http://localhost:5173';
 console.log(PORT, CLIENT_URL)
 
 const __dirname = path.resolve();

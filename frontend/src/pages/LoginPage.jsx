@@ -8,7 +8,7 @@ import Colors from '../utils/Colors.jsx';
 
 const PORT = import.meta.env.PORT || 4000;
 const API_BASE_URL = import.meta.env.MODE === 'production'
-    ? 'https://simplify-f1978ef8a491.herokuapp.com/'
+    ? 'https://simplify-e3px.onrender.com/api/login/google'
     : `http://localhost:${PORT}/api/login/google`;
 
 const LoginPage = () => {

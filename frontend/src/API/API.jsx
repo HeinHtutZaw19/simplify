@@ -1,5 +1,5 @@
 const isProd = import.meta.env.MODE === 'production';
-const apiUrl = !isProd ? 'http://localhost:4000' : 'https://simplify-f1978ef8a491.herokuapp.com/';
+const apiUrl = !isProd ? 'http://localhost:4000' : 'https://simplify-e3px.onrender.com';
 console.log('API URL is', apiUrl, 'mode:', import.meta.env.NODE_ENV);
 
 console.log(apiUrl, process.env.NODE_ENV)
