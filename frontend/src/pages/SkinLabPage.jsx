@@ -154,7 +154,7 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
           fontWeight="bold"
           textAlign="center"
           fontFamily='Feather Bold'
-          pt={10}
+          pt={5}
           pb={5}
           textShadow="2px 2px 4px rgba(0, 0, 0, 0.2)"
           color={colors.TEXT1}
@@ -163,7 +163,7 @@ Likely **Combination to Oily Skin**, showing visible redness, uneven texture, an
         </Text>
 
         {/* Webcam */}
-        <Flex py={10} width={{ sm: "100%", md: "100%", lg: "120%" }} >
+        <Flex py={5} width={{ base: '85%' }} >
           <WebCam
             handleSubmitClick={handleSubmitClick}
             image={image}
