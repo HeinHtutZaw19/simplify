@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Box, Heading, Flex, Image } from '@chakra-ui/react';
+import { Box, Heading, Flex, Image, Avatar } from '@chakra-ui/react';
 import Calendar from '../components/Calendar';
 import Colors from '../utils/Colors';
 import { uploadImage, updateUserPFP, fetchUserDays, fetchUserStreak } from '../API/API';
@@ -56,13 +56,13 @@ const ProfilePage = ({ user, setUser }) => {
     <Flex className="page" overflow="hidden" color="black" bg={colors.MAIN1}>
       <Flex p='8vw' gap='2vw' flex={1} flexDirection='column' overflowY='auto' alignItems='center' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
         <Flex flexDirection='column' alignItems='center'>
-          <Image
+          <Avatar
             src={user.pfp}
             alt='Profile picture'
-            borderRadius='full'
             boxSize="15vw"
             ml={{ base: 0, sm: 3 }}
             onClick={handleImageClick}
+            size="sm"
             cursor="pointer"
             shadow="md"
           />
