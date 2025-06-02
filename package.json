@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "SIMPLIFY : AI powered skin-care assistant web-app",
   "main": "index.js",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend",
+    "build": "echo 'Skipping root build script - handled in heroku-postbuild'",
     "test": "vitest",
     "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
     "start": "cross-env NODE_ENV=production node backend/server.js",
