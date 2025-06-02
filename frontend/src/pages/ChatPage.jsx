@@ -6,6 +6,7 @@ import { checkLogin, chat, getChatList, deleteChat } from "../API/API";
 import Message from "../components/Message";
 import Colors from '../utils/Colors';
 import LoadingBubble from "../components/LoadingBubble";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const ChatPage = ({ user }) => {
   const colors = Colors();
@@ -116,8 +117,17 @@ const ChatPage = ({ user }) => {
           Simpli Chat can make mistakes. Please double-check your information!
         </Text>
         <Spacer />
-        <Button colorScheme="red" variant="outline" ml={4} onClick={() => { deleteChat(user.username); setMessages([]); }}>
-          X
+        <Button
+          leftIcon={<DeleteIcon />}
+          colorScheme="red"
+          variant="ghost"
+          ml={4}
+          _hover={{
+            color: "red.600",
+            transform: "scale(1.3)",
+          }}
+          onClick={() => { deleteChat(user.username); setMessages([]); }}
+        >
         </Button>
       </Flex>
     </Flex>

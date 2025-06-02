@@ -58,48 +58,93 @@ const WebCam = ({ handleSubmitClick, image, setImage, photoFile, setPhotoFile, d
     };
 
     return (
-        <Flex flexDirection='column' alignItems='center' w="100%" gap={5}>
+        <Flex flexDirection="column" alignItems="center" w="100%" gap={5}>
             {photoFile ? (
-                <Image src={URL.createObjectURL(photoFile)} alt="Photo" py={10} px='20vw' w="100%" h='auto' objectFit='contain' />
+                <Image
+                    src={URL.createObjectURL(photoFile)}
+                    alt="Photo"
+                    w="40%"
+                    h="auto"
+                    objectFit="contain"
+                    style={{
+                        borderRadius: 12,
+                        border: '2px solid grey',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        filter: 'contrast(1.05) brightness(1.02)',
+                    }}
+                />
+            ) : image ? (
+                <>
+                    <Image
+                        src={image}
+                        alt="Photo"
+                        w="40%"
+                        h="auto"
+                        objectFit="contain"
+                        style={{
+                            borderRadius: 12,
+                            border: '2px solid grey',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                            filter: 'contrast(1.05) brightness(1.02)',
+                        }}
+                    />
+                    <Button onClick={handleRetake} mt={2}>
+                        Retake Photo
+                    </Button>
+                </>
             ) : (
-                image ? (
-                    <>
-                        <Image src={image} alt="Photo" />
-                        <Button onClick={handleRetake}>Retake Photo</Button>
-                    </>
-                ) : (
-                    <>
-                        <Webcam
-                            style={{
-                                width: '70%',
-                                borderRadius: 12,
-                                border: "2px solid grey",
-                                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                                filter: "contrast(1.05) brightness(1.02)"
-                            }}
-                            audio={false}
-                            ref={webcamRef}
-                            screenshotFormat='image/jpeg'
-                            mirrored={true}
-                            videoConstraints={videoConstraints} />
-                        <Button onClick={handlePhoto}>Take Photo</Button>
-                    </>
-                )
+                <>
+                    <Webcam
+                        audio={false}
+                        ref={webcamRef}
+                        screenshotFormat="image/jpeg"
+                        mirrored={true}
+                        videoConstraints={videoConstraints}
+                        style={{
+                            width: '40%',
+                            borderRadius: 12,
+                            border: '2px solid grey',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                            filter: 'contrast(1.05) brightness(1.02)',
+                        }}
+                    />
+
+                    <Button
+                        onClick={handlePhoto}
+                        bg="gray.400"
+                        size="md"
+                        borderRadius="xl"
+                        boxShadow="md"
+                        _hover={{
+                            bg: 'gray.500',
+                            boxShadow: 'lg',
+                            transform: 'translateY(-1px)',
+                        }}
+                        mt={2}
+                    >
+                        Take Photo
+                    </Button>
+                </>
             )}
+
 
             <Flex direction="row" mt="5px" mb="40px" align="center" width={300}>
                 <Button
                     width="120px"
                     ml="90px"
                     mr="35px"
+
+                    borderRadius="xl"
+                    boxShadow="md"
                     height="35px"
                     lineHeight="30px"
                     bg={colors.BRIGHT3}
                     color={colors.MAIN1}
-                    _hover={{ bg: colors.BRIGHT5 }}
                     onClick={handleSubmitClick}
                     isDisabled={disableSubmit}
                     isLoading={disableSubmit}
+                    _hover={{ bg: colors.BRIGHT5, boxShadow: 'lg', transform: 'translateY(-1px)' }}
+                    _active={{ boxShadow: 'sm', transform: 'translateY(0)' }}
                 >
                     Submit
                 </Button>

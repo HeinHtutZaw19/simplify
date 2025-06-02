@@ -191,12 +191,14 @@ const SurveyPage = () => {
                 <>
                     <Box w="84vw" alignContent='center' >
                         <WebCam
+
                             handleSubmitClick={handleSubmit}
                             image={image}
                             setImage={setImage}
                             photoFile={photoFile}
                             setPhotoFile={setPhotoFile}
                             disableSubmit={submitted}
+                            mirrored={false}
                         />
                     </Box>
                 </>

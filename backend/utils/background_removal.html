@@ -1,0 +1,70 @@
+< !DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>BodyPix Background Removal</title>
+        <style>
+            canvas {
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h2>Background Removal with BodyPix</h2>
+        <canvas id="outputCanvas"></canvas>
+
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
+        <script>
+            const IMAGE_SRC = 'https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRmvEUkDD01vPvPfCO9L2MSN_f8Jw9gSOnS8qUDelv3O6Bg0qkBZW-vF8ZE5fhYXeVFDVCnb5vlk-XsQ_0';
+
+            async function run() {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.src = IMAGE_SRC;
+
+                await new Promise((resolve) => {
+                    img.onload = resolve;
+                });
+
+                const canvas = document.getElementById('outputCanvas');
+                const ctx = canvas.getContext('2d');
+
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                const net = await bodyPix.load({
+                    architecture: 'ResNet50',
+                    outputStride: 32,
+                    quantBytes: 4,
+                });
+
+                const segmentation = await net.segmentPerson(canvas, {
+                    internalResolution: 'medium',
+                    segmentationThreshold: 0.7,
+                });
+
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const newImage = ctx.createImageData(canvas.width, canvas.height);
+
+                segmentation.data.forEach((segment, i) => {
+                    const offset = i * 4;
+                    if (segment === 1) {
+                        newImage.data[offset] = imageData.data[offset];
+                        newImage.data[offset + 1] = imageData.data[offset + 1];
+                        newImage.data[offset + 2] = imageData.data[offset + 2];
+                        newImage.data[offset + 3] = imageData.data[offset + 3];
+                    }
+                });
+
+                ctx.putImageData(newImage, 0, 0);
+            }
+
+            run();
+        </script>
+    </body>
+
+    </html>
