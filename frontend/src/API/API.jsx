@@ -1,5 +1,5 @@
 const isProd = import.meta.env.MODE === 'production';
-const apiUrl = !isProd ? 'http://localhost:4000' : 'https://simplify-e3px.onrender.com';
+const apiUrl = !isProd ? 'http://localhost:4000' : 'https://simplify-f1978ef8a491.herokuapp.com/';
 console.log('API URL is', apiUrl, 'mode:', import.meta.env.NODE_ENV);
 
 console.log(apiUrl, process.env.NODE_ENV)
@@ -242,10 +242,10 @@ export const fetchLeaderboard = async () => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error fetching leaderboard:', res.status);
             return [];
-         }
+        }
         const parsed = await res.json();
         return parsed;
     }
@@ -266,7 +266,7 @@ export const getUserRoutine = async (username) => {
         if (!res.ok) {
             console.log('Get routine error:', res.status);
             return;
-         }
+        }
         const parsed = await res.json();
         return parsed;
     }
@@ -305,7 +305,7 @@ export const fetchHomeLeaderboard = async (username) => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error fetching home leaderboard:', res.status);
             return [];
         }
@@ -326,7 +326,7 @@ export const fetchUserStreak = async (username) => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error fetching user streak:', res.status);
             return null;
         }
@@ -371,7 +371,7 @@ export const fetchUserPoint = async (username) => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error fetching user point:', res.status);
             return null;
         }
@@ -392,7 +392,7 @@ export const updateUserStreak = async () => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error updating user streak:', res.status);
             return null;
         }
@@ -413,7 +413,7 @@ export const fetchUserDays = async (username) => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error fetching user days:', res.status);
             return null;
         }
@@ -435,10 +435,10 @@ export const fetchUsers = async () => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error fetching all users:', res.status);
             return [];
-         }
+        }
         const parsed = await res.json();
         return parsed;
     }
@@ -457,12 +457,12 @@ export const deleteUser = async (email) => {
     };
     try {
         const res = await fetch(url, params);
-        if (!res.ok){
+        if (!res.ok) {
             console.error('Error deleting user:', res.status);
             return null;
         }
         console.log('Delete User Success: ', res.status);
-        return {message: res.message};
+        return { message: res.message };
     }
     catch (e) {
         console.error('Fetch User Days error:', e.message);
