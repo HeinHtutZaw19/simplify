@@ -189,7 +189,7 @@ const SurveyPage = () => {
                 </>
             ) : (
                 <>
-                    <Box w="84vw" px="70px" alignContent='center' style={{border:'1px solid red'}} >
+                    <Box w="84vw" alignContent='center' >
                         <WebCam
 
                             handleSubmitClick={handleSubmit}
