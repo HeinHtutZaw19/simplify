@@ -250,7 +250,7 @@ app.get('/api/login/google/callback', (req, res, next) => {
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-            return res.redirect(CLIENT_URL + '/login');
+                return res.redirect(CLIENT_URL + '/login');
             }
             res.redirect(CLIENT_URL + '/oauth');
         });

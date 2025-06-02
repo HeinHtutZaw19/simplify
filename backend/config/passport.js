@@ -22,20 +22,20 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.NODE_ENV == 'production' ? 'https://simplify-e3px.onrender.com/api/login/google/callback' : 'http://localhost:4000/api/login/google/callback',
 },
-async (accessToken, refreshToken, profile, done) => {
-    try {
-        const email = profile.emails[0].value;
-        console.log('google user email clicked:', email)
-        const existingUser = await User.findOne({ email: email });
-        if (!existingUser) {
-            // Prevent login
-            console.log('google oauth: email not found')
-            return done(null, null, { message: 'User email not found' });
-        }
+    async (accessToken, refreshToken, profile, done) => {
+        try {
+            const email = profile.emails[0].value;
+            console.log('google user email clicked:', email)
+            const existingUser = await User.findOne({ email: email });
+            if (!existingUser) {
+                // Prevent login
+                console.log('google oauth: email not found')
+                return done(null, null, { message: 'User email not found' });
+            }
 
-        // Log in existing user
-        return done(null, existingUser);
-    } catch (err) {
-        return done(err, null);
-    }
-}));
+            // Log in existing user
+            return done(null, existingUser);
+        } catch (err) {
+            return done(err, null);
+        }
+    }));
