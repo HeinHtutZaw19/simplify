@@ -38,10 +38,19 @@ function App() {
       console.log('User:', user);
       setUser(user);
 
-      if (authNeeded && !user) {
+      if (currentPath === '/oauth') {
+        if (user) {
+          navigate('/');
+          return;
+        }
+        window.location.reload();
+      }
+      else if (authNeeded && !user) {
         navigate('/welcome');
+        return;
       } else if (!authNeeded && user) {
         navigate('/');
+        return;
       }
 
       setLoaded(true);
