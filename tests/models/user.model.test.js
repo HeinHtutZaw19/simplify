@@ -16,14 +16,15 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
+
+
 beforeEach(async () => {
-    await User.deleteMany({});
+    await User.deleteMany({ email: { $ne: 'admin@admin.com' } });
 });
 
 afterEach(async () => {
-    await User.deleteMany({});
+    await User.deleteMany({ email: { $ne: 'admin@admin.com' } });
 });
-
 describe('User Model Test Suite', () => {
     const sampleUser = {
         username: 'testuser',
