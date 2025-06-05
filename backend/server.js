@@ -466,8 +466,11 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-app.listen(PORT, () => {
-    connectDB();
-    console.log(`Server started on http://localhost:${PORT}`);
-})
 
+export default app;
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        connectDB();
+        console.log(`Server started on http://localhost:${PORT}`);
+    });
+}

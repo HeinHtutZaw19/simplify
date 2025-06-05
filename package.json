@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "test": "vitest",
+    "test": "cross-env NODE_ENV=test vitest",
     "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
     "start": "cross-env NODE_ENV=production node backend/server.js",
     "clean": "npx rimraf node_modules frontend/node_modules frontend/dist"
@@ -42,8 +42,10 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.4",
     "mongoose": "^8.12.1",
     "rimraf": "^6.0.1",
-    "vitest": "^3.0.9"
+    "supertest": "^7.1.1",
+    "vitest": "^3.2.1"
   }
 }
