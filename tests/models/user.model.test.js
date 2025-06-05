@@ -79,9 +79,10 @@ describe('User Model Test Suite', () => {
         await user2.save();
 
         const users = await User.find({});
-        expect(users.length).toBe(2);
-        expect(users[0].username).toBe('user1');
-        expect(users[1].username).toBe('user2');
+        expect(users.length).toBe(3);
+        expect(users[0].username).toBe('admin');
+        expect(users[1].username).toBe('user1');
+        expect(users[2].username).toBe('user2');
     });
 
     // UPDATE
